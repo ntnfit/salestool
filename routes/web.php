@@ -1,71 +1,38 @@
 <?php
-
+  
 use Illuminate\Support\Facades\Route;
+  
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\CustomAuthController; 
+use App\Http\Controllers\sap\SAPB1Controller;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
-Route::group(['namespace' => 'App\Http\Controllers'], function()
-{   
-    /**
-     * Home Routes
-     */
-    Route::get('/', 'HomeController@index')->name('home.index');
-
-    Route::group(['middleware' => ['guest']], function() {
-        Auth::routes();
-
+  
+Auth::routes();
+Route::get('sapb1',[SAPB1Controller::class,'connect']);
+Route::group(['middleware' => ['auth']], function() {
+    Route::resource('roles', RoleController::class);
+    Route::resource('users', UserController::class);
+    Route::get('/', function () {
+        return view('welcome');
     });
-
-    Route::group(['middleware' => ['auth', 'permission']], function() {
-        /**
-         * Logout Routes
-         */
-        Route::get('/logout', 'LogoutController@perform')->name('logout.perform');
-
-        /**
-         * User Routes
-         */
-        Route::group(['prefix' => 'users'], function() {
-            Route::get('/', 'UsersController@index')->name('users.index');
-            Route::get('/create', 'UsersController@create')->name('users.create');
-            Route::post('/create', 'UsersController@store')->name('users.store');
-            Route::get('/{user}/show', 'UsersController@show')->name('users.show');
-            Route::get('/{user}/edit', 'UsersController@edit')->name('users.edit');
-            Route::patch('/{user}/update', 'UsersController@update')->name('users.update');
-            Route::delete('/{user}/delete', 'UsersController@destroy')->name('users.destroy');
-        });
-
-        /**
-         * User Routes
-         */
-        Route::group(['prefix' => 'posts'], function() {
-            Route::get('/', 'PostsController@index')->name('posts.index');
-            Route::get('/create', 'PostsController@create')->name('posts.create');
-            Route::post('/create', 'PostsController@store')->name('posts.store');
-            Route::get('/{post}/show', 'PostsController@show')->name('posts.show');
-            Route::get('/{post}/edit', 'PostsController@edit')->name('posts.edit');
-            Route::patch('/{post}/update', 'PostsController@update')->name('posts.update');
-            Route::delete('/{post}/delete', 'PostsController@destroy')->name('posts.destroy');
-        });
-
-        Route::resource('roles', RolesController::class);
-        Route::resource('permissions', PermissionsController::class);
+    Route::get('/customer-data', function () {
+        return view('sap.CustomerData');
+    });
+    Route::get('/stock-detail', function () {
+        return view('sap.SaleDetail');
+    });
+    Route::get('/stock-total', function () {
+        return view('sap.SaleTotal');
+    });
+    Route::get('/sale-by-cust', function () {
+        return view('sap.SaleBycus');
+    });
+    Route::get('/total-by-sale', function () {
+        return view('sap.TotalSaleByCustomer');
+    });
+    Route::get('/list-employees', function () {
+        return view('sap.listemployees');
     });
 });
-
-Route::get('/', function () {
-    return view('welcome');
-});
-
-
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'title' => 'AdminLTE 3',
+    'title' => 'Betagen-sales-tools',
     'title_prefix' => '',
     'title_postfix' => '',
 
@@ -63,7 +63,7 @@ return [
     |
     */
 
-    'logo' => '<b>Admin</b>LTE',
+    'logo' => '<b>Sale</b>Tools',
     'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
@@ -110,7 +110,7 @@ return [
         'enabled' => true,
         'img' => [
             'path' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
-            'alt' => 'AdminLTE Preloader Image',
+            'alt' => 'SaleTools Preloader Image',
             'effect' => 'animation__shake',
             'width' => 60,
             'height' => 60,
@@ -253,7 +253,7 @@ return [
     */
 
     'use_route_url' => false,
-    'dashboard_url' => 'home',
+    'dashboard_url' => '',
     'logout_url' => 'logout',
     'login_url' => 'login',
     'register_url' => 'register',
@@ -303,20 +303,9 @@ return [
 
         // Sidebar items:
         [
-            'type' => 'sidebar-menu-search',
-            'text' => 'search',
-        ],
-        [
             'text' => 'blog',
             'url'  => 'admin/blog',
             'can'  => 'manage-blog',
-        ],
-        [
-            'text'        => 'pages',
-            'url'         => 'admin/pages',
-            'icon'        => 'far fa-fw fa-file',
-            'label'       => 4,
-            'label_color' => 'success',
         ],
         ['header' => 'account_settings'],
         [
@@ -330,59 +319,87 @@ return [
             'icon' => 'fas fa-fw fa-lock',
         ],
         [
-            'text'    => 'multilevel',
+            'text'    => 'Reports',
             'icon'    => 'fas fa-fw fa-share',
             'submenu' => [
                 [
-                    'text' => 'level_one',
-                    'url'  => '#',
+                    'text' => 'Customer Master data',
+                    'url'  => 'customer-data',
                 ],
                 [
-                    'text'    => 'level_one',
-                    'url'     => '#',
-                    'submenu' => [
-                        [
-                            'text' => 'level_two',
-                            'url'  => '#',
-                        ],
-                        [
-                            'text'    => 'level_two',
-                            'url'     => '#',
-                            'submenu' => [
-                                [
-                                    'text' => 'level_three',
-                                    'url'  => '#',
-                                ],
-                                [
-                                    'text' => 'level_three',
-                                    'url'  => '#',
-                                ],
-                            ],
-                        ],
-                    ],
+                    'text' => 'Sale report-stock-total',
+                    'url'  => 'stock-total',
                 ],
                 [
-                    'text' => 'level_one',
-                    'url'  => '#',
+                    'text' => 'Sale report-stock-detail',
+                    'url'  => 'stock-detail',
+                ],
+                [
+                    'text' => 'Sale by cust Group/Customer/Product',
+                    'url'  => 'sale-by-cust',
+                ],
+                [
+                    'text' => 'Total Sale by Customer/Group',
+                    'url'  => 'total-by-sale',
+                ],
+                [
+                    'text' => 'List employees',
+                    'url'  => 'list-employees',
                 ],
             ],
         ],
-        ['header' => 'labels'],
         [
-            'text'       => 'important',
-            'icon_color' => 'red',
-            'url'        => '#',
+            'text'    => 'Sales - AR',
+            'icon'    => 'fa-solid fa-list-radio',
+            'submenu' => [
+                [
+                    'text' => 'Stock out request',
+                    'url'  => 'request-order',
+                ],
+                [
+                    'text' => 'Sale target',
+                    'url'  => 'sale-target',
+                ],
+                [
+                    'text' => 'Sales Target vs Actual managenment',
+                    'url'  => 'sale-target-actual',
+                ],
+                [
+                    'text' => 'Sale out Weekly-Chanel GT',
+                    'url'  => 'sale-weekly-chanel',
+                ],
+                [
+                    'text' => 'Update delivery info',
+                    'url'  => 'update-delivery-info',
+                ],
+                [
+                    'text' => 'Print Delivery Notes',
+                    'url'  => 'print-delivery-notes',
+                ],
+            ],
         ],
         [
-            'text'       => 'warning',
-            'icon_color' => 'yellow',
-            'url'        => '#',
+            'text'    => 'Purchasing A/P',
+            'icon'    => 'fa-solid fa-list-radio',
+            'submenu' => [
+                [
+                    'text' => 'Purchase order request',
+                    'url'  => 'puchase-request',
+                ],
+            ],
         ],
         [
-            'text'       => 'information',
-            'icon_color' => 'cyan',
-            'url'        => '#',
+            'text'    => 'Inventory',
+            'icon'    => 'fa-solid fa-list-radio',
+            'submenu' => [
+                [
+                    'text' => 'Inventory requests',
+                    'url'  => 'inventory-request',
+                ],
+                
+            ],
         ],
+
     ],
 
     /*
