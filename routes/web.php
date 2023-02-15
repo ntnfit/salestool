@@ -7,7 +7,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CustomAuthController; 
 use App\Http\Controllers\sap\SAPB1Controller;
-
+use App\Http\Controllers\Auth\ProfilesController;
   
 Auth::routes();
 Route::get('sapb1',[SAPB1Controller::class,'connect']);
@@ -35,4 +35,12 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/list-employees', function () {
         return view('sap.listemployees');
     });
+
+    Route::get('/connect-setup',
+    function () {
+        return view('sap.connectSetup');
+    })->name('setup-connect');
+    Route::post('/connect-setup', [SAPB1Controller::class,'connectSetup'])->name('connect-setup');
+   
+    Route::get('/profiles', [ProfilesController::class,'show'])->name('profiles');
 });

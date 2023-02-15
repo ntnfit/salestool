@@ -302,15 +302,11 @@ return [
         ],
 
         // Sidebar items:
-        [
-            'text' => 'blog',
-            'url'  => 'admin/blog',
-            'can'  => 'manage-blog',
-        ],
+        
         ['header' => 'account_settings'],
         [
             'text' => 'profile',
-            'url'  => 'admin/settings',
+            'url'  => '/profiles',
             'icon' => 'fas fa-fw fa-user',
         ],
         [
@@ -351,6 +347,7 @@ return [
         [
             'text'    => 'Sales - AR',
             'icon'    => 'fa-solid fa-list-radio',
+            'can' => 'sales-module',
             'submenu' => [
                 [
                     'text' => 'Stock out request',
@@ -398,6 +395,11 @@ return [
                 ],
                 
             ],
+        ],
+        [
+            'text' => ' Connect settings',
+            'url'  => 'connect-setup',
+            'icon'=>'fas fa-cogs'
         ],
 
     ],
@@ -458,16 +460,16 @@ return [
             ],
         ],
         'Select2' => [
-            'active' => false,
+            'active' => true,
             'files' => [
                 [
                     'type' => 'js',
-                    'asset' => false,
+                    'asset' => true,
                     'location' => '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js',
                 ],
                 [
                     'type' => 'css',
-                    'asset' => false,
+                    'asset' => true,
                     'location' => '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.css',
                 ],
             ],

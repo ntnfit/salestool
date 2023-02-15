@@ -27,7 +27,7 @@
     </div>
     <div class="form-group col-md-2">
       
-      <button type="button" class="form-control btn btn-primary" id="export-excel">Excel</button>
+      <button type="button" class="form-control btn btn-primary" id="export-excel" onclick="onBtExport()">Excel</button>
     </div>
     </div>
 </form>
@@ -59,8 +59,10 @@
         </style>
 
 		<script>var __basePath = './';</script>
-		<script src="https://cdn.jsdelivr.net/npm/ag-grid-community@28.2.1/dist/ag-grid-community.min.js">
+		<script src="https://cdn.jsdelivr.net/npm/ag-grid-community@28.2.1/dist/ag-grid-community.min.js"> 
 		</script>
+    <script src="https://cdn.jsdelivr.net/npm/ag-grid-enterprise@28.2.1/dist/ag-grid-enterprise.min.js">
+      </script>
 		<script>
       var filterParams = {
   comparator: (filterLocalDateAtMidnight, cellValue) => {
@@ -89,20 +91,31 @@
 };
 
 const columnDefs = [
-  { field: 'athlete' },
-  { field: 'age', filter: 'agNumberColumnFilter', maxWidth: 100 },
-  { field: 'country' },
-  { field: 'year', maxWidth: 100 },
+  { field: 'CardCode' },
+  { field: 'CardName', filter: 'agNumberColumnFilter' },
+  { field: 'ShortName' },
+  { field: 'storeID', maxWidth: 100 },
   {
-    field: 'date',
+    field: 'Street',
     filter: 'agDateColumnFilter',
     filterParams: filterParams,
   },
-  { field: 'sport' },
-  { field: 'gold', filter: 'agNumberColumnFilter' },
-  { field: 'silver', filter: 'agNumberColumnFilter' },
-  { field: 'bronze', filter: 'agNumberColumnFilter' },
-  { field: 'total', filter: false },
+  { field: 'TaxCode' },
+  { field: 'Channel', filter: 'agNumberColumnFilter' },
+  { field: 'Route', filter: 'agNumberColumnFilter' },
+  { field: 'PGCode', filter: 'agNumberColumnFilter' },
+  { field: 'PGName', filter: 'agNumberColumnFilter' },
+  { field: 'PGCode', filter: 'agNumberColumnFilter' },
+  { field: 'SalSupCode', filter: 'agNumberColumnFilter' },
+  { field: 'SalSupName', filter: 'agNumberColumnFilter' },
+  { field: 'TeamLeaderCode', filter: 'agNumberColumnFilter' },
+  { field: 'TeamLeaderName', filter: 'agNumberColumnFilter' },
+  { field: 'KA_ASM_Code', filter: 'agNumberColumnFilter' },
+  { field: 'KA_ASM_Name', filter: 'agNumberColumnFilter' },
+  { field: 'SalManagerCode', filter: 'agNumberColumnFilter' },
+  { field: 'SaLManager_Name', filter: 'agNumberColumnFilter' },
+  { field: 'Group', filter: 'agNumberColumnFilter' },
+  { field: 'DefaultWhs', filter: 'agNumberColumnFilter' },
 ];
 
 const gridOptions = {
@@ -112,17 +125,57 @@ const gridOptions = {
     flex: 1,
     minWidth: 150,
     filter: true,
+    resizable: true,
   },
 };
-
+function onBtExport() {
+  gridOptions.api.exportDataAsExcel();
+}
 // setup the grid after the page has finished loading
 document.addEventListener('DOMContentLoaded', function () {
   var gridDiv = document.querySelector('#myGrid');
   new agGrid.Grid(gridDiv, gridOptions);
 
-  fetch('https://www.ag-grid.com/example-assets/olympic-winners.json')
-    .then((response) => response.json())
-    .then((data) => gridOptions.api.setRowData(data));
+
+    $.ajax({
+          beforeSend: function (xhr) {
+              xhr.setRequestHeader ("Authorization", "Basic eyJDb21wYW55REIiOiIwMV9CVEdfU0FQX0xJVkUiLCJVc2VyTmFtZSI6Im1hbmFnZXIifTptYW5hZ2Vy");
+          },
+          url:"https://{{env('SAP_SERVER')}}:50000/b1s/v1/sml.svc/CUSTOMERDATA",
+          xhrFields: {
+              withCredentials: true
+          },              
+		// the URL for the request
+	
+		// whether this is a POST or GET request
+		type: "get",
+		// the type of data we expect back
+		dataType : "json",
+        headers:{
+            "Prefer": "odata.maxpagesize=all",
+        },
+		// code to run if the request succeeds;
+		// the response is passed to the function
+		success: function( response ) {
+      gridOptions.api.setRowData(response.value)
+           
+		},
+
+		// code to run if the request fails; the raw request and
+		// status codes are passed to the function
+		error: function( xhr, status, errorThrown ) {
+			console.log( "Error: " + errorThrown );
+			console.log( "Status: " + status );
+			console.dir( xhr );
+		},
+
+		// code to run regardless of success or failure
+		complete: function( xhr, status ) {
+			//alert(complete);
+			// Nothing for now.
+		}
+	});
+
 });
 
 		</script>

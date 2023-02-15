@@ -44,4 +44,49 @@ class SAPB1Controller extends Controller
             odbc_close($conn);
         }
     }
+    function connectSetup (Request $request)
+    {
+        try {
+            $data=$request->all();
+            //$request->port
+            $username = '{"CompanyDB":"'.$request->CompanyDB.'","UserName":"'.$request->username.'"}';
+            $password = "manager";
+            $authString = base64_encode("$username:$password");
+            $headers = $authString;
+
+           $path = base_path('.env');
+           
+           $key="BSHeader";
+           $value=$headers;
+           if (file_exists($path)) {
+            //headers
+            file_put_contents($path, str_replace(
+                "$key=" . env($key), "$key=" . $value, file_get_contents($path)));
+            //namserserver
+            file_put_contents($path, str_replace(
+                "SAP_SERVER=" . env("SAP_SERVER"), "SAP_SERVER=". $request->servername, file_get_contents($path)));
+            //port
+            file_put_contents($path, str_replace(
+                "SAP_PORT=" . env("SAP_PORT"), "SAP_PORT=". $request->port, file_get_contents($path)));
+            //CompanyDB
+            file_put_contents($path, str_replace(
+                "SAP_DB=" . env("SAP_DB"), "SAP_DB=". $request->CompanyDB, file_get_contents($path)));
+            //Username
+            file_put_contents($path, str_replace(
+                "user_name=" . env("user_name"), "user_name=". $request->username, file_get_contents($path)));
+            //Password
+            file_put_contents($path, str_replace(
+                "password=" . env("password"), "password=". $request->password, file_get_contents($path)));
+
+            
+         }
+         return redirect()->route('setup-connect')->with('success','User created successfully');
+        }
+        catch (Throwable $e)
+        {
+            return redirect()->route('setup-connect')->with('error',$e);
+        }
+       
+      
+    }
 }
