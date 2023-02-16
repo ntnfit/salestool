@@ -345,6 +345,21 @@ return [
             ],
         ],
         [
+            'text'    => 'Marketing',
+            'icon'    => '',
+            'submenu' => [
+                [
+                    'text' => 'Promotion by items',
+                    'url'  => 'promotions-items',
+                ],
+                [
+                    'text' => 'Promotion by Customer',
+                    'url'  => 'promotions-customers',
+                ],
+                
+            ],
+        ],
+        [
             'text'    => 'Sales - AR',
             'icon'    => 'fa-solid fa-list-radio',
             'can' => 'sales-module',

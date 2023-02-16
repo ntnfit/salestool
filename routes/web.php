@@ -36,6 +36,11 @@ Route::group(['middleware' => ['auth']], function() {
         return view('sap.listemployees');
     });
 
+
+    Route::get('/promotions-items', function () {
+        return view('promotion.definePromotions');
+    });
+    
     Route::get('/connect-setup',
     function () {
         return view('sap.connectSetup');
