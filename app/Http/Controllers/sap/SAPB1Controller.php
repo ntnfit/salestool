@@ -9,7 +9,7 @@ class SAPB1Controller extends Controller
 {
     function connect(){
         $host='115.84.182.179:30015';
-        $driver = '/home/nguyen/sap/hdbclient/libodbcHDB.so';
+        $driver = 'HDBODBC';
         $db_name = "HDB";
         // Username
         $username = 'SYSTEM';
@@ -90,23 +90,5 @@ class SAPB1Controller extends Controller
 
       
     }
-    function connect_saphan_db()
-    {
-          
-            $username = "SYSTEM";
-            $password = "S@p@HanaSapb1";
-            $dsn ="odbc:SAP_HANA";
-            $queryString = "SELECT * FROM OITM";
-            try {
-            // Connect to the data source
-            $dbh = new PDO($dsn, $username, $password);
-            $stmt = $dbh->prepare($queryString);
-            $stmt -> execute();
-            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-          
-            }
-            catch (Exception $e) {
-                echo $e->getMessage();
-            }
-    }
+  
 }
