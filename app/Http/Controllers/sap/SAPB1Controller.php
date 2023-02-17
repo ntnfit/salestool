@@ -92,16 +92,18 @@ class SAPB1Controller extends Controller
     }
     function connect_saphan_db()
     {
-        $username = “<HANA User ID”;
-            $password = “<HANA password>”;
-            $dsn =”odbc:<name of Data Source>”;$queryString = ‘SELECT …’;
+          
+            $username = "SYSTEM";
+            $password = "S@p@HanaSapb1";
+            $dsn ="odbc:SAP_HANA";
+            $queryString = "SELECT * FROM OITM";
             try {
             // Connect to the data source
             $dbh = new PDO($dsn, $username, $password);
             $stmt = $dbh->prepare($queryString);
             $stmt -> execute();
-            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);.
-            Then I wrote some manual logic to parse a JSON structure from the result set, and then closed out the PHP file:
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+          
             }
             catch (Exception $e) {
                 echo $e->getMessage();

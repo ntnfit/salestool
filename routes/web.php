@@ -10,6 +10,7 @@ use App\Http\Controllers\sap\SAPB1Controller;
 use App\Http\Controllers\Auth\ProfilesController;
   
 Auth::routes();
+Route::get('connect_saphana',[SAPB1Controller::class,'connect_saphan_db']);
 Route::get('sapb1',[SAPB1Controller::class,'connect']);
 Route::group(['middleware' => ['auth']], function() {
     Route::resource('roles', RoleController::class);
