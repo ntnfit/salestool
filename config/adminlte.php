@@ -63,12 +63,12 @@ return [
     |
     */
 
-    'logo' => '<b>Sale</b>Tools',
+    'logo' => '<b>Sales </b>Tools',
     'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
-    'logo_img_alt' => 'Admin Logo',
+    'logo_img_alt' => 'Sales-tools Logo',
 
     /*
     |--------------------------------------------------------------------------
@@ -365,6 +365,11 @@ return [
             'can' => 'sales-module',
             'submenu' => [
                 [
+                    'text' => 'Promotion list',
+                    'url'  => 'promotions-list',
+                ],
+                
+                [
                     'text' => 'Stock out request',
                     'url'  => 'request-order',
                 ],
@@ -521,6 +526,26 @@ return [
                     'type' => 'js',
                     'asset' => false,
                     'location' => '//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js',
+                ],
+            ],
+        ],
+        'DateRangePicker' => [
+            'active' => false,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/moment/moment.min.js',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/daterangepicker/daterangepicker.js',
+                ],
+                [
+                    'type' => 'css',
+                    'asset' => true,
+                    'location' => 'vendor/daterangepicker/daterangepicker.css',
                 ],
             ],
         ],

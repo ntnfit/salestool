@@ -7,10 +7,21 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CustomAuthController; 
 use App\Http\Controllers\sap\SAPB1Controller;
+use App\Http\Controllers\sap\GetItemController;
 use App\Http\Controllers\Auth\ProfilesController;
-  
+use App\Http\Controllers\sap\PromotionController;
+use App\Http\Controllers\sap\DeliveryController;
+use App\Http\Controllers\sap\ImageUploadController;
 Auth::routes();
+
 Route::get('sapb1',[SAPB1Controller::class,'connect']);
+Route::get('getitemsap',[GetItemController::class,'getItemSAP']);
+//
+
+Route::resource('delivery', DeliveryController::class);
+Route::post('uploadImg', 'ImageUploadController@postImages')->name('uploadImg'); 
+Route::post('deleteImg',[DeliveryController::class,'destroy']); 
+
 Route::group(['middleware' => ['auth']], function() {
     Route::resource('roles', RoleController::class);
     Route::resource('users', UserController::class);
@@ -36,11 +47,13 @@ Route::group(['middleware' => ['auth']], function() {
         return view('sap.listemployees');
     });
 
-
-    Route::get('/promotions-items', function () {
-        return view('promotion.definePromotions');
-    });
-    
+    //promotions route
+    Route::get('/promotions-list',[PromotionController::class,'listPromotion'])->name('list-promotion');
+    Route::get('/promotions-add',[PromotionController::class,'dfPromotion'])->name('add-promotions');
+    Route::get('/custmer-filter',[PromotionController::class,'ListCustomerDropDown'])->name('filterCus');
+    Route::post('/promotions-submit',[PromotionController::class,'store'])->name('prosubmit');
+    //update DO
+    Route::post('/updateDo',[DeliveryController::class,'updatestatus'])->name('updateDo');
     Route::get('/connect-setup',
     function () {
         return view('sap.connectSetup');

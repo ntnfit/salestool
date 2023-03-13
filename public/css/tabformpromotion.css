@@ -1,0 +1,73 @@
+.tab {
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+  }
+  
+  .tab button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+  }
+  
+  .tab button:hover {
+    background-color: rgb(217, 214, 41);
+  }
+  
+  .tab button.active {
+    background-color: rgb(24, 222, 173);
+  }
+  
+  .tabcontent {
+    display: none;
+    padding: 6px 12px;
+    border: 1px solid rgb(233, 181, 181);
+    border-top: none;
+  }
+
+  #myTable .dropdown-menu.show
+  {
+    position: inherit !important
+  }
+  #tablecustomer .dropdown-menu.show
+  {
+    position: inherit !important
+  }
+  
+  #proitems .dropdown-menu.show
+  {
+    position: inherit !important
+  }
+
+  
+  #myTable .bootstrap-select {
+    max-width: 200px;
+  }
+  #myTable .bootstrap-select .btn {
+  
+    border-style: solid;
+
+   
+    border-top: none;
+    border-bottom: none;
+    border-right: none;
+ 
+    font-weight: 200;
+    padding: 12px 12px;
+    font-size: 16px;
+ 
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+  }
+  .bootstrap-select .dropdown-menu {
+    margin: 50px 0 0;
+  }
+  select::-ms-expand {
+    /* for IE 11 */
+    display: none;
+  }
