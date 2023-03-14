@@ -1,16 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-	<head>
-		<title>Sale Tool</title>
-		<meta charSet="UTF-8"/>
-		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+@extends('adminlte::page')
+
+@section('title', 'Customer data')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
     <script src="https://unpkg.com/jquery/dist/jquery.min.js"></script>	
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.13.1/xlsx.full.min.js"></script>
-</head>
-	<body>
+@section('content')
+
   <form>
     <div class="form-row">
         <div class="form-group col-sx-4">Sale manager</div>
@@ -179,5 +176,4 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 		</script>
-	</body>
-</html>
+@stop
