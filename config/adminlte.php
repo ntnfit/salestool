@@ -364,7 +364,7 @@ return [
                 
                 [
                     'text' => 'Stock out request',
-                    'url'  => '/stock-request',
+                    'url'  => '/stock-request-list',
                 ],
                 [
                     'text' => 'Sale target',
@@ -405,6 +405,22 @@ return [
                 [
                     'text' => 'Inventory requests',
                     'url'  => 'inventory-request',
+                ],
+                
+            ],
+        ],
+        [
+            'text'    => 'Users & Roles management',
+            'icon'    => 'fa-solid fa-list-radio',
+            'submenu' => [
+                [
+                    'text' => 'Users management',
+                    'url'  => '/users',
+                    'icon'=>  'fas fa-fw fa-users'
+                ],
+                [
+                    'text' => 'Roles management',
+                    'url'  => '/roles',
                 ],
                 
             ],

@@ -55,6 +55,11 @@ Route::group(['middleware' => ['auth']], function() {
     //update DO
     Route::post('/updateDo',[DeliveryController::class,'updatestatus'])->name('updateDo');
     // sale stock- request
+    Route::get('/stock-request-list',
+    function () {
+        return view('sales.list');
+    })->name('sales.list');
+
     Route::get('/stock-request',
     function () {
         return view('sales.add');
