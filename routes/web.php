@@ -54,6 +54,14 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('/promotions-submit',[PromotionController::class,'store'])->name('prosubmit');
     //update DO
     Route::post('/updateDo',[DeliveryController::class,'updatestatus'])->name('updateDo');
+    // sale stock- request
+    Route::get('/stock-request',
+    function () {
+        return view('sales.add');
+    })->name('setup-connect');
+
+   
+   
     Route::get('/connect-setup',
     function () {
         return view('sap.connectSetup');

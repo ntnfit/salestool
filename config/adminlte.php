@@ -349,12 +349,8 @@ return [
             'icon'    => '',
             'submenu' => [
                 [
-                    'text' => 'Promotion by items',
-                    'url'  => 'promotions-items',
-                ],
-                [
-                    'text' => 'Promotion by Customer',
-                    'url'  => 'promotions-customers',
+                    'text' => 'Promotions',
+                    'url'  => 'promotions-list',
                 ],
                 
             ],
@@ -364,10 +360,7 @@ return [
             'icon'    => 'fa-solid fa-list-radio',
             'can' => 'sales-module',
             'submenu' => [
-                [
-                    'text' => 'Promotion list',
-                    'url'  => 'promotions-list',
-                ],
+                
                 
                 [
                     'text' => 'Stock out request',
@@ -546,6 +539,26 @@ return [
                     'type' => 'css',
                     'asset' => true,
                     'location' => 'vendor/daterangepicker/daterangepicker.css',
+                ],
+            ],
+        ],
+        'TempusDominusBs4' => [
+            'active' => false,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/moment/moment.min.js',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js',
+                ],
+                [
+                    'type' => 'css',
+                    'asset' => true,
+                    'location' => 'vendor/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css',
                 ],
             ],
         ],
