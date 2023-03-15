@@ -58,7 +58,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/stock-request',
     function () {
         return view('sales.add');
-    })->name('setup-connect');
+    })->name('sales.add');
 
    
    

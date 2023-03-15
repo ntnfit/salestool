@@ -364,7 +364,7 @@ return [
                 
                 [
                     'text' => 'Stock out request',
-                    'url'  => 'request-order',
+                    'url'  => '/stock-request',
                 ],
                 [
                     'text' => 'Sale target',
