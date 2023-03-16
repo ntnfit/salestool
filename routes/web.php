@@ -12,6 +12,7 @@ use App\Http\Controllers\Auth\ProfilesController;
 use App\Http\Controllers\sap\PromotionController;
 use App\Http\Controllers\sap\DeliveryController;
 use App\Http\Controllers\sap\ImageUploadController;
+use App\Http\Controllers\sap\ListEmployeeController;
 Auth::routes();
 
 Route::get('sapb1',[SAPB1Controller::class,'connect']);
@@ -43,10 +44,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/total-by-sale', function () {
         return view('sap.TotalSaleByCustomer');
     });
-    Route::get('/list-employees', function () {
-        return view('sap.listemployees');
-    });
-
+    Route::get('/list-employees', [ListEmployeeController::class,'ListEmploy'])->name('list-employee');
+       
     //promotions route
     Route::get('/promotions-list',[PromotionController::class,'listPromotion'])->name('list-promotion');
     Route::get('/promotions-add',[PromotionController::class,'dfPromotion'])->name('add-promotions');
@@ -64,7 +63,10 @@ Route::group(['middleware' => ['auth']], function() {
     function () {
         return view('sales.add');
     })->name('sales.add');
-
+    Route::get('/sale-target',
+    function () {
+        return view('sales.saletarget');
+    })->name('sales.add');
    
    
     Route::get('/connect-setup',
