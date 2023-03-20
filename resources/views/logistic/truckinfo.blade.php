@@ -1,6 +1,8 @@
 @extends('adminlte::page')
 
 @section('title', 'Truck information')
+@section('plugins.Datatables', true)
+@section('plugins.DateRangePicker', true)
 @section('plugins.BsCustomFileInput', true)
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
     <script src="https://unpkg.com/jquery/dist/jquery.min.js"></script>	
