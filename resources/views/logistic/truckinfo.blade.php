@@ -48,14 +48,14 @@ $config = ['format' => 'L'];
     </div>
     <!-- form gird -->
     <div id="MyGrid" class="ag-theme-alpine" style="height: 80%">
-      </div>
+    </div>
   </form>
-      <div class="">
+    
       <x-adminlte-button class="btn-flat" id="save" style="float: left;font-size: small;" type="button" label="Save" theme="success"/>
       <x-adminlte-button class="btn-flat" id="print" style="float: right; margin-top: 30px;font-size: small; padding: 8px 24px;margin-right: 20px;" type="button" label="Print" theme="success" />
       <x-adminlte-button class="btn-flat" id="stockout" style="float: right; margin-top: 30px;font-size: small; padding: 8px 24px;margin-right: 20px;" type="button" label="Print stock out" theme="success" />
       <x-adminlte-button class="btn-flat" id="lock" style="float: right; margin-top: 30px;font-size: small; padding: 8px 24px;margin-right: 20px;" type="button" label="Lock/ Unlock Vehicle" theme="success" />
-      </div>
+     
 </div>   
 @endsection
 @section('css')
