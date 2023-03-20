@@ -2,11 +2,14 @@
 
 @section('title', 'Truck information')
 @section('plugins.Datatables', true)
+
+@section('plugins.Sweetalert2', true)
 @section('plugins.DateRangePicker', true)
-@section('plugins.BsCustomFileInput', true)
+@section('plugins.TempusDominusBs4', true)
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
     <script src="https://unpkg.com/jquery/dist/jquery.min.js"></script>	
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 @section('content')
 @php
 $config = ['format' => 'L'];
@@ -17,14 +20,14 @@ $config = ['format' => 'L'];
   <form>
     <div class="row">
       <!-- header input -->
-      <x-adminlte-input-date name="truckdate" label="From Date" :config="$config"  label-class="text-lightblue" igroup-size="sm" fgroup-class="col-md-3" placeholder="Choose a date...">
+      <x-adminlte-input-date name="fromdate" label="From Date" :config="$config"  label-class="text-lightblue" igroup-size="sm" fgroup-class="col-md-3" placeholder="Choose a date...">
                     <x-slot name="appendSlot">
                         <div class="input-group-text bg-gradient-danger">
                             <i class="fas fa-calendar-alt"></i>
                         </div>
                     </x-slot>
       </x-adminlte-input-date>
-      <x-adminlte-input-date name="truckdate" label="To Date" :config="$config"  label-class="text-lightblue" igroup-size="sm" fgroup-class="col-md-3" placeholder="Choose a date...">
+      <x-adminlte-input-date name="todate" label="To Date" :config="$config"  label-class="text-lightblue" igroup-size="sm" fgroup-class="col-md-3" placeholder="Choose a date...">
                     <x-slot name="appendSlot">
                         <div class="input-group-text bg-gradient-danger">
                             <i class="fas fa-calendar-alt"></i>
@@ -33,9 +36,14 @@ $config = ['format' => 'L'];
       </x-adminlte-input-date>
 
       <x-adminlte-button class="btn-flat" id="search" style="float: right;margin-top: 30px;font-size: small;height: 31px;" type="button" label="Search" theme="success" />
-      <x-adminlte-select label="Truck Code" label-class="text-lightblue" name="truckcode" id="truckcode" fgroup-class="col-md-3" style="float:right" enable-old-support>  
+    
+      <x-adminlte-select label="Truck Code" label-class="text-lightblue truckcode" name="truckcode" id="truckcode" igroup-size="sm" fgroup-class="col-md-4" style="margin-left: 150px" enable-old-support>  
       </x-adminlte-select>
-      <x-adminlte-button class="btn-flat" id="apply" style="float: right; margin-top: 30px;font-size: small;height: 31px;" type="button" label="Apply" theme="success" />
+  
+      <div>
+      <x-adminlte-button class="btn-flat" id="apply" style="float: right;margin-top: 30px;font-size: small;height: 31px;margin-left:10px;" type="button" label="Apply" theme="success" />
+      </div>
+      
       
     </div>
     <!-- form gird -->
@@ -65,7 +73,9 @@ $config = ['format' => 'L'];
   display: inline-block;
   font-size: 16px;
 }
-
+label.text-lightblue.truckcode {
+    margin-left: 150px;
+}
 
 </style>
 @stop
