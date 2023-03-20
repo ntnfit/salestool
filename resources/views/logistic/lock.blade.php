@@ -1,36 +1,31 @@
 @extends('adminlte::page')
-
-<<<<<<< HEAD
 @section('title', 'lock vehicle')
-@section('plugins.Datatables', true)
 
+@section('plugins.Datatables', true)
 @section('plugins.Sweetalert2', true)
 @section('plugins.DateRangePicker', true)
 @section('plugins.TempusDominusBs4', true)
-
-@section('content')
-@stop
-=======
-@section('title', 'Lock Vehicle')
 @section('plugins.BsCustomFileInput', true)
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
     <script src="https://unpkg.com/jquery/dist/jquery.min.js"></script>	
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
 @section('content')
+<h4> Lock/ Unlock Vehicle </h4>
+<div class="content">
+    <div id="MyGrid" class="ag-theme-alpine" style="height: 80%">
+    </div>
+     
+    <x-adminlte-button class="btn-flat" id="lockall" style="float: left;font-size: small; margin-top:30px;padding: 8px 24px;" type="button" label="Lock All" theme="success"/>
+    <x-adminlte-button class="btn-flat" id="unall" style="float: left;font-size: small;margin-top:30px; margin-left: 20px;padding: 8px 24px;" type="button" label="Unlock All" theme="success"/>
+    <a href="{{route('logistic.truckinfor')}}"><x-adminlte-button class="btn-flat" id="back" style="float: right;font-size: small;margin-top:30px;padding: 8px 24px;" type="button" label="Back" theme="success"/></a>
+    <x-adminlte-button class="btn-flat" id="export" style="float: right;font-size: small;margin-top:30px; margin-right: 20px;padding: 8px 24px;" type="button" label="Export Excel" theme="success"/>
+</div>
 @php
 
 @endphp
 
-<h4> Lock/ Unlock Vehicle </h4>
-<div class="content">
-    <div id="MyGrid" class="ag-theme-alpine" style="height: 80%">
-      </div>
-     
-    <x-adminlte-button class="btn-flat" id="lockall" style="float: left;font-size: small; margin-top:30px;" type="button" label="Lock All" theme="success"/>
-    <x-adminlte-button class="btn-flat" id="unall" style="float: left;font-size: small;margin-top:30px; margin-left: 20px;" type="button" label="Unlock All" theme="success"/>
-    <x-adminlte-button class="btn-flat" id="export" style="float: right;font-size: small;margin-top:30px;" type="button" label="Export Excel" theme="success"/>
-</div>
+
 
 
 @endsection
@@ -112,4 +107,4 @@ document.addEventListener('DOMContentLoaded', function () {
 
 </script>
 @endpush
->>>>>>> 2cc3811 (update)
+
