@@ -63,12 +63,23 @@ Route::group(['middleware' => ['auth']], function() {
     function () {
         return view('sales.add');
     })->name('sales.add');
+
     Route::get('/sale-target',
     function () {
         return view('sales.saletarget');
     })->name('sales.add');
    
-   
+   Route::get('/truck-information',
+    function () {
+        return view('logistic.truckinfo');
+    })->name('logistic.truckinfor');
+
+    Route::get('/lock-vehicle',
+    function () {
+        return view('logistic.lock');
+    })->name('logistic.lock');
+
+
     Route::get('/connect-setup',
     function () {
         return view('sap.connectSetup');

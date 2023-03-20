@@ -71,7 +71,8 @@ $config = ['format' => 'L'];
 @stop
 
 @section('js')
-<script>var __basePath = './';</script>
+<script>
+var __basePath = './';</script>
 		<script src="https://cdn.jsdelivr.net/npm/ag-grid-community@28.2.1/dist/ag-grid-community.min.js"> 
 		</script>
     <script src="https://cdn.jsdelivr.net/npm/ag-grid-enterprise@28.2.1/dist/ag-grid-enterprise.min.js">
