@@ -9,10 +9,9 @@
 @section('content')
 
 
- 
-    <div class="form-group col-md-2">
-      
-      <button type="button" class="form-control btn btn-primary" id="export-excel" onclick="onBtExport()">Excel</button>
+
+    <div class="form-group col-md-12">
+      <a style="float: right" href="{{route('sales.add')}}"><x-adminlte-button label="add new" theme="primary" icon="fas fa-plus"/> </a>
       <button id="getSelectedRowsBtn">Get Selected Rows</button>
     </div>
    

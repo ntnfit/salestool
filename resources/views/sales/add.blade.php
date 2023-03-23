@@ -18,7 +18,7 @@ $config = ['format' => 'L'];
             <h2>add stock request -order</h2>
         </div>
         <div class="pull-right">
-            <a class="btn btn-primary" href=""> Back</a>
+            <a class="btn btn-primary" href="{{route('sales.list')}}"> Back</a>
         </div>
     </div>
 </div>

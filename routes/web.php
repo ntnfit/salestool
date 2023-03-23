@@ -67,7 +67,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/sale-target',
     function () {
         return view('sales.saletarget');
-    })->name('sales.add');
+    })->name('sales.saletarget');
    
    Route::get('/truck-information',
     function () {
