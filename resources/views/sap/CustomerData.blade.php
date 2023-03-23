@@ -88,16 +88,16 @@
 };
 
 const columnDefs = [
-  { field: 'CardCode' },
+  { field: 'CardCode', filter: 'agNumberColumnFilter' },
   { field: 'CardName', filter: 'agNumberColumnFilter' },
-  { field: 'ShortName' },
-  { field: 'storeID', maxWidth: 100 },
+  { field: 'ShortName', filter: 'agNumberColumnFilter'},
+  { field: 'storeID', maxWidth: 100 , filter: 'agNumberColumnFilter'},
   {
     field: 'Street',
     filter: 'agDateColumnFilter',
     filterParams: filterParams,
   },
-  { field: 'TaxCode' },
+  { field: 'TaxCode', filter: 'agNumberColumnFilter'},
   { field: 'Channel', filter: 'agNumberColumnFilter' },
   { field: 'Route', filter: 'agNumberColumnFilter' },
   { field: 'PGCode', filter: 'agNumberColumnFilter' },

@@ -41,3 +41,9 @@
   .form-group.col-xs-3.rouding {
     margin-left: 1.75rem;
 }
+.tr_clone_proitem span.select2 {
+  width: 400px !important;
+}
+.tr_clone_itemlist span.select2 {
+  width: 400px !important;
+}

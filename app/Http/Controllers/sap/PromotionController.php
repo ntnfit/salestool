@@ -13,16 +13,12 @@ class PromotionController extends Controller
     function listPromotion(Request $request)
     {
         $Promotionlist = DB::table('promotionlist')->orderby('ProId', 'desc')->get();
-    
+        
         return view('promotion.ListPromotions',compact('Promotionlist'))
         ->with('i', ($request->input('page', 1) - 1) * 100);
     }
 
-    function create_promotion()
-    {
-     
-
-    }
+    
     function dfPromotion()
     {
         $PromTypes = DB::table('PromotionType')->get();
@@ -69,7 +65,7 @@ class PromotionController extends Controller
     }
     function store(Request $request)
     {
-      
+      exit();
         $conDB =(new SAPB1Controller)->connect_sap();
         
        
