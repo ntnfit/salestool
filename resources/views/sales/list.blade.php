@@ -1,11 +1,11 @@
 @extends('adminlte::page')
 
-@section('title', 'List request stock-out Sales orders ')
+@section('title', 'List Stock Out Request - Sales Order')
 @section('plugins.Datatables', true)
 @section('plugins.DateRangePicker', true)
 @section('plugins.TempusDominusBs4', true)
 @section('content_header')
-    <h5>List request stock-out Sales orders</h5>
+    <h3>List Stock Out Request - Sales Order</h3>
 @stop
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
@@ -18,7 +18,7 @@
 $config = ['format' => 'L'];
 @endphp
 
-    <p style="float:right"><a href="{{route('sales.add')}}"><x-adminlte-button label="add new" theme="primary" icon="fas fa-plus"/> </a> </p>
+    <p style="float:right"><a href="{{route('sales.add')}}"><x-adminlte-button label="Add New" theme="primary" icon="fas fa-plus"/> </a> </p>
     {{-- Setup data for datatables --}}
     <form>
     <div class="form-row">
@@ -36,12 +36,16 @@ $config = ['format' => 'L'];
                     </div>
                 </x-slot>
     </x-adminlte-input-date>
-    <x-adminlte-button class="btn-flat" id="search" style="float: right;margin-top: 34px;font-size: small;height: 31px;" type="button" label="load item" theme="success" icon="fas fa-filter"/>
+    <x-adminlte-button class="btn" id="search" style="float: right;margin-top: 34px;font-size: small;height: 31px;" type="button" label="Load Item" theme="success" icon="fas fa-filter"/>
     
     </div>
-</form>
     <div id="myGrid" class="ag-theme-alpine" style="height: 100%">
 	</div>
+
+  <x-adminlte-button class="btn-flat" id="apply" style="float: right;margin-right: 20px;" type="button" label="Apply SAP"  theme="success"  />
+  <x-adminlte-button class="btn-flat" id="confirm" style="float: right; margin-right: 20px; " type="button" label="Confirm" theme="success"  />
+</form>
+    
 
 @stop
 
@@ -67,11 +71,18 @@ $config = ['format' => 'L'];
                 padding: 1rem;
                 overflow: auto;
             }
+
+            .btn-flat{
+              font-size: small;
+              padding: 8px 24px;
+              margin-top: 30px;
+            }   
         </style>
 @stop
 
 @section('js')
 <script>
+
 var __basePath = './';</script>
 		<script src="https://cdn.jsdelivr.net/npm/ag-grid-community@28.2.1/dist/ag-grid-community.min.js"> 
 		</script>
@@ -157,6 +168,7 @@ document.addEventListener('DOMContentLoaded', function () {
   new agGrid.Grid(gridDiv, gridOptions);
   gridOptions.api.setRowData("")
     });
+
 
 </script>
 @stop

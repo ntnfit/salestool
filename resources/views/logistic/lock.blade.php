@@ -1,5 +1,5 @@
 @extends('adminlte::page')
-@section('title', 'lock vehicle')
+@section('title', 'Lock Vehicle')
 
 @section('plugins.Datatables', true)
 @section('plugins.Sweetalert2', true)
@@ -11,7 +11,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
 @section('content')
-<h4> Lock/ Unlock Vehicle </h4>
+<h3> Lock/ Unlock Vehicle </h3>
 <div class="content">
     <div id="MyGrid" class="ag-theme-alpine" style="height: 80%">
     </div>

@@ -1,11 +1,13 @@
 @extends('adminlte::page')
 
-@section('title', 'Add sales stock ')
+@section('title', 'Add Stock Out Request - Sales Order')
 @section('plugins.Datatables', true)
 
 @section('plugins.Sweetalert2', true)
 @section('plugins.DateRangePicker', true)
 @section('plugins.TempusDominusBs4', true)
+
+
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 @section('content')
@@ -15,7 +17,7 @@ $config = ['format' => 'L'];
 <div class="row">
     <div class="col-lg-12 margin-tb">
         <div class="pull-left">
-            <h2>add stock request -order</h2>
+        <h3>Add Stock Out Request - Sales Order</h3>
         </div>
         <div class="pull-right">
             <a class="btn btn-primary" href="{{route('sales.list')}}"> Back</a>
@@ -62,7 +64,7 @@ $config = ['format' => 'L'];
                     </div>
                 </x-slot>
             </x-adminlte-input-date>
-            <x-adminlte-button class="btn-flat" id="search" style="float: right;margin-top: 34px;font-size: small;height: 31px;" type="button" label="load item" theme="success" icon="fas fa-filter"/>
+            <x-adminlte-button class="btn" id="search" style="float: right;margin-top: 34px;font-size: small;height: 31px;" type="button" label="load item" theme="success" icon="fas fa-filter"/>
         </div>
         <div class="row">
             <div class=" table-responsive py-2"> 
@@ -96,15 +98,40 @@ $config = ['format' => 'L'];
                 </tbody>
                 </table>
                 <div id="totalQuantity">Total Quantity here</div>
-                <div><x-adminlte-button class="btn-flat" style="float: right; margin-top:10px"  id="submit" type="submit" label="Save" theme="success" icon="fas fa-lg fa-save"/></div>
-            </div>
+                
+                <div>
+                
+                    <label for="note" style="margin-right: 30px; margin-top: 100px;"> Note:</label>
+                    <input type="text" id="note" name="note" style="width: 400px; height: 80px;">
+                    
+                </div>
+                <x-adminlte-button class="btn-flat" style="float: left; margin-left: 20px;"  id="save" type="submit" label="Save" theme="success" icon="fas fa-lg fa-save"/>
+                <x-adminlte-button class="btn-flat" id="export" style="float: left; margin-left: 20px;" type="button" label="Export Excel" theme="success"/>
+
+                <x-adminlte-button class="btn-flat" id="add" style=" margin-right: 20px; float: right;background-color: #e7e7e7; color: black;" type="button" label="Add New"  />
+                <x-adminlte-button class="btn-flat" id="copy" style="float: right; margin-right: 20px;background-color: #e7e7e7; color: black;" type="button" label="Copy Order"  />
+                <x-adminlte-button class="btn-flat" id="apply" style="float: right;margin-right: 20px;background-color: #e7e7e7; color: black;" type="button" label="Apply SAP" />
+                <x-adminlte-button class="btn-flat" id="promotion" style="float: right; margin-right: 20px;" type="button" label="Get Promotion" theme="success"  />
+        
+                
         </div>
        
-</form>
+        
+        
+        
+
+    </form>
 @stop
 
 @section('css')
+<style>
+.btn-flat{
+    font-size: small;
+    padding: 8px 24px;
+    margin-top: 70px;
+}   
 
+</style>
 @stop
 @push('js')
 @endpush

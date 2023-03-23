@@ -35,13 +35,13 @@ $config = ['format' => 'L'];
                     </x-slot>
       </x-adminlte-input-date>
 
-      <x-adminlte-button class="btn-flat" id="search" style="float: right;margin-top: 30px;font-size: small;height: 31px;" type="button" label="Search" theme="success" />
+      <x-adminlte-button class="btn" id="search" style="float: right;margin-top: 30px;font-size: small;height: 31px;" type="button" label="Search" theme="success" />
     
       <x-adminlte-select label="Truck Code" label-class="text-lightblue truckcode" name="truckcode" id="truckcode" igroup-size="sm" fgroup-class="col-md-4" style="margin-left: 150px" enable-old-support>  
       </x-adminlte-select>
-  
-      <div>
-      <x-adminlte-button class="btn-flat" id="apply" style="float: right;margin-top: 30px;font-size: small;height: 31px;margin-left:10px;" type="button" label="Apply" theme="success" />
+      <x-adminlte-button class="btn" id="apply" style="float: right;margin-top: 30px;font-size: small;height: 31px;margin-left:10px;" type="button" label="Apply" theme="success" />
+      
+      
       </div>
       
       
@@ -49,30 +49,31 @@ $config = ['format' => 'L'];
     <!-- form gird -->
     <div id="MyGrid" class="ag-theme-alpine" style="height: 80%">
     </div>
-  </form>
+
     
-      <x-adminlte-button class="btn-flat" id="save" style="float: left;font-size: small;" type="button" label="Save" theme="success"/>
-      <x-adminlte-button class="btn-flat" id="print" style="float: right; margin-top: 30px;font-size: small; padding: 8px 24px;margin-right: 20px;" type="button" label="Print" theme="success" />
-      <x-adminlte-button class="btn-flat" id="stockout" style="float: right; margin-top: 30px;font-size: small; padding: 8px 24px;margin-right: 20px;" type="button" label="Print stock out" theme="success" />
-      <a href="{{route('logistic.lock')}}"> <x-adminlte-button class="btn-flat" id="lock" style="float: right; margin-top: 30px;font-size: small; padding: 8px 24px;margin-right: 20px;" type="button" label="Lock/ Unlock Vehicle" theme="success" /></a>
+  </form>
+    <x-adminlte-button class="btn-flat" id="save" style="float: left;margin-left: 20px; " type="button" label="Save" theme="success"/>
+      <x-adminlte-button class="btn-flat" id="print" style="float: right;  margin-right: 20px;" type="button" label="Print" theme="success" />
+      <x-adminlte-button class="btn-flat" id="stockout" style="float: right;  margin-right: 20px;" type="button" label="Print stock out" theme="success" />
+      <a href="{{route('logistic.lock')}}"> <x-adminlte-button class="btn-flat" id="lock" style="float: right;  margin-right: 20px;" type="button" label="Lock/ Unlock Vehicle" theme="success" /></a>
      
+      
 </div>   
 @endsection
 @section('css')
 <style>
 #search {
   float: right;
-  margin-left: 50px;
-}
-
-#save {
-  margin-top: 30px;
   margin-left: 20px;
-  margin-bottom: 20px;
-  padding: 8px 24px;
-  display: inline-block;
-  font-size: 16px;
 }
+.btn-flat{
+    font-size: small;
+    padding: 8px 24px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+
+}   
+
 label.text-lightblue.truckcode {
     margin-left: 150px;
 }
