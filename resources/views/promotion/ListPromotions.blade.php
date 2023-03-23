@@ -11,7 +11,7 @@
 
 
     <div class="form-group col-md-12">
-      <a style="float: right" href="{{route('sales.add')}}"><x-adminlte-button label="add new" theme="primary" icon="fas fa-plus"/> </a>
+      <a style="float: right" href="{{route('add-promotions')}}"><x-adminlte-button label="add new" theme="primary" icon="fas fa-plus"/> </a>
       <button id="getSelectedRowsBtn">Get Selected Rows</button>
     </div>
    
