@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Sales Target Management')
+@section('title', 'Sale Out Weekly')
 @section('plugins.Datatables', true)
 
 @section('plugins.Sweetalert2', true)
@@ -14,7 +14,7 @@
 @php
 $config = ['format' => 'L'];
 @endphp
-<h3> Sales Target Add New/ Update</h3>
+<h3> Sale Out Weekly - Channel GT</h3>
 <div class="content">
   <form>
     <div class="row">
@@ -22,36 +22,19 @@ $config = ['format' => 'L'];
       <x-adminlte-select label="Sales Manager" label-class="text-lightblue"  igroup-size="sm" name="sales" id="sales" fgroup-class="col-md-2" enable-old-support></x-adminlte-select>
       <x-adminlte-select label="KA/ ASM" label-class="text-lightblue"  igroup-size="sm" name="ka" id="ka" fgroup-class="col-md-2" enable-old-support></x-adminlte-select>
       <x-adminlte-select label="Sales Sup." label-class="text-lightblue"  igroup-size="sm" name="sup" id="sup" fgroup-class="col-md-2" enable-old-support></x-adminlte-select>
-      <x-adminlte-select label="T. Leader" label-class="text-lightblue"  igroup-size="sm" name="leader" id="leader" fgroup-class="col-md-2" enable-old-support></x-adminlte-select>
       <x-adminlte-button class="btn" id="search" style="float: right;margin-top: 30px;font-size: small;height: 31px;" type="button" label="Search" theme="success" />
       
     </div>
     
     <!-- form gird -->
     <div id="MyGrid" class="ag-theme-alpine" style="height: 80%"></div>
-
-   
-    
-  </div>
   
   </form>
   
   <div>
-  <x-adminlte-input-file name="ifPholder" igroup-size="sm" label="Select file" fgroup-class="col-md-3" style="float:left;" placeholder="Choose a file..." >
-    <x-slot name="prependSlot">
-        <div class="input-group-text bg-lightblue">
-            <i class="fas fa-upload"></i>
-        </div>
-    </x-slot>
-    </x-adminlte-input-file>
-    
-    <x-adminlte-button class="btn-flat" id="import" style=" margin-right: 20px;" type="button" label="Import Excel" theme="success" />
-
-    
-    <x-adminlte-button class="btn-flat" id="copy" style=" margin-right: 20px; float: right;" type="button" label="Copy Target from Sales Manager" theme="success" />
-    <x-adminlte-button class="btn-flat" id="approve" style="float: right; margin-right: 20px;" type="button" label="Approve" theme="success" />
+    <x-adminlte-button class="btn-flat" style="float: left; margin-right: 20px;"  id="save" type="submit" label="Save" theme="success" icon="fas fa-lg fa-save"/> 
     <x-adminlte-button class="btn-flat" id="export" style="float: right;margin-right: 20px;" type="button" label="Export Excel" theme="success" />
-    <x-adminlte-button class="btn-flat" style="float: right; margin-right: 20px;"  id="save" type="submit" label="Save" theme="success" icon="fas fa-lg fa-save"/> 
+    
     
   </div>   
       
@@ -70,7 +53,6 @@ $config = ['format' => 'L'];
     margin-bottom: 30px;
 
 }   
-
 
 
 </style>
@@ -117,44 +99,41 @@ const columnDefs = [
     children: [
       { field: 'Code'},
       { field: 'Name'},
-      { field: 'Group' },
       { field: 'Sale Manager' },
       { field: 'KA/ASM'},
       { field: 'Sale Sup.'},
       { field: 'Team Leader' },
-      { field: 'Order Number'},
       { field: 'Sale Rep EmpID'},
       { field: 'PG/ Sales Rep.'},
     ]
   },
 
   {
-    headerName: 'Target',
+    headerName: 'Sale Out All SKU',
     children: [
-      { field: 'Sale Sup.'},
-      { field: 'KA/ASM'},
-      { field: 'Sale Manager' },
-      { field: 'General Manager' },
+      { field: 'Sale Out W1'},
+      { field: 'Sale Out W2'},
+      { field: 'Sale Out W3'},
+      { field: 'Sale Out W4'},
+      { field: 'Sale Out W5'},
+      { field: 'Sale Out W6'},
+      { field: 'Sale Out BS (W1+W2+W3)'},
+      { field: 'Total Sale Out' },
     ]
   },
    
   {
-    headerName: 'Target SKU',
+    headerName: 'Sale Out - SKU',
     children: [
-      { field: 'KA/ASM'},
-      { field: 'Sale Manager' },
-      { field: 'General Manager' },
+      { field: 'Sale Out W1'},
+      { field: 'Sale Out W2'},
+      { field: 'Sale Out W3'},
+      { field: 'Sale Out W4'},
+      { field: 'Sale Out W5'},
+      { field: 'Sale Out W6'},
+      { field: 'Total Sale Out' },
     ]
   },
-
-  {
-    headerName: 'Actual',
-    children: [
-      { field: 'Current Month' },
-      { field: 'Prev. Month' },
-    ]
-  },
-
 
 ];
 

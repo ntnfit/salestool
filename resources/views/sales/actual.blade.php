@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Sales Target Management')
+@section('title', 'Sales Target vs Actual Management')
 @section('plugins.Datatables', true)
 
 @section('plugins.Sweetalert2', true)
@@ -14,7 +14,7 @@
 @php
 $config = ['format' => 'L'];
 @endphp
-<h3> Sales Target Add New/ Update</h3>
+<h3> Sales Target vs Actual Management</h3>
 <div class="content">
   <form>
     <div class="row">
@@ -29,30 +29,10 @@ $config = ['format' => 'L'];
     
     <!-- form gird -->
     <div id="MyGrid" class="ag-theme-alpine" style="height: 80%"></div>
-
-   
-    
-  </div>
-  
   </form>
   
   <div>
-  <x-adminlte-input-file name="ifPholder" igroup-size="sm" label="Select file" fgroup-class="col-md-3" style="float:left;" placeholder="Choose a file..." >
-    <x-slot name="prependSlot">
-        <div class="input-group-text bg-lightblue">
-            <i class="fas fa-upload"></i>
-        </div>
-    </x-slot>
-    </x-adminlte-input-file>
-    
-    <x-adminlte-button class="btn-flat" id="import" style=" margin-right: 20px;" type="button" label="Import Excel" theme="success" />
-
-    
-    <x-adminlte-button class="btn-flat" id="copy" style=" margin-right: 20px; float: right;" type="button" label="Copy Target from Sales Manager" theme="success" />
-    <x-adminlte-button class="btn-flat" id="approve" style="float: right; margin-right: 20px;" type="button" label="Approve" theme="success" />
     <x-adminlte-button class="btn-flat" id="export" style="float: right;margin-right: 20px;" type="button" label="Export Excel" theme="success" />
-    <x-adminlte-button class="btn-flat" style="float: right; margin-right: 20px;"  id="save" type="submit" label="Save" theme="success" icon="fas fa-lg fa-save"/> 
-    
   </div>   
       
 </div>   
@@ -70,7 +50,6 @@ $config = ['format' => 'L'];
     margin-bottom: 30px;
 
 }   
-
 
 
 </style>
@@ -122,36 +101,45 @@ const columnDefs = [
       { field: 'KA/ASM'},
       { field: 'Sale Sup.'},
       { field: 'Team Leader' },
-      { field: 'Order Number'},
-      { field: 'Sale Rep EmpID'},
+      { field: 'Sales Sup.'},
+      { field: 'PG/SR ID'},
       { field: 'PG/ Sales Rep.'},
+      { field: 'Remark'},
     ]
   },
 
   {
-    headerName: 'Target',
+    headerName: 'Target vs Actual',
     children: [
-      { field: 'Sale Sup.'},
-      { field: 'KA/ASM'},
-      { field: 'Sale Manager' },
-      { field: 'General Manager' },
+      { field: 'Target'},
+      { field: 'Actual'},
+      { field: '%Target - Actual' },
     ]
   },
    
   {
-    headerName: 'Target SKU',
+    headerName: 'Adjust',
     children: [
-      { field: 'KA/ASM'},
-      { field: 'Sale Manager' },
-      { field: 'General Manager' },
+      { field: 'Opening'},
+      { field: 'Sale Actual' },
+      { field: 'Description' },
     ]
   },
 
   {
-    headerName: 'Actual',
+    headerName: 'SKU',
     children: [
-      { field: 'Current Month' },
-      { field: 'Prev. Month' },
+      { field: 'SKU Target' },
+      { field: 'SKU Actual' },
+      { field: 'SKU Percent' },
+    ]
+  },
+
+  {
+    headerName: 'SKU Adjust',
+    children: [
+      { field: 'SKU Sale Actual' },
+      { field: 'SKU Description' },
     ]
   },
 

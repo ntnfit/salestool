@@ -69,6 +69,17 @@ Route::group(['middleware' => ['auth']], function() {
         return view('sales.saletarget');
     })->name('sales.saletarget');
    
+    Route::get('/actual',
+    function () {
+        return view('sales.actual');
+    })->name('sales.actual');
+
+    Route::get('/sale-out-weekly',
+    function () {
+        return view('sales.weekly');
+    })->name('sales.weekly');
+
+    //logistic
    Route::get('/truck-information',
     function () {
         return view('logistic.truckinfo');
@@ -79,6 +90,7 @@ Route::group(['middleware' => ['auth']], function() {
         return view('logistic.lock');
     })->name('logistic.lock');
 
+    
 
     Route::get('/connect-setup',
     function () {
