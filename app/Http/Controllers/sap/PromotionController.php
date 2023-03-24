@@ -166,5 +166,11 @@ class PromotionController extends Controller
         return redirect()->route('list-promotion')->with('success', 'add promotion successfully.');
 
     }
+    function check_baseUoM(Request $request)
+    {
+        
+        $BaseUom=DB::table('ST_BaseUom')->where('ItemCode',$request->itemcode)->where('UomEntry',$request->uom)->get();
+        dd($BaseUom);
+    }
 
 }

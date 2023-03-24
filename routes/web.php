@@ -99,4 +99,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('/connect-setup', [SAPB1Controller::class,'connectSetup'])->name('connect-setup');
    
     Route::get('/profiles', [ProfilesController::class,'show'])->name('profiles');
+
+    //validate data
+    Route::get('/base-uom',[PromotionController::class,'check_baseUoM'])->name('baseUom');
+
 });
