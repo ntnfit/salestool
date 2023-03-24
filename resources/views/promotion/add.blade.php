@@ -82,7 +82,7 @@
                         <tbody>
                             <tr class="tr_clone_itemlist">
                                 <td class="Itemselect">
-                                    <select class="itemlist" id="Item" name="Item[]">
+                                    <select class="itemlist" id="Item" name="Item[]" data-placeholder="Select an itemcode">
                                         <option value="" selected></option>
                                         @foreach ($ItemCodes as $ItemCode)
                                             <option value="{{ $ItemCode->ItemCode }}">
