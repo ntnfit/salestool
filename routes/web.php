@@ -101,6 +101,6 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/profiles', [ProfilesController::class,'show'])->name('profiles');
 
     //validate data
-    Route::get('/base-uom',[PromotionController::class,'check_baseUoM'])->name('baseUom');
+    Route::get('/base-uom',[PromotionController::class,'check_baseUoM'])->name('baseuom');
 
 });

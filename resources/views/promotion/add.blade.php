@@ -91,14 +91,20 @@
                                     </select>
                                 </td>
                                 <td><input type="number" name="Qty[]" class="qty form-control"></td>
-                                <td><select class="uom form-control" type="text" name="UomCode[]">
+                                <td><select class="uom form-control" name="UomCode[]">
                                         <option value="" selected></option>
                                         @foreach ($Uoms as $Uom)
                                             <option value="{{ $Uom->UomEntry }}">{{ $Uom->UomName }}</option>
                                         @endforeach
                                     </select></td>
-                                <td><input type="number" name="BaseQty[]" class="form-control"></td>
-                                <td><input type="text" name="BaseUom[]" class="form-control"></td>
+                                <td><input type="number" name="BaseQty[]" class="form-control" readonly="true"></td>
+                                <td>
+                                    <select class="form-control" name="BaseUom[]" style="max-width:350px" readonly="true">
+                                        <option value="" selected></option>
+                                        @foreach ($Uoms as $Uom)
+                                            <option value="{{ $Uom->UomEntry }}">{{ $Uom->UomName }}</option>
+                                        @endforeach
+                                    </select></td>
                                 <td><button type="button" class="btn btn-outline-danger"
                                         onclick="removeRow(this, '#myTable')"><i class="fa fa-trash"
                                             aria-hidden="true"></i> </button></td>
@@ -188,7 +194,10 @@
                                         <option></option>
                                         @foreach ($Customers as $Customer)
                                             <option value="{{ $Customer->CardCode }}">
-                                                {{ $Customer->CardCode . '--' . $Customer->CardName }}</option>
+                                                {{ $Customer->CardCode . '--' . $Customer->CardName . '--' .
+                                                $Customer->GroupName.'--'.$Customer->ChannelName.'--'.$Customer->RouteName
+                                                .'--'.$Customer->LocationName
+                                                }}</option>
                                         @endforeach
                                     </select>
                                 </td>
@@ -197,6 +206,7 @@
                                         onclick="removeRow(this, '#tablecustomer')"><i class="fa fa-trash"
                                             aria-hidden="true"></i> </button></td>
                             </tr>
+                            
                         </tbody>
                     </table>
 
@@ -237,8 +247,15 @@
                                             @endforeach
                                         </select>
                                     </td>
-                                    <td><input type="number" name="probaseqty[]" class="form-control"></td>
-                                    <td><input type="text" name="probaseoum[]"class="form-control"></td>
+                                    <td><input type="number" name="probaseqty[]" class="form-control" readonly="true"></td>
+                                    <td>
+                                       
+                                            <select class="form-control" name="probaseoum[]" style="max-width:350px" readonly="true">
+                                                <option value="" selected></option>
+                                                @foreach ($Uoms as $Uom)
+                                                    <option value="{{ $Uom->UomEntry }}">{{ $Uom->UomName }}</option>
+                                                @endforeach
+                                            </select></td>
                                     <td><button type="button" class="btn btn-outline-danger"
                                             onclick="removeRow(this, '#proitems')"><i class="fa fa-trash"
                                                 aria-hidden="true"></i> </button></td>
@@ -391,4 +408,87 @@
             }
         });
     </script>
+<script>
+$(document).ready(function() {
+  $('#proitems tbody').on('change', 'select[name="proitem[]"], input[name="proqty[]"], select[name="prouomcode[]"]', function(event) {
+    var row = $(event.target).closest('tr');
+    var itemCode = row.find('select[name="proitem[]"]').val();
+    var quantityInput = row.find('input[name="proqty[]"]');
+    var quantity = quantityInput.val();
+    var uomCode = row.find('select[name="prouomcode[]"]').val();
+    var baseUomInput = row.find('select[name="probaseoum[]"]');
+
+    // If Quantity input is null, set value to 0
+    if (quantity === '') {
+      quantityInput.val('0');
+      quantity = '0';
+    }
+
+    // Check if both Quantity and UOM have value before making the API call
+    if (quantity && uomCode) {
+      // Make API call to retrieve Base Quantity and Base UoM Code
+      $.ajax({
+        url: "{{route('baseuom')}}",
+        data:{ itemcode: itemCode, quantity: quantity, uomcode: uomCode, _token: '{{csrf_token()}}' },
+        type:'get'
+      }).done(function(data){
+        var baseQtyInput = row.find('input[name="probaseqty[]"]');
+       // console.log(data);
+        baseQtyInput.val(data.baseQuantity);
+        baseUomInput.val(data.baseUomCode); // Set the selected value of baseUomInput to data.baseUomCode
+      }).fail(function (data) {
+                  alert("UomCode invaild!")
+                });
+    } else {
+      // Clear the Base Quantity and Base UOM input fields
+      var baseQtyInput = row.find('input[name="probaseqty[]"]');
+      baseQtyInput.val('');
+      baseUomInput.val('');
+    }
+  });
+});
+</script>
+<script>
+    $(document).ready(function() {
+      $('#myTable tbody').on('change', 'select[name="Item[]"], input[name="Qty[]"], select[name="UomCode[]"]', function(event) {
+        var row = $(event.target).closest('tr');
+        var itemCode = row.find('select[name="Item[]"]').val();
+        var quantityInput = row.find('input[name="Qty[]"]');
+        var quantity = quantityInput.val();
+        var uomCode = row.find('select[name="UomCode[]"]').val();
+        var baseUomInput = row.find('select[name="BaseUom[]"]');
+    
+        // If Quantity input is null, set value to 0
+        if (quantity === '') {
+          quantityInput.val('0');
+          quantity = '0';
+        }
+    
+        // Check if both Quantity and UOM have value before making the API call
+        if (quantity && uomCode) {
+          // Make API call to retrieve Base Quantity and Base UoM Code
+          $.ajax({
+            url: "{{route('baseuom')}}",
+            data:{ itemcode: itemCode, quantity: quantity, uomcode: uomCode, _token: '{{csrf_token()}}' },
+            type:'get'
+          }).done(function(data){
+            var baseQtyInput = row.find('input[name="BaseQty[]"]');
+            //console.log(data);
+            baseQtyInput.val(data.baseQuantity);
+            baseUomInput.val(data.baseUomCode); // Set the selected value of baseUomInput to data.baseUomCode
+          })
+          .fail(function (data) {
+                  alert("UomCode invaild!")
+                });
+        } else {
+          // Clear the Base Quantity and Base UOM input fields
+          var baseQtyInput = row.find('input[name="BaseQty[]"]');
+          baseQtyInput.val('');
+          baseUomInput.val('');
+        }
+      });
+    });
+    </script>
+    
+  
 @endpush

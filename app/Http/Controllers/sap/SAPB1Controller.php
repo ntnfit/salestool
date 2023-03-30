@@ -87,8 +87,9 @@ class SAPB1Controller extends Controller
             return redirect()->route('setup-connect')->with('error',$e);
         }
        
-        function connect(){
-        $host='115.84.182.179:30015';
+        function connect()
+        { 
+            $host='115.84.182.179:30015';
         $driver = 'HDBODBC';
         $db_name = "HDB";
         // Username

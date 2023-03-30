@@ -64,7 +64,8 @@ function getPageData(cusgrp, channel, route, location) {
       type: 'GET',
       data: data
     }).done(function(data){
-      console.log(data.success);
-    });
-  }
-  
+      $('#tablecustomer tbody').prepend(data.cust);
+      
+      $(".items").select2();
+    });    
+}

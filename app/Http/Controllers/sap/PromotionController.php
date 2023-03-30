@@ -57,15 +57,29 @@ class PromotionController extends Controller
         }
     
         $results = $query->get();
-        foreach( $results as  $result)
-        {
 
+        $Customers = '';
+        foreach ($results as $result) {
+            $Customers .= '<tr class="tr_clone">
+                    <td>
+                        <select class="items" name="cus[]" data-placeholder="Select an customer">
+                            <option value="'.$result->CardCode.'" selected>'.$result->CardName.'--'.$result->GroupName.'--'.$result->ChannelName.'--'.$result->RouteName.'--'.$result->LocationName.'--'.'betagen'.'</option> 
+                        </select>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-outline-danger" onclick="removeRow(this, \'#tablecustomer\')">
+                            <i class="fa fa-trash" aria-hidden="true"></i> 
+                        </button>
+                    </td>
+                </tr>';
         }
-        return response()->json(['success' => $results], 200);
+      
+        return response()->json(['cust' => $Customers], 200);
     }
     function store(Request $request)
     {
-      exit();
+      
+       
         $conDB =(new SAPB1Controller)->connect_sap();
         
        
@@ -169,8 +183,10 @@ class PromotionController extends Controller
     function check_baseUoM(Request $request)
     {
         
-        $BaseUom=DB::table('ST_BaseUom')->where('ItemCode',$request->itemcode)->where('UomEntry',$request->uom)->get();
-        dd($BaseUom);
+        $BaseUom=DB::table('ST_BaseUom')->where('ItemCode',$request->itemcode)->where('UomEntry',$request->uomcode)->get()->first(); 
+       return response()->json(['baseUomCode'=>$BaseUom->BaseUoMEntry,
+                        'baseQuantity'=>$request->quantity*$BaseUom->UoMCode_Qty
+    ]);
     }
 
 }
