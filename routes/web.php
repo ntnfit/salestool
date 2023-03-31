@@ -13,6 +13,7 @@ use App\Http\Controllers\sap\PromotionController;
 use App\Http\Controllers\sap\DeliveryController;
 use App\Http\Controllers\sap\ImageUploadController;
 use App\Http\Controllers\sap\ListEmployeeController;
+use App\Http\Controllers\sap\SalesController;
 Auth::routes();
 
 Route::get('sapb1',[SAPB1Controller::class,'connect']);
@@ -54,30 +55,27 @@ Route::group(['middleware' => ['auth']], function() {
     //update DO
     Route::post('/updateDo',[DeliveryController::class,'updatestatus'])->name('updateDo');
     // sale stock- request
-    Route::get('/stock-request-list',
-    function () {
-        return view('sales.list');
-    })->name('sales.list');
+        Route::get('/stock-request-list',[SalesController::class,'listSaleStock'])->name('sales.list');
 
-    Route::get('/stock-request',
-    function () {
-        return view('sales.add');
-    })->name('sales.add');
+        Route::get('/stock-request',
+        function () {
+            return view('sales.add');
+        })->name('sales.add');
 
-    Route::get('/sale-target',
-    function () {
-        return view('sales.saletarget');
-    })->name('sales.saletarget');
-   
-    Route::get('/actual',
-    function () {
-        return view('sales.actual');
-    })->name('sales.actual');
+        Route::get('/sale-target',
+        function () {
+            return view('sales.saletarget');
+        })->name('sales.saletarget');
+    
+        Route::get('/actual',
+        function () {
+            return view('sales.actual');
+        })->name('sales.actual');
 
-    Route::get('/sale-out-weekly',
-    function () {
-        return view('sales.weekly');
-    })->name('sales.weekly');
+        Route::get('/sale-out-weekly',
+        function () {
+            return view('sales.weekly');
+        })->name('sales.weekly');
 
     //logistic
    Route::get('/truck-information',

@@ -128,14 +128,15 @@ class SAPB1Controller extends Controller
       
     }
     function connect_sap(){
-        $host='115.84.182.179:30015';
+        
+        $host='172.31.246.123:30015';
         $driver = 'HDBODBC';
         $db_name = "01_BTG_SAP_LIVE";
         // Username
         $username = 'SYSTEM';
         // Password
-        $password = "S@p@HanaSapb1";
-       $constring="Driver={HDBODBC};ServerNode=115.84.182.179:30015;UID=SYSTEM;PWD=S@p@HanaSapb1;CS=01_BTG_SAP_LIVE;char_as_utf8=true";
+        $password = "Sap@2023#B1";
+       $constring="Driver={HDBODBC};ServerNode=172.31.246.123:30015;UID=SYSTEM;PWD=Sap@2023#B1;CS=01_BTG_SAP_LIVE;char_as_utf8=true";
        //return $conn = odbc_connect("Driver=$driver;ServerNode=$host;Database=$db_name;", $username, $password, SQL_CUR_USE_ODBC);
        return $conn = odbc_connect($constring,'','');
         

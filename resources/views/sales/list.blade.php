@@ -4,7 +4,7 @@
 @section('plugins.DateRangePicker', true)
 @section('plugins.TempusDominusBs4', true)
 @section('content_header')
-    <h3>List Stock Out Request - Sales Order</h3>
+    <h5>List Stock Out Request - Sales Order</h5>
 @stop
 
 <script src="https://unpkg.com/jquery/dist/jquery.min.js"></script>
@@ -22,7 +22,7 @@
     {{-- Setup data for datatables --}}
     <form>
         <div class="form-row">
-            <x-adminlte-input-date name="podate" label="FromDate" :config="$config" label-class="text-lightblue"
+            <x-adminlte-input-date name="" id="fromDate" label="FromDate" :config="$config" label-class="text-lightblue"
                 igroup-size="sm" fgroup-class="col-md-3" placeholder="Choose a date...">
                 <x-slot name="appendSlot">
                     <div class="input-group-text bg-gradient-danger">
@@ -30,7 +30,7 @@
                     </div>
                 </x-slot>
             </x-adminlte-input-date>
-            <x-adminlte-input-date name="podate" label="ToDate" :config="$config" label-class="text-lightblue"
+            <x-adminlte-input-date name=""  id="toDate" label="ToDate" :config="$config" label-class="text-lightblue"
                 igroup-size="sm" fgroup-class="col-md-3" placeholder="Choose a date...">
                 <x-slot name="appendSlot">
                     <div class="input-group-text bg-gradient-danger">
@@ -38,12 +38,12 @@
                     </div>
                 </x-slot>
             </x-adminlte-input-date>
-            <x-adminlte-button class="btn" id="search"
+            <x-adminlte-button class="btn" id="filterButton"
                 style="float: right;margin-top: 34px;font-size: small;height: 31px;" type="button" label="Load Item"
                 theme="success" icon="fas fa-filter" />
 
         </div>
-        <div id="myGrid" class="ag-theme-alpine" style="height: 100%">
+        <div id="myGrid" class="ag-theme-alpine" style="height: 70%">
         </div>
         <x-adminlte-button class="btn-flat" id="apply" style="float: right;margin-right: 20px;" type="button"
             label="Apply SAP" theme="success" />
@@ -99,102 +99,110 @@
         };
 
         const columnDefs = [{
-                field: 'DocNo'
-            },
-            {
-                field: 'DocDate',
+             headerName: 'Doc No',
+                field: 'StockNo',
                 filter: 'agNumberColumnFilter'
             },
             {
-                field: 'StoreID'
+                headerName: 'Doc Date',
+                field: 'StockDate',
+                maxWidth:150
+            },
+            {
+                headerName: 'StoreID',
+                field: 'U_SID',
+                maxWidth:150
             },
             {
                 field: 'CustCode',
-                maxWidth: 100
+              
             },
             {
-                field: 'CustomerName',
-                filter: 'RouteName',
-                filterParams: filterParams,
+                field: 'CustName',
             },
             {
-                field: 'SaleSup'
+                field: 'saleSup'
             },
             {
-                field: 'OrderTypeName',
-                filter: 'agNumberColumnFilter'
+                headerName: 'OrderTypeName',
+                field: 'Name'
             },
             {
-                field: 'SupportOrderNo',
-                filter: 'agNumberColumnFilter'
+                headerName: 'SupportOrderNo',
+                field: 'AbsID',
+              
             },
             {
-                field: 'WhsCode',
-                filter: 'agNumberColumnFilter'
+                headerName: 'WhsCode',
+                field: 'FromWhsCode'
             },
             {
-                field: 'WhsName',
-                filter: 'agNumberColumnFilter'
+                headerName: 'WhsName',
+                field: 'FromWhsName'
             },
             {
-                field: 'PoNo.',
-                filter: 'agNumberColumnFilter'
+                headerName: 'PoNo.',
+                field: 'POCardCode',
+               
             },
             {
-                field: 'Po Date',
-                filter: 'agNumberColumnFilter'
+                headerName: 'Po Date',
+                field: 'PODate',
+              
             },
             {
-                field: 'TeamCode',
-                filter: 'agNumberColumnFilter'
+                headerName: 'TeamCode',
+                field: 'BinCode'
+               
             },
             {
-                field: 'ApplySAP',
-                filter: 'agNumberColumnFilter'
+                field: 'ApplySAP'
+               
             },
             {
-                field: 'Note',
-                filter: 'agNumberColumnFilter'
+                field: 'Note'
+             
             },
             {
-                field: 'SQ No',
-                filter: 'agNumberColumnFilter'
+                field: 'SQNO'
+                
             },
             {
-                field: 'SO No.',
-                filter: 'agNumberColumnFilter'
+                field: 'SONO'
+              
             },
             {
-                field: 'Delivery No.',
-                filter: 'agNumberColumnFilter'
+                headerName: 'Delivery No.',
+                field: 'DeliveryNO'
+                
             },
             {
-                field: 'AR.NO',
-                filter: 'agNumberColumnFilter'
+                headerName: 'AR.NO',
+                field: 'ARNo'
             },
             {
-                field: 'DeliveryStatus',
-                filter: 'agNumberColumnFilter'
+                field: 'DeliveryStatus'
+              
             },
             {
-                field: 'UserCreate',
-                filter: 'agNumberColumnFilter'
+                headerName: 'UserCreate',
+                field: 'UserName'
             },
             {
-                field: 'DateCreate',
-                filter: 'agNumberColumnFilter'
+                field: 'DateCreate'
+             
             },
             {
-                field: 'DateUpdate',
-                filter: 'agNumberColumnFilter'
+                field: 'DateUpdate'
+              
             },
             {
                 field: 'TotalWeight',
-                filter: 'agNumberColumnFilter'
+              
             },
             {
-                field: 'ApplySatus',
-                filter: 'agNumberColumnFilter'
+                field: 'ApplyStatus',
+               
             },
         ];
 
@@ -214,11 +222,44 @@
         function onBtExport() {
             gridOptions.api.exportDataAsExcel();
         }
+        function loadInitialData() {
+        // Make an API call to abc.com to retrieve 100 records
+        
+        // Update the grid with the retrieved data
+        gridOptions.api.setRowData({!!$results!!});
+        }
+        function  loadFilteredData()
+        {
+            $.ajax({ 
+            type: 'GET', 
+            url: '{{route('sales.list')}}', 
+            data: filterData, 
+            dataType: 'json',
+            success: function (data) { 
+                gridOptions.api.setRowData(data);
+            }
+        });
+           
+        }
+        let filterData={};
         // setup the grid after the page has finished loading
         document.addEventListener('DOMContentLoaded', function() {
+           
             var gridDiv = document.querySelector('#myGrid');
             new agGrid.Grid(gridDiv, gridOptions);
-            gridOptions.api.setRowData("")
+
+            const filterButton = document.querySelector('#filterButton');
+            filterButton.addEventListener('click', function() {
+            // Get the filter values from the input fields
+            const filterInput1 = document.querySelector('#fromDate');
+            const filterInput2 = document.querySelector('#toDate');
+            filterData.fromdate = filterInput1.value;
+            filterData.todate = filterInput2.value;
+
+            // Load the filtered data from the API
+            loadFilteredData();
+        });
+            loadInitialData();
         });
     </script>
 @stop
