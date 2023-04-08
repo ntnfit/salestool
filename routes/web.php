@@ -57,11 +57,11 @@ Route::group(['middleware' => ['auth']], function() {
     // sale stock- request
         Route::get('/stock-request-list',[SalesController::class,'listSaleStock'])->name('sales.list');
 
-        Route::get('/stock-request',
-        function () {
-            return view('sales.add');
-        })->name('sales.add');
+        Route::get('/stock-request',[SalesController::class,'addView'])->name('sales.add');
+        
+        Route::get('/stock-request-edit/{stockSO}',[SalesController::class,'edit'])->name('sales.edit');
 
+        Route::post('/stock-request',[SalesController::class,'store'])->name('sales.store');
         Route::get('/sale-target',
         function () {
             return view('sales.saletarget');
@@ -98,7 +98,9 @@ Route::group(['middleware' => ['auth']], function() {
    
     Route::get('/profiles', [ProfilesController::class,'show'])->name('profiles');
 
-    //validate data
+    //validate data & get data via ODBC
     Route::get('/base-uom',[PromotionController::class,'check_baseUoM'])->name('baseuom');
-
+    Route::get('/bincode',[GetItemController::class,'getTeam'])->name('bincode');
+    Route::get('/fill-lot-items',[SalesController::class,'filterdata'])->name('filllot-items');
+    Route::get('/getpromotion',[SalesController::class,'getpromotion'])->name('clickgetpromotion');
 });

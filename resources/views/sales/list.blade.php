@@ -98,7 +98,9 @@
             browserDatePicker: true,
         };
 
-        const columnDefs = [{
+        const columnDefs = [
+            { headerName: '', field: '', maxWidth: 50,  headerCheckboxSelection: true, checkboxSelection: true, },
+            {
              headerName: 'Doc No',
                 field: 'StockNo',
                 filter: 'agNumberColumnFilter'
@@ -217,6 +219,13 @@
                 filter: true,
                 resizable: true,
             },
+            onRowDoubleClicked: function(params) {
+                var id = params.data.StockNo;
+                var url = '{{ route("sales.edit", ":id") }}';
+                url = url.replace(':id', id);
+                window.location.href = url;
+            },
+        rowSelection: 'multiple'
         };
 
         function onBtExport() {
