@@ -60,8 +60,9 @@ Route::group(['middleware' => ['auth']], function() {
         Route::get('/stock-request',[SalesController::class,'addView'])->name('sales.add');
         
         Route::get('/stock-request-edit/{stockSO}',[SalesController::class,'edit'])->name('sales.edit');
-
         Route::post('/stock-request',[SalesController::class,'store'])->name('sales.store');
+        Route::get('/promotion-click',[SalesController::class,'getpromotion'])->name('promotion.click');
+
         Route::get('/sale-target',
         function () {
             return view('sales.saletarget');

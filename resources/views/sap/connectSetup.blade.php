@@ -139,7 +139,8 @@ for (const { id, message } of fields) {
           },
           url:nameServer+"/Login",
           xhrFields: {
-              withCredentials: true
+              withCredentials: true,
+              rejectUnauthorized: false
           },              
 		// the URL for the request
 	

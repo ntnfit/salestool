@@ -11,10 +11,20 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
     integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>  
+    
 @section('content')
+
     @php
-        $config = ['format' => 'L'];
+        $config = ['format' => 'L',
+        'format' => 'yyyy/MM/DD'];
+        $configsodate = [ 'autoclose'=> true,
+        'format' => 'yyyy/MM/DD',
+        'immediateUpdates'=> true,
+        'todayBtn'=> true,
+        'todayHighlight'=> true,
+        'setDate'=>0]; 
+       
     @endphp
     <div class="row">
         <div class="col-lg-12 margin-tb">
@@ -37,7 +47,7 @@
                     <option value="{{ $orderType->Code }}">{{ $orderType->Name }}</option>
                 @endforeach
             </x-adminlte-select>
-            <x-adminlte-input label="PO ID" label-class="text-lightblue" name="pono" type="text" placeholder=""
+            <x-adminlte-input label="PO ID" label-class="text-lightblue" name="pono" id="pono" type="text" placeholder=""
                 igroup-size="sm" fgroup-class="col-md-3">
             </x-adminlte-input>
             <x-adminlte-input-date name="podate" id="podate" label="PoDate" :config="$config"
@@ -61,14 +71,14 @@
                 id="cuscode" fgroup-class="col-md-2" enable-old-support>
                 <option value=""></option>
                 @foreach ($customers as $customer)
-                    <option value="{{ $customer->CardCode }}">{{ $customer->CardCode . '---' . $customer->CardName }}</option>
+                    <option value="{{ $customer->CardCode }}">{{ $customer->CardCode . '--' . $customer->CardName }}</option>
                 @endforeach
             </x-adminlte-select>
             <x-adminlte-select label="Warehouse" label-class="text-lightblue" igroup-size="sm" name="WhsCode" id="WhsCode"
                 fgroup-class="col-md-2" enable-old-support>
                 <option value=""></option>
                 @foreach ($whsCodes as $whsCode)
-                    <option value="{{ $whsCode->WhsCode }}">{{ $whsCode->WhsCode . '---' . $whsCode->WhsName }}</option>
+                    <option value="{{ $whsCode->WhsCode }}">{{ $whsCode->WhsCode . '--' . $whsCode->WhsName }}</option>
                 @endforeach
             </x-adminlte-select>
             <x-adminlte-select label="Team" label-class="text-lightblue" igroup-size="sm" name="bincode" id="bincode"
@@ -76,7 +86,7 @@
 
             </x-adminlte-select>
 
-            <x-adminlte-input-date name="date" id="sodate" label="Date" :config="$config"
+            <x-adminlte-input-date name="date" id="sodate" label="Date" :config="$configsodate"
                 label-class="text-lightblue" igroup-size="sm" fgroup-class="col-md-3" placeholder="Choose a date...">
                 <x-slot name="appendSlot">
                     <div class="input-group-text bg-gradient-danger">
@@ -86,7 +96,8 @@
             </x-adminlte-input-date>
             <x-adminlte-button class="btn" id="search"
                 style="float: right;margin-top: 34px;font-size: small;height: 31px;" type="button" label="load item"
-                theme="success" icon="fas fa-filter" />
+                theme="success" icon="fas fa-filter"/>
+                
         </div>
         <div class="row">
             <div style="height: 600px; overflow: auto;" id="tabledata">
@@ -102,18 +113,6 @@
                 </div>
                 <x-adminlte-button class="btn-flat" style="float: left; margin-left: 20px;" id="save" type="submit"
                     label="Save" theme="success" icon="fas fa-lg fa-save" />
-                <x-adminlte-button class="btn-flat" id="export" style="float: left; margin-left: 20px;"
-                    type="button" label="Export Excel" theme="success" />
-
-                <x-adminlte-button class="btn-flat" id="add"
-                    style=" margin-right: 20px; float: right;background-color: #e7e7e7; color: black;" type="button"
-                    label="Add New" />
-                <x-adminlte-button class="btn-flat" id="copy"
-                    style="float: right; margin-right: 20px;background-color: #e7e7e7; color: black;" type="button"
-                    label="Copy Order" />
-                <x-adminlte-button class="btn-flat" id="apply"
-                    style="float: right;margin-right: 20px;background-color: #e7e7e7; color: black;" type="button"
-                    label="Apply SAP" />
                 <x-adminlte-button class="btn-flat" id="promotion" style="float: right; margin-right: 20px;"
                     type="button" label="Get Promotion" theme="success" disabled />
 
@@ -121,15 +120,13 @@
 
         </div>
 
-
+        <input type="text" name="custname" id="custname"  value="" hidden>
+        <input type="text" name="frmwhsname" id="frmwhsname" value="" hidden>
+        <input type="text" name="teams" id="teams" value="" hidden>
 
     </form>
 @stop
-<section id="loading">
-    <div id="loading-content">
-        <span class="loader"></span>
-    </div>
-</section>
+
 
 @section('css')
     <style>
@@ -176,81 +173,6 @@
             color: orange;
         }
 
-        .loader {
-            transform: translateZ(1px);
-        }
-
-        .loader:after {
-            content: '$';
-            display: inline-block;
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            text-align: center;
-            line-height: 40px;
-            font-size: 32px;
-            font-weight: bold;
-            background: #FFD700;
-            color: #DAA520;
-            border: 4px double;
-            box-sizing: border-box;
-            box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, .1);
-            animation: coin-flip 4s cubic-bezier(0, 0.2, 0.8, 1) infinite;
-        }
-
-        @keyframes coin-flip {
-
-            0%,
-            100% {
-                animation-timing-function: cubic-bezier(0.5, 0, 1, 0.5);
-            }
-
-            0% {
-                transform: rotateY(0deg);
-            }
-
-            50% {
-                transform: rotateY(1800deg);
-                animation-timing-function: cubic-bezier(0, 0.5, 0.5, 1);
-            }
-
-            100% {
-                transform: rotateY(3600deg);
-            }
-        }
-
-        .loading {
-            z-index: 20;
-            position: absolute;
-            top: 0;
-            left: -5px;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.4);
-        }
-
-        .loading-content {
-            position: absolute;
-            //border: 16px solid #f3f3f3; /* Light grey */
-            border-top: 16px solid #3498db;
-            /* Blue */
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            top: 40%;
-            left: 35%;
-            animation: spin 2s linear infinite;
-        }
-
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
-        }
     </style>
 @stop
 @push('js')
@@ -288,7 +210,7 @@
     </script>
     <script>
         $('#search').click(function() {
-
+            
             var ordertype = document.getElementById("ordertype").value;
             var custcode = document.getElementById("cuscode").value;
             var whscode = document.getElementById("WhsCode").value;
@@ -304,7 +226,9 @@
             } else if (!team) {
                 alert("Team is missing");
             } else {
-
+                $(this).prepend('<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>');
+                // Disable button
+                $(this).prop('disabled', true);
                 $('#tabledata').empty();
                 $.ajax({
 
@@ -320,39 +244,42 @@
                     },
 
                     success: function(data) {
-
+                        // Remove spinner icon
+                       $('#search .spinner-grow').remove();
+                        // Re-enable button
+                        $('#search').prop('disabled', false);
                         document.getElementById("tabledata").innerHTML = data;
                         $('#promotion').removeAttr('disabled');
                         // Listen for changes to input fields in the rendered table
-                        $('#tabledata input.qtyout').on('input', function() {
+                        $('#tabledata input.Qtyout').on('input', function() {
                             var sum = 0;
                             var $row = $(this).closest('tr');
-                            $row.find('input.qtyout').each(function() {
+                            $row.find('input.Qtyout').each(function() {
                                 var inputValue = parseInt($(this).val());
                                 if (!isNaN(inputValue)) {
                                     sum += inputValue;
                                 }
                             });
-
+                            var prototal=$row.find('.totalrow').val(sum);
                             
                            
                             var sumcol = 0;
                             var columnIndex = $(this).parent().index();
                             $('#tabledata tr:not(:first):not(:last)').each(function() {
                                 var cellValue = parseInt($(this).find('td:eq(' +
-                                    columnIndex + ') input.qtyout').val());
+                                    columnIndex + ') input.Qtyout').val());
                                 if (!isNaN(cellValue)) {
                                     sumcol += cellValue;
                                 }
                             });
 
-                            $('tfoot tr th').eq(columnIndex - 1).text(sumcol || 0);
+                            $('tfoot tr th').eq(columnIndex - 2).text(sumcol || 0);
                         });
-                        $('#tabledata input.Qtyout').on('change', function() {
+                        $('#tabledata input.qtypro').on('change', function() {
                             console.log("okay");
                             var sum = 0;
                             var $row = $(this).closest('tr');
-                            $row.find('input.qtyout.qtypro').each(function() {
+                            $row.find('input.qtypro').each(function() {
                                 var inputValue = parseInt($(this).val());
                                 if (!isNaN(inputValue)) {
                                     sum += inputValue;
@@ -379,13 +306,49 @@
     <script>
         // Assume the "Load Promotion" button has an ID of "loadPromotionBtn"
         $("#promotion").on("click", function() {
+            
+            var stockOutsInputs = document.querySelectorAll('input[name^="stockOuts"]','input[name^="sotype"]');
+            var stockOutsValues = [];
 
-            var promotions = {
-                "9811": 20, // List of item codes and their corresponding promotion quantities
-                "102": 50
-            };
+            for (var i = 0; i < stockOutsInputs.length; i++) {
+            var stockOutsInput = stockOutsInputs[i];
+            var stockOutsName = stockOutsInput.getAttribute('name');
+            var stockOutsValue = stockOutsInput.value;
 
-            // Loop through each row in the table with ID "tableadd"
+            // Include only non-null and greater than zero values
+            if (stockOutsValue !== null && parseFloat(stockOutsValue) > 0) {
+                // Extract dynamic parts from name attribute
+                var dynamicParts = stockOutsName.match(/\[(.*?)\]/g).map(function(part) {
+                return part.replace(/\[|\]/g, '');
+                });
+
+                // Rearrange dynamic parts and concatenate with value
+                var result = dynamicParts[0] + '-' + stockOutsValue + '-' + dynamicParts[1];
+                stockOutsValues.push(result);
+            }
+            }
+
+            // Convert array to two separate strings
+            var ItemLot = stockOutsValues.join(',');
+            var ItemList = stockOutsValues.map(function(value) {
+                return value.split('-').slice(0, 2).join('-');
+            }).join(',');
+
+            var promotions = {};
+            var custcodes=document.getElementById("cuscode").value;
+            var whscodes=document.getElementById("WhsCode").value;
+            var dates=document.getElementById("sodate").value;
+            var whscodes=document.getElementById("WhsCode").value;
+            var sodate=document.getElementById("sodate").value.replace("/", "")
+            $.ajax({
+            type: 'GET',
+            url: "{{route('promotion.click')}}",
+            data: {custcodes:custcodes,whscodes:whscodes,dates:sodate,itemlists:ItemList,itemlots:ItemLot},
+            datatype:"json",
+            success: function (data) {
+                console.log('data: ', data);
+                promotions=data;
+                  // Loop through each row in the table with ID "tableadd"
             $("#tableadd tbody tr").each(function(index) {
                 var itemCode = $(this).find("td.ItemCode").text()
             .trim(); // Get the value in the "ItemCode" column of the current row
@@ -399,12 +362,17 @@
 
                     // Clone the current row, update the "Total Qty" input field with the new quantity, and append it to the table
                     var newRow = $(this).clone(true, true);
+                   
+                    newRow.find(".sotype").val('KM'); 
                     newRow.find(".totalrow").val(newQty); // Update the "Total Qty" input field with the new quantity
-                    newRow.find(".qtyout").val("");
+                    newRow.find(".Qtyout").val("");
                    
-                    newRow.find(".qtyout").removeClass('qtyout').addClass('qtypro');
+                    newRow.find(".Qtyout").removeClass('Qtyout').addClass('qtypro');
                     newRow.find(".totalrow").removeClass('totalrow').addClass('totalpro');
-                   
+                    newRow.find("input[name^='stockOuts']").attr("name", function(index, name) {
+                        return name.replace(/^stockOuts/, "proout");
+                    });
+
 
                     // Append the cloned row to the table
                     $(this).after(newRow);
@@ -412,13 +380,68 @@
                     // Remove the "STT" (serial number) for the cloned row
                     newRow.find("td:first-child").text("");
                 }
+               
             });
+            // Add new rows for items in the promotions list that are not in the table
+            $.each(promotions, function(itemCode, promotionQty) {
+                var found = false;
+                $("#tableadd tbody tr").each(function() {
+                    if ($(this).find(".ItemCode").text().trim() == itemCode) {
+                        found = true;
+                        return false;
+                    }
+                });
+                if (!found) {
+                    var lastRow = $("#tableadd tbody tr:last"); // Get the last row of the table
+                    var secondLastRow = lastRow.prev(); // Get the second last row of the table
+                    var newRow = secondLastRow.clone(true, true); // Clone the second last row
+                    newRow.find(".ItemCode").text(itemCode);
+                    newRow.find(".inlot").text("");
+                    newRow.find(".sotype").val('KM');
+                    newRow.find(".Qtyout").remove();
+                    newRow.find(".Qtyout").val("");
+                    newRow.find(".totalrow").val(promotionQty); 
+                   
+                    newRow.find(".totalrow").removeClass('totalrow').addClass('totalpro');
+                    
+                    newRow.find("input[name^='stockOuts']").attr("name", function(index, name) {
+                        return name.replace(/^stockOuts/, "proout");
+                    });
 
+                    $("#tableadd tbody").append(newRow);
+                }
+            });
             // Refresh "STT" (serial number) and "Total Qty" in the table
             $("#tableadd tbody tr").each(function(index) {
                 $(this).find("td:first-child").text(index + 1); // Update the "STT" (serial number)
             });
             $('#promotion').attr('disabled', 'disabled');
+            },
+            error: function(data) {
+                console.log('data: ', data);
+            }
+            });
+          
+          
         });
+    </script>
+    <script>
+         $(document).ready(function() {
+            $('#cuscode').change(function() {
+                var CustName=document.getElementById("cuscode").selectedOptions[0].text.split("--")[1];
+                document.getElementById("custname").value = CustName;
+            })
+            $('#WhsCode').change(function() {
+                var FromWhsName=document.getElementById("WhsCode").selectedOptions[0].text.split("--")[1];
+              
+                document.getElementById("frmwhsname").value = FromWhsName;
+            })
+            $('#bincode').change(function() {
+                var BinCode=document.getElementById("bincode").selectedOptions[0].text;
+                document.getElementById("teams").value = BinCode;
+            })
+
+        })  
+       
     </script>
 @endpush

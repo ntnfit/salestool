@@ -3,6 +3,7 @@
         <tr>
             <th>STT</th>
             <th>ItemCode</th>
+            <th hidden>Type</th>
             @foreach ($distinctLots as $lot)
                 <th class="orange">Stock Out</th>
                 <th>LOT{{ $lot }}</th>
@@ -37,6 +38,7 @@
             <tr class="{{ $result['QuantityOut'] > 0 ? 'has-stockout' : '' }}">
                 <td>{{ $loop->iteration }}</td>
                 <td class="ItemCode">{{ $result['ItemCode'] }}</td>
+                <td hidden><input type="text" class="sotype" name="sotype[{{ $result['ItemCode'] }}][]" value="{{$ordertype}}"></td>
                 @foreach ($distinctLots as $lot)
                     
 
@@ -44,14 +46,14 @@
                         @if($result['QuantityIn'][$lot] > 0)
                             <input type="number" class="Qtyout" style="text-color:orange"
                                 name="stockOuts[{{ $result['ItemCode'] }}][{{ $lot }}][]"
-                                value="{{ $result['QuantityOut'][$lot] }}">
+                                value="{{ $result['QuantityOut'][$lot] }}" max="{{ $result['QuantityIn'][$lot] }}" min="0">
                         @else
                         <input type="number" class="Qtyout" style="text-color:orange"
                                 name="stockOuts[{{ $result['ItemCode'] }}][{{ $lot }}][]"
                                 value="" readonly="true">
                         @endif
                     </td>
-                    <td>{{ $result['QuantityIn'][$lot] }}</td>
+                    <td class="inlot">{{ $result['QuantityIn'][$lot] }}</td>
                 @endforeach
 
                 <td> <input type="number" class="totalrow" value="{{ array_sum($result['QuantityOut']) }}"
