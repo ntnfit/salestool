@@ -310,11 +310,6 @@ return [
             'icon' => 'fas fa-fw fa-user',
         ],
         [
-            'text' => 'change_password',
-            'url'  => 'admin/settings',
-            'icon' => 'fas fa-fw fa-lock',
-        ],
-        [
             'text'    => 'Reports',
             'icon'    => 'fas fa-fw fa-share',
             'submenu' => [
@@ -371,46 +366,21 @@ return [
                     'url'  => '/stock-request',
                 ],
                 [
-                    'text' => 'Sale target',
-                    'url'  => 'sale-target',
-                ],
-                [
-                    'text' => 'Sales Target vs Actual managenment',
-                    'url'  => 'sale-target-actual',
-                ],
-                [
-                    'text' => 'Sale out Weekly-Chanel GT',
-                    'url'  => 'sale-weekly-chanel',
-                ],
-                [
                     'text' => 'Update delivery info',
                     'url'  => 'update-delivery-info',
+                ],
+                [
+                    'text' => 'truck information',
+                    'url'  => 'truck-information',
+                ],
+                [
+                    'text' => 'update delivery status',
+                    'url'  => '/delivery',
                 ],
                 [
                     'text' => 'Print Delivery Notes',
                     'url'  => 'print-delivery-notes',
                 ],
-            ],
-        ],
-        [
-            'text'    => 'Purchasing A/P',
-            'icon'    => 'fa-solid fa-list-radio',
-            'submenu' => [
-                [
-                    'text' => 'Purchase order request',
-                    'url'  => 'puchase-request',
-                ],
-            ],
-        ],
-        [
-            'text'    => 'Inventory',
-            'icon'    => 'fa-solid fa-list-radio',
-            'submenu' => [
-                [
-                    'text' => 'Inventory requests',
-                    'url'  => 'inventory-request',
-                ],
-                
             ],
         ],
         [

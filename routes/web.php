@@ -25,6 +25,8 @@ Route::post('uploadImg', 'ImageUploadController@postImages')->name('uploadImg');
 Route::post('deleteImg',[DeliveryController::class,'destroy']); 
 
 Route::group(['middleware' => ['auth']], function() {
+    Route::patch('/profile', [ProfilesController::class, 'update'])->name('profile.update');
+    Route::patch('/resetpass', [ProfilesController::class, 'updatepass'])->name('profile.updatepass');
     Route::resource('roles', RoleController::class);
     Route::resource('users', UserController::class);
     Route::get('/', function () {
@@ -63,21 +65,6 @@ Route::group(['middleware' => ['auth']], function() {
         Route::post('/stock-request',[SalesController::class,'store'])->name('sales.store');
         Route::get('/promotion-click',[SalesController::class,'getpromotion'])->name('promotion.click');
 
-        Route::get('/sale-target',
-        function () {
-            return view('sales.saletarget');
-        })->name('sales.saletarget');
-    
-        Route::get('/actual',
-        function () {
-            return view('sales.actual');
-        })->name('sales.actual');
-
-        Route::get('/sale-out-weekly',
-        function () {
-            return view('sales.weekly');
-        })->name('sales.weekly');
-
     //logistic
    Route::get('/truck-information',
     function () {
@@ -98,7 +85,6 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('/connect-setup', [SAPB1Controller::class,'connectSetup'])->name('connect-setup');
    
     Route::get('/profiles', [ProfilesController::class,'show'])->name('profiles');
-
     //validate data & get data via ODBC
     Route::get('/base-uom',[PromotionController::class,'check_baseUoM'])->name('baseuom');
     Route::get('/bincode',[GetItemController::class,'getTeam'])->name('bincode');

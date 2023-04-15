@@ -28,13 +28,25 @@
 </div>
 <div class="row">
     
-    <x-adminlte-select label="UserSAP" name="UserID" fgroup-class="col-md-6" enable-old-support required>
+    <x-adminlte-select label="UserSAP" label-class="text-lightblue" name="UserID" fgroup-class="col-md-6" placeholder="please choose SAP USER ID" enable-old-support required>
         <option value=""></option>
         @foreach($usersap as $sapid)
              
             <option value="{{$sapid->USERID}}">{{$sapid->USER_CODE}}</option>
             @endforeach
         </x-adminlte-select>
+        <x-adminlte-input name="address" label="Address" fgroup-class="col-md-6" label-class="text-lightblue" placeholder="561A Điện Biên Phủ, Bình Thạnh, Hồ Chí Minh" enable-old-support>
+            <x-slot name="prependSlot">
+                <div class="input-group-text text-purple">
+                    <i class="fas fa-address-card"></i>
+                </div>
+            </x-slot>
+            <x-slot name="bottomSlot">
+                <span class="text-sm text-gray">
+                  
+                </span>
+            </x-slot>
+        </x-adminlte-input>
 <x-adminlte-input name="password" type="password" label="password" placeholder="password" label-class="text-lightblue"  fgroup-class="col-md-6" >
     <x-slot name="prependSlot">
         <div class="input-group-text">
@@ -42,20 +54,18 @@
         </div>
     </x-slot>
 </x-adminlte-input>
-</div>
-<div class="row">
-<x-adminlte-input name="address" label="Address" fgroup-class="col-md-6" label-class="text-lightblue" placeholder="561A Điện Biên Phủ, Bình Thạnh, Hồ Chí Minh" enable-old-support>
+<x-adminlte-input name="confirm-password" type="password" label="confirm-password" placeholder="password" label-class="text-lightblue"  fgroup-class="col-md-6" >
     <x-slot name="prependSlot">
-        <div class="input-group-text text-purple">
-            <i class="fas fa-address-card"></i>
+        <div class="input-group-text">
+            <i class="fas fa-lock text-lightblue"></i>
         </div>
     </x-slot>
-    <x-slot name="bottomSlot">
-        <span class="text-sm text-gray">
-          
-        </span>
-    </x-slot>
 </x-adminlte-input>
+
+
+</div>
+<div class="row">
+
 <x-adminlte-select label="Role" name="roles" fgroup-class="col-md-6" label-class="text-lightblue" enable-old-support>
     @foreach($roles as $role)
          
