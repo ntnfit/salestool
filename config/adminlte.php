@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'title' => 'Betagen-sales-tools',
+    'title' => 'Betagen-sales-Hub',
     'title_prefix' => '',
     'title_postfix' => '',
 
@@ -63,12 +63,12 @@ return [
     |
     */
 
-    'logo' => '<b>Sales </b>Tools',
+    'logo' => '<b>Sales </b>Hub',
     'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
-    'logo_img_alt' => 'Sales-tools Logo',
+    'logo_img_alt' => 'Sales-Hub Logo',
 
     /*
     |--------------------------------------------------------------------------
@@ -110,7 +110,7 @@ return [
         'enabled' => true,
         'img' => [
             'path' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
-            'alt' => 'SaleTools Preloader Image',
+            'alt' => 'SalesHub Preloader Image',
             'effect' => 'animation__shake',
             'width' => 60,
             'height' => 60,
