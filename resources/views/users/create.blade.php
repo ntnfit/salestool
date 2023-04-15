@@ -5,7 +5,7 @@
 @section('content_header')
     <h5>create user</h5>
 @stop
-@section('plugins.Sweetalert2', true);
+@section('plugins.Sweetalert2', true)
 @section('content')
 <div class="container-fluid"> 
 <form action="{{route('users.store')}}" method="post">

@@ -132,46 +132,7 @@ function onBtExport() {
 document.addEventListener('DOMContentLoaded', function () {
   var gridDiv = document.querySelector('#myGrid');
   new agGrid.Grid(gridDiv, gridOptions);
-
-
-    $.ajax({
-          beforeSend: function (xhr) {
-              xhr.setRequestHeader ("Authorization", "Basic eyJDb21wYW55REIiOiIwMV9CVEdfU0FQX0xJVkUiLCJVc2VyTmFtZSI6Im1hbmFnZXIifTptYW5hZ2Vy");
-          },
-          url:"https://{{env('SAP_SERVER')}}:50000/b1s/v1/sml.svc/CUSTOMERDATA",
-          xhrFields: {
-              withCredentials: true
-          },              
-		// the URL for the request
-	
-		// whether this is a POST or GET request
-		type: "get",
-		// the type of data we expect back
-		dataType : "json",
-        headers:{
-            "Prefer": "odata.maxpagesize=all",
-        },
-		// code to run if the request succeeds;
-		// the response is passed to the function
-		success: function( response ) {
-      gridOptions.api.setRowData(response.value)
-           
-		},
-
-		// code to run if the request fails; the raw request and
-		// status codes are passed to the function
-		error: function( xhr, status, errorThrown ) {
-			console.log( "Error: " + errorThrown );
-			console.log( "Status: " + status );
-			console.dir( xhr );
-		},
-
-		// code to run regardless of success or failure
-		complete: function( xhr, status ) {
-			//alert(complete);
-			// Nothing for now.
-		}
-	});
+  gridOptions.api.setRowData({!!$custdata!!})
 
 });
 

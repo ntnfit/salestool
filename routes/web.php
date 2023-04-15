@@ -32,9 +32,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/', function () {
         return view('welcome');
     });
-    Route::get('/customer-data', function () {
-        return view('sap.CustomerData');
-    });
+    Route::get('/customer-data', [GetItemController::class,'getCustDate'])->name('customer.data');
+
     Route::get('/stock-detail', function () {
         return view('sap.SaleDetail');
     });
@@ -90,4 +89,5 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/bincode',[GetItemController::class,'getTeam'])->name('bincode');
     Route::get('/fill-lot-items',[SalesController::class,'filterdata'])->name('filllot-items');
     Route::get('/getpromotion',[SalesController::class,'getpromotion'])->name('clickgetpromotion');
+    Route::get('/saletotal',[GetItemController::class,'getsaletotal'])->name('report.saletotal');
 });

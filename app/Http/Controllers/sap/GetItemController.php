@@ -38,4 +38,31 @@ class GetItemController extends Controller
         $results=json_encode($BinCode);
         return  $results;
     }
+    function getCustDate(Request $request)
+    {
+        
+        $custdata = DB::table('GT_CUSTOMER_DATA')->get();
+    
+        return view('sap.CustomerData',compact('custdata'));
+    }
+    function getsaletotal(Request $request)
+    {
+        $conDB = (new SAPB1Controller)->connect_sap();
+        
+        $query='call "usp_Rpt_BS_Item_StockSalesAvailable_byLotNo_Total_web" (?,?)';
+        $stmt = odbc_prepare($conDB, $query);
+        
+        if (!odbc_execute($stmt, array($request->whscode, $request->bincode))) {
+            // Handle execution error
+            die("Error executing SQL statement: " . odbc_errormsg());
+        }
+
+        $results = array();
+        while ($row = odbc_fetch_array($stmt)) {
+            $results[] = $row;
+        }
+        $results=json_encode($results);
+        return  $results;
+    }
+    
 }
