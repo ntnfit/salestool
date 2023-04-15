@@ -94,7 +94,13 @@ class UserController extends Controller
         $user = User::find($id);
         $roles = Role::pluck('name','name')->all();
         $userRole = $user->roles->pluck('name','name')->all();
-        $usersap = DB::table('OUSR')->get();
+        $usersap = DB::table('OUSR')
+        ->whereNotIn('USERID', function($query) {
+            $query->select(DB::raw('isnull(USERID, 0)'))
+                  ->from('users');
+        })
+        ->get();
+       
         return view('users.edit',compact('user','roles','userRole','usersap'));
     }
     
