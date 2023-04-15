@@ -135,36 +135,29 @@
             padding: 8px 24px;
             margin-top: 70px;
         }
-
         table {
             border-collapse: collapse;
             width: 100%;
         }
-
         th,
         td {
             border: 1px solid #ddd;
             padding: 8px;
             text-align: center;
         }
-
         th {
             background-color: #f2f2f2;
         }
-
         tr:nth-child(even) {
             background-color: #f2f2f2;
         }
-
         td:first-child,
         th:first-child {
             text-align: left;
         }
-
         .orange {
             color: orange;
         }
-
         button,
         input {
             /* background: coral; */
@@ -172,7 +165,6 @@
             border: none;
             color: orange;
         }
-
     </style>
 @stop
 @push('js')
@@ -231,7 +223,6 @@
                 $(this).prop('disabled', true);
                 $('#tabledata').empty();
                 $.ajax({
-
                     type: 'GET',
                     url: '{{ route('filllot-items') }}',
                     data: {
@@ -242,7 +233,6 @@
                         sodate: sodate,
                         Podate: Podate
                     },
-
                     success: function(data) {
                         // Remove spinner icon
                        $('#search .spinner-grow').remove();
@@ -272,7 +262,6 @@
                                     sumcol += cellValue;
                                 }
                             });
-
                             $('tfoot tr th').eq(columnIndex - 2).text(sumcol || 0);
                         });
                         $('#tabledata input.qtypro').on('change', function() {
@@ -295,11 +284,8 @@
                             
                             
                         });
-
-
                     }
                 })
-
             }
         })
     </script>
@@ -309,37 +295,35 @@
             
             var stockOutsInputs = document.querySelectorAll('input[name^="stockOuts"]','input[name^="sotype"]');
             var stockOutsValues = [];
-
             for (var i = 0; i < stockOutsInputs.length; i++) {
             var stockOutsInput = stockOutsInputs[i];
             var stockOutsName = stockOutsInput.getAttribute('name');
             var stockOutsValue = stockOutsInput.value;
-
             // Include only non-null and greater than zero values
             if (stockOutsValue !== null && parseFloat(stockOutsValue) > 0) {
                 // Extract dynamic parts from name attribute
                 var dynamicParts = stockOutsName.match(/\[(.*?)\]/g).map(function(part) {
                 return part.replace(/\[|\]/g, '');
                 });
-
                 // Rearrange dynamic parts and concatenate with value
                 var result = dynamicParts[0] + '-' + stockOutsValue + '-' + dynamicParts[1];
                 stockOutsValues.push(result);
             }
             }
-
+            
             // Convert array to two separate strings
             var ItemLot = stockOutsValues.join(',');
             var ItemList = stockOutsValues.map(function(value) {
                 return value.split('-').slice(0, 2).join('-');
             }).join(',');
-
+            console.log(ItemLot);
+            console.log(ItemList);
             var promotions = {};
             var custcodes=document.getElementById("cuscode").value;
             var whscodes=document.getElementById("WhsCode").value;
             var dates=document.getElementById("sodate").value;
             var whscodes=document.getElementById("WhsCode").value;
-            var sodate=document.getElementById("sodate").value.replace("/", "")
+            var sodate=document.getElementById("sodate").value.replace(/\//g, '')
             $.ajax({
             type: 'GET',
             url: "{{route('promotion.click')}}",
@@ -352,14 +336,12 @@
             $("#tableadd tbody tr").each(function(index) {
                 var itemCode = $(this).find("td.ItemCode").text()
             .trim(); // Get the value in the "ItemCode" column of the current row
-
                 // Check if the value in "ItemCode" column is found in the list of promotions
                 if (promotions.hasOwnProperty(itemCode)) {
                     var promotionQty = promotions[
                     itemCode]; // Get the promotion quantity for the current item code
                     var newQty =
                     promotionQty; // Calculate the new quantity by adding the promotion quantity
-
                     // Clone the current row, update the "Total Qty" input field with the new quantity, and append it to the table
                     var newRow = $(this).clone(true, true);
                    
@@ -372,11 +354,8 @@
                     newRow.find("input[name^='stockOuts']").attr("name", function(index, name) {
                         return name.replace(/^stockOuts/, "proout");
                     });
-
-
                     // Append the cloned row to the table
                     $(this).after(newRow);
-
                     // Remove the "STT" (serial number) for the cloned row
                     newRow.find("td:first-child").text("");
                 }
@@ -407,7 +386,6 @@
                     newRow.find("input[name^='stockOuts']").attr("name", function(index, name) {
                         return name.replace(/^stockOuts/, "proout");
                     });
-
                     $("#tableadd tbody").append(newRow);
                 }
             });
@@ -440,7 +418,6 @@
                 var BinCode=document.getElementById("bincode").selectedOptions[0].text;
                 document.getElementById("teams").value = BinCode;
             })
-
         })  
        
     </script>

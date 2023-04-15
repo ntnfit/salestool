@@ -31,25 +31,48 @@
 
 {!! Form::model($user, ['method' => 'PATCH','route' => ['users.update', $user->id]]) !!}
 <div class="row">
-    <div class="col-xs-12 col-sm-12 col-md-12">
+    <div class="col-md-6">
         <div class="form-group">
             <strong>Name:</strong>
             {!! Form::text('name', null, array('placeholder' => 'Name','class' => 'form-control')) !!}
         </div>
     </div>
-    <div class="col-xs-12 col-sm-12 col-md-12">
+    <div class="col-md-6">
         <div class="form-group">
             <strong>Email:</strong>
             {!! Form::text('email', null, array('placeholder' => 'Email','class' => 'form-control')) !!}
         </div>
     </div>
-    <div class="col-xs-12 col-sm-12 col-md-12">
+    <x-adminlte-select label="UserSAP" name="UserID"  fgroup-class="col-md-6" enable-old-support required>
+        <option value="" selected></option>
+        @foreach($usersap as $sapid)  
+            @if($sapid->USERID==$user->UserID)
+            <option value="{{$sapid->USERID}}" selected>{{$sapid->USER_CODE}}</option>
+            @else   
+            <option value="{{$sapid->USERID}}">{{$sapid->USER_CODE}}</option>
+            @endif
+        @endforeach
+        </x-adminlte-select>
+        <x-adminlte-input name="address" label="Address" fgroup-class="col-md-6" label-class="text-lightblue" 
+        placeholder="561A Điện Biên Phủ, Bình Thạnh, Hồ Chí Minh" value="{{$user->address}}" enable-old-support>
+            <x-slot name="prependSlot">
+                <div class="input-group-text text-purple">
+                    <i class="fas fa-address-card"></i>
+                </div>
+            </x-slot>
+            <x-slot name="bottomSlot">
+                <span class="text-sm text-gray">
+                  
+                </span>
+            </x-slot>
+        </x-adminlte-input>
+    <div class="col-md-6">
         <div class="form-group">
             <strong>Password:</strong>
             {!! Form::password('password', array('placeholder' => 'Password','class' => 'form-control')) !!}
         </div>
     </div>
-    <div class="col-xs-12 col-sm-12 col-md-12">
+    <div class="col-md-6">
         <div class="form-group">
             <strong>Confirm Password:</strong>
             {!! Form::password('confirm-password', array('placeholder' => 'Confirm Password','class' => 'form-control')) !!}
@@ -65,7 +88,7 @@
         "actionsBox" => true,
     ];
 @endphp
-<x-adminlte-select-bs label="Vai trò" name="roles" fgroup-class="col-md-6" :config="$config" enable-old-support>
+<x-adminlte-select-bs label="roles" name="roles" fgroup-class="col-md-6" :config="$config" enable-old-support>
 <x-slot name="prependSlot">
         <div class="input-group-text bg-gradient-red">
             <i class="fas fa-cannabis"></i>

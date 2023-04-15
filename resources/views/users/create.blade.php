@@ -28,7 +28,8 @@
 </div>
 <div class="row">
     
-    <x-adminlte-select label="UserSAP" name="userid" fgroup-class="col-md-6" enable-old-support>
+    <x-adminlte-select label="UserSAP" name="UserID" fgroup-class="col-md-6" enable-old-support required>
+        <option value=""></option>
         @foreach($usersap as $sapid)
              
             <option value="{{$sapid->USERID}}">{{$sapid->USER_CODE}}</option>
@@ -43,13 +44,6 @@
 </x-adminlte-input>
 </div>
 <div class="row">
-<x-adminlte-input label="Phone" type="text" name="phone" id="" placeholder="0987654321" label-class="text-lightblue" fgroup-class="col-md-6" enable-old-support>
-    <x-slot name="prependSlot">
-        <div class="input-group-text">
-            <i class="fas fa-phone text-lightblue"></i>
-        </div>
-    </x-slot>
-    </x-adminlte-input>
 <x-adminlte-input name="address" label="Address" fgroup-class="col-md-6" label-class="text-lightblue" placeholder="561A Điện Biên Phủ, Bình Thạnh, Hồ Chí Minh" enable-old-support>
     <x-slot name="prependSlot">
         <div class="input-group-text text-purple">
@@ -62,15 +56,12 @@
         </span>
     </x-slot>
 </x-adminlte-input>
-
-</div>
-<div class="row">
-<x-adminlte-select label="Role" name="roles" fgroup-class="col-md-6" enable-old-support>
-@foreach($roles as $role)
-     
-    <option value="{{$role}}">{{$role}}</option>
-    @endforeach
-</x-adminlte-select>
+<x-adminlte-select label="Role" name="roles" fgroup-class="col-md-6" label-class="text-lightblue" enable-old-support>
+    @foreach($roles as $role)
+         
+        <option value="{{$role}}">{{$role}}</option>
+        @endforeach
+    </x-adminlte-select>
 </div>
 <x-adminlte-button class="btn-flat" style="float: right" type="submit" label="save" theme="success" icon="fas fa-lg fa-save"/>
 

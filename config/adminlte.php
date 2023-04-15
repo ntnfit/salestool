@@ -363,8 +363,12 @@ return [
                 
                 
                 [
-                    'text' => 'Stock out request',
+                    'text' => 'list Sale stock request',
                     'url'  => '/stock-request-list',
+                ],
+                [
+                    'text' => 'Add Sales stock',
+                    'url'  => '/stock-request',
                 ],
                 [
                     'text' => 'Sale target',

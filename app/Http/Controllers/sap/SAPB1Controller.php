@@ -89,7 +89,7 @@ class SAPB1Controller extends Controller
        
         function connect()
         { 
-            $host='115.84.182.179:30015';
+        $host='115.84.182.179:30015';
         $driver = 'HDBODBC';
         $db_name = "HDB";
         // Username
@@ -129,6 +129,7 @@ class SAPB1Controller extends Controller
     }
     function connect_sap(){
         
+        //$host='172.31.246.123:30015';
         $host='172.31.246.123:30015';
         $driver = 'HDBODBC';
         $db_name = "01_BTG_SAP_LIVE";

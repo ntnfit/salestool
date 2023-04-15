@@ -106,11 +106,15 @@ class SalesController extends Controller
     }
     function edit($id)
     {
+        $orderTypes=DB::table('SAL_ORDER_TYPE')->get();
         $conDB = (new SAPB1Controller)->connect_sap();
         if (!$conDB) {
             // Handle connection error
             die("Error connecting to SAPB1: " . odbc_errormsg());
         }     
+        // get data pass to pramater
+        $so=DB::TABLE('SAL_LIST_STOCK_REQUEST')->where('StockNo',$id)->first();
+     
         $sql = 'CALL USP_BS_LOT_OINM_STOCKREQUEST(?,?,?,?,?,?)';
         $stmt = odbc_prepare($conDB, $sql);
         if (!$stmt) {
@@ -118,7 +122,7 @@ class SalesController extends Controller
             die("Error preparing SQL statement: " . odbc_errormsg());
         }
         // Execute the stored procedure with the input parameters
-        if (!odbc_execute($stmt, array('20220727','102800','HN03','SO220715484',0,24))) {
+        if (!odbc_execute($stmt, array($so->StockDate,$so->CustCode,$so->FromWhsCode,$id,0,$so->AbsEntry))) {
             // Handle execution error
             die("Error executing SQL statement: " . odbc_errormsg());
         }
@@ -138,7 +142,7 @@ class SalesController extends Controller
         $distinctLots = array_unique(array_column($results, 'LotNo'));
        
 
-        return view('sales.edit',compact('results','distinctLots'));
+        return view('sales.edit',compact('results','distinctLots','orderTypes','so'));
     }
     function addView()
     {
@@ -192,7 +196,7 @@ class SalesController extends Controller
         $team=$request->teams;
         $note=$request->note;
         $statusSAP=1;
-        $userId = Auth::id();
+        $userId = Auth::user()->UserID;
         $applysap=-1;
         $datecreate=date("Ymd", strtotime(date("Y/m/d")));
         $insertHeader='insert into "BS_STOCKOUTREQUEST" 
@@ -374,9 +378,10 @@ class SalesController extends Controller
             // Handle SQL error
             die("Error preparing SQL statement: " . odbc_errormsg());
         }
+        
         // Execute the stored procedure with the input parameters
-        if (!odbc_execute($stmt, array('102522','HO03','2018-4-5','201-25152',''))) {
-        //if (!odbc_execute($stmt, array($request->custcodes,$request->whscodes,$request->sodate,$request->itemlists,$itemlot))) {
+        //if (!odbc_execute($stmt, array('102522','HO03','2018-4-5','201-25152',''))) {
+        if (!odbc_execute($stmt, array($request->custcodes,$request->whscodes,$request->dates,$request->itemlists,$itemlot))) {
             // Handle execution error
             die("Error executing SQL statement: " . odbc_errormsg());
         }
