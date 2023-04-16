@@ -4,39 +4,59 @@ namespace App\Http\Controllers\sap;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Controllers\sap\SAPB1Controller;
+use Illuminate\Support\Facades\Storage;
+use League\Flysystem\Visibility;
 class DeliveryController extends Controller
 {
     public function index()
     {
         return view('delivery.index');
     }
- 
+    
+    
  
     public function store(Request $request)
-    { if ($request->ajax()) {
+    { 
+        $files = $request->file('file');
+      
+        $attachments = []; 
         if ($request->hasFile('file')) {
-            $imageFiles = $request->file('file');
-            // set destination path
-            $folderDir = 'uploads/delivery';
-            $destinationPath = base_path() . '/' . $folderDir;
-            // this form uploads multiple files
-            foreach ($request->file('file') as $fileKey => $fileObject ) {
-                // make sure each file is valid
-                if ($fileObject->isValid()) {
-                    // make destination file name
-                    $destinationFileName =$fileObject->getClientOriginalName();
-                    // move the file from tmp to the destination path
-                    $fileObject->move($destinationPath, $destinationFileName);
-                    // save the the destination filename
-                    // $prodcuctImage = new ProductImage;
-                    // $ProdcuctImage->image_path = $folderDir . $destinationFileName;
-                    // $prodcuctImage->title = $originalNameWithoutExt;
-                    // $prodcuctImage->alt = $originalNameWithoutExt;
-                    // $prodcuctImage->save();
-                }
+
+            foreach ($files as $file) {
+             
+                $namefile = pathinfo($file->getClientOriginalName(),PATHINFO_FILENAME);
+               
+                $extension = $file->getClientOriginalExtension();
+                $fileName = $namefile ."_". time() . '.' . $extension;
+                //move_uploaded_file( $fileName,env('pathuploadSAP').$fileName);
+                $path = Storage::disk('network')->putFileAs('attachment', $file, $fileName);
+                $directory = dirname($path);
+                $filename = basename($path);
+                Storage::disk('network')->setVisibility($directory.'/'.$filename, Visibility::PUBLIC);
+               
+                $attachment = [
+                    "FileExtension" => $extension,
+                    "FileName" => pathinfo($fileName,PATHINFO_FILENAME),
+                    "SourcePath" => env('pathuploadSAP'),
+                    "UserID" => "1"
+                ];
+                
+                array_push($attachments, $attachment);
+                
+                $payload = [
+                    "Attachments2_Lines" => $attachments
+                ];
+                
             }
+            
         }
-    }
+        $entry=$this->attachSAP($payload);
+        $this->updatestatus($entry,$request->DocKey);
+      
+        
+       return  redirect()->back()->with('message', 'update sucesss!');
+    
     }
     function destroy (Request $request)
     {
@@ -51,9 +71,69 @@ class DeliveryController extends Controller
            
             
     }
-    function updatestatus(Request $request)
+    function updatestatus(string $entry, string $so)
     {
-        dd($request->all());
+        $serviceLayerUrl = "https://".env('SAP_SERVER').":".env('SAP_PORT');
+        //$serviceLayerUrl = "https://crm-grantthornton.xyz".":".env('SAP_PORT');
+        $headers = [
+            'Content-Type' => 'text/plain',
+            "Authorization" => "Basic " . env('BSHeader'),
+           // "Authorization" => "Basic " . "eyJDb21wYW55REIiOiIwMV9CVEdfU0FQX0xJVkUiLCJVc2VyTmFtZSI6Im1hbmFnZXIifTptYW5hZ2Vy",
+        ];
+
+        $client = new \GuzzleHttp\Client([
+            "base_uri" => $serviceLayerUrl,
+            "headers" => $headers,
+        ]);
+        $payload = [
+            "AttachmentEntry" =>$entry,
+            "U_DeliveryStatus"=>'02'
+        ];
+        // Make a request to the service layer
+        $response = $client->request("patch", "/b1s/v1/Orders(".$so.")", [
+            'verify' => false,
+            'json' => $payload
+        ]);
+    
+   
+    }
+
+    public function attachSAP(array $payload)
+    {
+        $serviceLayerUrl = "https://".env('SAP_SERVER').":".env('SAP_PORT');
+        //$serviceLayerUrl = "https://crm-grantthornton.xyz".":".env('SAP_PORT');
+        $headers = [
+            'Content-Type' => 'multipart/mixed',
+            "Authorization" => "Basic " . env('BSHeader'),
+            //"Authorization" => "Basic " . "eyJDb21wYW55REIiOiIwMV9CVEdfU0FQX0xJVkUiLCJVc2VyTmFtZSI6Im1hbmFnZXIifTptYW5hZ2Vy",
+        ];
+
+        $client = new \GuzzleHttp\Client([
+            "base_uri" => $serviceLayerUrl,
+            "headers" => $headers,
+        ]);
+        // $payload = [
+        //     "Attachments2_Lines" => [
+        //         [
+        //             "FileExtension" => $ext,
+        //             "FileName" => $filename,
+        //             "SourcePath" => $path,
+        //             "UserID" => "1"
+        //         ]
+        //     ]
+        // ];
+        // Make a request to the service layer
+        $response = $client->request("POST", "/b1s/v1/Attachments2", [
+            'verify' => false,
+            'json' => $payload
+        ]);
+    
+        // Get the response body as a string
+        $responseBody = $response->getBody()->getContents();
+        $responseJson = json_decode($responseBody, true);
+        $absoluteEntry = $responseJson["AbsoluteEntry"];
+        
+        return $absoluteEntry;
     }
    
 }

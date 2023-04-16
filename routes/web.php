@@ -19,7 +19,8 @@ Auth::routes();
 Route::get('sapb1',[SAPB1Controller::class,'connect']);
 Route::get('getitemsap',[GetItemController::class,'getItemSAP']);
 //
-
+ //update DO
+ Route::post('/updateDo',[DeliveryController::class,'store'])->name('updateDo');
 Route::resource('delivery', DeliveryController::class);
 Route::post('uploadImg', 'ImageUploadController@postImages')->name('uploadImg'); 
 Route::post('deleteImg',[DeliveryController::class,'destroy']); 
@@ -53,8 +54,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/promotions-add',[PromotionController::class,'dfPromotion'])->name('add-promotions');
     Route::get('/custmer-filter',[PromotionController::class,'ListCustomerDropDown'])->name('filterCus');
     Route::post('/promotions-submit',[PromotionController::class,'store'])->name('prosubmit');
-    //update DO
-    Route::post('/updateDo',[DeliveryController::class,'updatestatus'])->name('updateDo');
+   
     // sale stock- request
         Route::get('/stock-request-list',[SalesController::class,'listSaleStock'])->name('sales.list');
 
@@ -63,6 +63,8 @@ Route::group(['middleware' => ['auth']], function() {
         Route::get('/stock-request-edit/{stockSO}',[SalesController::class,'edit'])->name('sales.edit');
         Route::post('/stock-request',[SalesController::class,'store'])->name('sales.store');
         Route::get('/promotion-click',[SalesController::class,'getpromotion'])->name('promotion.click');
+        Route::post('/stock-update/{stockSO}',[SalesController::class,'update'])->name('sales.update');
+        Route::get('/applysap',[SalesController::class,'applySAP'])->name('sales.apply');
 
     //logistic
    Route::get('/truck-information',

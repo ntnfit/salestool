@@ -14,21 +14,53 @@
                 @endforeach
             </ul>
  @endif 
+ @if(session()->has('message'))
+ <div class="alert alert-success">
+	 {{ session()->get('message') }}
+ </div>
+@endif
+ <form action="{{route('updateDo')}}" method="post" enctype="multipart/form-data">
 
- <form action="" method="get" enctype="multipart/form-data">
-        <div class="card">
-           
-            <div class="drag-area">
+	@csrf
+	
+        <div class="card" >
+			<div class="row">
+				<x-adminlte-input label="Số SO/SO No." label-class="text-lightblue" name="so" id="sono" type="text"
+				placeholder="nhập số SO/input SO.No: SO230400001" igroup-size="sm" fgroup-class="col-md-3" >
+			</x-adminlte-input>
+			<x-adminlte-button class="btn" style="font-size: small;height: 30px; margin-top:30px" id="search" igroup-size="sm" type="button" label="search/Tìm kiếm"
+							theme="success" icon="fas fa-filter" onclick="loadso()" />
+			
+			</div>
+			<div class="row">
+				<x-adminlte-input label="DocEntry." label-class="text-lightblue" name="DocKey" id="DocKey" type="text"
+				placeholder="" igroup-size="sm" fgroup-class="col-md-2" readonly>
+				</x-adminlte-input>
+				<x-adminlte-input label="DocNum." label-class="text-lightblue" name="DocNum" id="DocNum" type="text"
+				placeholder="" igroup-size="sm" fgroup-class="col-md-2" readonly>
+				</x-adminlte-input>
+				<x-adminlte-input label="CardName." label-class="text-lightblue" name="CardName" id="CardName" type="text"
+				placeholder="" igroup-size="sm" fgroup-class="col-md-2" readonly>
+				</x-adminlte-input>
+				<x-adminlte-input label="TruckInfo/TT xe." label-class="text-lightblue" name="driver" id="driver" type="text"
+				placeholder="" igroup-size="sm" fgroup-class="col-md-2" readonly>			
+				</x-adminlte-input>
+				<x-adminlte-input label="Địa chỉ/Address." label-class="text-lightblue" name="address" id="address" type="text"
+				placeholder="" igroup-size="sm" fgroup-class="col-md-8" readonly>
+				</x-adminlte-input>
+			
+			</div>
+            <div class="drag-area" id="upload" hidden>
                 <span class="visible">
                     Drag & drop image here or
                     <span class="select" role="button">Browse</span>
                 </span>
                 <span class="on-drop">Drop images here</span>
-                <input name="file[]" type="file" id="img" accept="image/*" class="file" multiple />
+                <input name="file[]" type="file" id="img" accept="image/*" class="file" multiple required />
             </div>
             <div class="top">
                
-                <button type="submit"  onclick = "uploadFile()" >Save & update status</button>
+                <button type="submit" id="submitform"  onclick = "uploadFile()" disabled>Save & update status</button>
             </div>
             <!-- IMAGE PREVIEW CONTAINER -->
             <div class="container"></div>
@@ -61,12 +93,12 @@ body {
 /* MAIN STYLE */
 
 .card {
-    width: 400px;
+    width: auto;
     height: auto;
     padding: 15px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
     border-radius: 5px;
-    overflow: hidden;
+    
     background: #fafbff;
 }
 
@@ -182,10 +214,16 @@ body {
 	font-size: 28px;
 }
 
-.card input,
+.card input#img,
 .card .drag-area .on-drop, 
 .card .drag-area.dragover .visible {
 	display: none;
+}
+button[disabled] {
+    cursor: not-allowed;
+    border: 1px solid #999999;
+    background-color: #cccccc;
+    color: #666666;
 }
  </style>
 
@@ -298,5 +336,96 @@ function isFileValid(file) {
 	return true;
 }
 
+function loadso(){
+	var so=document.getElementById('sono').value;
+	if(so==='')
+	{
+		alert('số SO không được trống/SO No. is required');
+	}
+	else{
+		
+		$.ajax({
+          beforeSend: function (xhr) {
+			
+              xhr.setRequestHeader ("Authorization", "Basic "+'eyJDb21wYW55REIiOiIwMV9CVEdfU0FQX0xJVkUiLCJVc2VyTmFtZSI6Im1hbmFnZXIifTptYW5hZ2Vy');
+			 // xhr.setRequestHeader ("Authorization", "Basic "+'{{env('BSHeader')}}');
+          },
+		//url:" https://"+'{{env('SAP_SERVER')}}'+":"+'{{env('SAP_PORT')}}'+"/b1s/v1/Orders?$select=DocNum,DocEntry,DocDate,CardName,Address,U_SoPhieu,U_TruckInfo&$filter=U_SoPhieu eq '"+so+"'",
+        url:" https://"+'crm-grantthornton.xyz'+":"+'{{env('SAP_PORT')}}'+"/b1s/v1/Orders?$select=DocNum,DocEntry,DocDate,CardName,Address,U_SoPhieu,U_TruckInfo&$filter=U_SoPhieu eq '"+so+"'",
+		xhrFields: {
+            withCredentials: true,
+            rejectUnauthorized: false
+        }, 
+		// whether this is a POST or GET request
+		method: "get",
+		// the type of data we expect back
+		dataType : "json",
+        headers:{
+            "Prefer": "odata.maxpagesize=all",
+        }
+		}).done(function(response){
+			
+			if(response.value.length>0){
+				//binding
+			document.getElementById('DocKey').value=response.value[0].DocEntry;
+			document.getElementById('DocNum').value=response.value[0].DocNum;
+			document.getElementById('CardName').value=response.value[0].CardName;
+			document.getElementById('driver').value= response.value[0].U_TruckInfo != null ? response.value[0].U_TruckInfo : "";
+			document.getElementById('address').value=response.value[0].Address;
+			document.getElementById('upload').hidden = false;
+			document.getElementById('submitform').disabled=false;
+			$("#submitform").prop("disabled", false).css(
+				{"cursor": "", 
+				"border": "",
+				"background-color": "",
+				"color": ""});
+
+		}
+			else
+			{
+				alert("không tìm thấy SO.No hoặc So.No không hợp lệ!/So No. not found!");
+				document.getElementById('upload').hidden = true;
+				$("#submitform").attr("disabled");
+				document.querySelectorAll('input').forEach(input => input.type === 'text' || input.type === 'file' ? input.value = '' : null);
+
+				$("#submitform").attr("disabled");
+				$("#submitform").prop("disabled", true).css({
+					"cursor": "not-allowed",
+					"border": "1px solid #999999",
+					"background-color": "#cccccc",
+					"color": "#666666"
+					});
+
+			}
+			
+		}).fail(function(respone)
+		{
+			alert("không tìm thấy SO.No hoặc So.No không hợp lệ!/So No. not found!");
+			document.getElementById('upload').hidden = true;
+			$("#submitform").attr("disabled");
+			$("#submitform").prop("disabled", true).css({
+					"cursor": "not-allowed",
+					"border": "1px solid #999999",
+					"background-color": "#cccccc",
+					"color": "#666666"
+					});
+
+			document.querySelectorAll('input').forEach(input => input.type === 'text' || input.type === 'file' ? input.value = '' : null);
+
+		});
+	}
+}
+
+function uploadFile()
+{
+	const fileInput = document.getElementById('img');
+
+    // Check if a file has been selected
+    if (fileInput.files.length === 0) {
+      alert("Please select a file");
+      return false; // Prevent the form from submitting
+    }
+}
 </script>
+
 @endsection

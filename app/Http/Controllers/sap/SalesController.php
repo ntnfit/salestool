@@ -100,6 +100,7 @@ class SalesController extends Controller
                $results[] = $row;
            }
            $results=json_encode($results);
+           odbc_close($conDB);
            return  $results;
         }
           
@@ -141,7 +142,7 @@ class SalesController extends Controller
         // get number lot
         $distinctLots = array_unique(array_column($results, 'LotNo'));
        
-
+        odbc_close($conDB);
         return view('sales.edit',compact('results','distinctLots','orderTypes','so'));
     }
     function addView()
@@ -195,9 +196,9 @@ class SalesController extends Controller
         $AbsId=null;//Sale blanket id
         $team=$request->teams;
         $note=$request->note;
-        $statusSAP=1;
+        $statusSAP=0;
         $userId = Auth::user()->UserID;
-        $applysap=-1;
+        $applysap=0;
         $datecreate=date("Ymd", strtotime(date("Y/m/d")));
         $insertHeader='insert into "BS_STOCKOUTREQUEST" 
         ("StockNo","StockDate","StockType",
@@ -292,23 +293,182 @@ class SalesController extends Controller
         //update itemname in line 
         $sqlupdate='call "SAL_UPDATE_ITM_NAME"'; 
         odbc_exec($conDB, $sqlupdate);
-        
+        odbc_close($conDB);
        
     }
-    function update()
+    function update(Request $request,$id)
     {
+       
+        if($request->sono)
+        {
+            $sqldete='delete "BS_STOCKOUTREQUEST" where "StockNo"=\''.$request->sono.'\''; 
+            odbc_exec($conDB, $sqldete);
+            
+            $sqldeteline='delete BS_STOCKOUTREQUEST_Detail where "StockNo"=\''.$request->sono.'\'';            
+            odbc_exec($conDB, $sqldeteline);
+        }
+      $conDB =(new SAPB1Controller)->connect_sap();
+      //dd($Itempost);
+        // post to header
+        $date=(string)date("Ymd", strtotime($request->date));
+        $ordertype=$request->ordertype; 
+        $SOID =$request->sono;
+        $Stocktype=2;
+        $custcode=$request->cuscode;
+        $custname=$request->custname;
+        $FromWhsCode=$request->WhsCode;
+        $FromWhsName=$request->frmwhsname;
+        $OrderType=$request->ordertype;
+        $POCardCode=$request->pono;
+        $PODate=date("Ymd", strtotime($request->podate));
+        $AbsEntry=$request->bincode;
+        $AbsId=null;//Sale blanket id
+        $team=$request->teams;
+        $note=$request->note;
+        $statusSAP=0;
+        $userId = Auth::user()->UserID;
+        $applysap=0;
+        $datecreate=date("Ymd", strtotime(date("Y/m/d")));
+        $insertHeader='insert into "BS_STOCKOUTREQUEST" 
+        ("StockNo","StockDate","StockType",
+        "CustCode","CustName","FromWhsCode","FromWhsName",
+        "OrderType","POCardCode","PODate","AbsID",
+        "AbsEntry","BinCode","Note","StatusSAP","DateCreate",
+        "UserID","ApplyStatus")
+        values
+        (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
+         $stmtsheader = odbc_prepare($conDB, $insertHeader);
+        $result = odbc_execute($stmtsheader, array($SOID,$date,$Stocktype,$custcode,$custname,$FromWhsCode,$FromWhsName,
+        $OrderType, $POCardCode, $PODate,$AbsId,$AbsEntry,$team,$note,$statusSAP,$datecreate,$userId,$applysap));
+        
+        //handler data to detail
+        // item post
+       
+        $Itempost=[];
+        foreach ($request->stockOuts as $item => $lots) {
+            $newLots = [];
+        
+            foreach ($lots as $lot => $data) {
+                if ($data[0] !== null && $data[0] !== 0) {
+                    $newLots[$lot] = array(
+                        'Quantity' => $data[0]
+                    );
+                }
+            }
+        
+            if (!empty($newLots)) {
+                foreach ($newLots as $lotKey => $lotValue) {
+                    if ($lotValue['Quantity'] !== null && $lotValue['Quantity'] !== "0") {
+                        $Itempost[] = array(
+                            'Item' => $item,
+                            'lot' => $lotKey,
+                            'Quantity' => $lotValue['Quantity']
+                        );
+                    }
+                }
+            }
+        }
+        
+        // item post
+        $ItemPro=[];
+        if($request->proout)
+        {
+        
+        foreach ($request->proout as $item => $lots) {
+        $newLots = [];
+
+        foreach ($lots as $lot => $data) {
+            if ($data[0] !== null && $data[0] !== 0) {
+                $newLots[$lot] = array(
+                    'Quantity' => $data[0]
+                );
+            }
+        }
+
+        if (!empty($newLots)) {
+            foreach ($newLots as $lotKey => $lotValue) {
+                if ($lotValue['Quantity'] !== null && $lotValue['Quantity'] !== "0") {
+                    $ItemPro[] = array(
+                        'Item' => $item,
+                        'lot' => $lotKey,
+                        'Quantity' => $lotValue['Quantity']
+                    );
+                }
+            }
+        }
+        }
+        }
+        //insert data item to table line
+        $sqlinsertline='insert into BS_STOCKOUTREQUEST_Detail 
+        ("StockNo","ItemCode","LotNo","TypePrd","QuantityPro","Quantity","CreatedDate) values(?,?,?,?,?,?,?)';
+        foreach ($Itempost as $item)
+        {
+           
+        $stmtline = odbc_prepare($conDB, $sqlinsertline);
+        $result = odbc_execute($stmtline, array($SOID,$item['Item'],$item['lot'],$ordertype,$item['Quantity'],$item['Quantity'], $datecreate));
+
+        }
+       if( $ItemPro)
+       {
+        foreach ($ItemPro as $item)
+        {
+           
+        $stmtline = odbc_prepare($conDB, $sqlinsertline);
+        $result = odbc_execute($stmtline, array($SOID,$item['Item'],$item['lot'],$ordertype,$item['Quantity'],$item['Quantity'],$datecreate));
+
+        }
+
+       }
+        //update itemname in line 
+        $sqlupdate='call "SAL_UPDATE_ITM_NAME"'; 
+        odbc_exec($conDB, $sqlupdate);
+        odbc_close($conDB);
 
     }
     function applySAP()
     {
+        $serviceLayerUrl = "https://".env('SAP_SERVER').":".env('SAP_PORT');
+      
+        $headers = [
+            "Content-Type" => "application/json",
+            "Accept" => "application/json",
+            "Authorization" => "Basic " . env('BSHeader'),
+        ];
+
+        $client = new \GuzzleHttp\Client([
+            "base_uri" => $serviceLayerUrl,
+            "headers" => $headers,
+        ]);
+
+        // Make a request to the service layer
+        $response = $client->request("GET", "/b1s/v1/Quotations",['verify' => false]);
+
+        // Get the response body as a string
+        $responseBody = $response->getBody()->getContents();
+
+        // Decode the response JSON
+        $responseJson = json_decode($responseBody, true);
+
+        // Process the response JSON as needed
+        // ...
+
+        return response()->json(["success" => true,"data"=>$responseJson]);
 
     }
     // function filter 
     function filterdata(Request $request)
     {
+        $so="";
       
+        if($request->sono)
+        {
+            $so=$request->sono;
+        }
+        else
+        {
+            $so='SO'.substr(date("Y"), -2).date("m").'99999999999999';
+        }
        
-        $so='SO'.substr(date("Y"), -2).date("m").'99999999999999';
         $blanket=0;
         if($request->sporderno)
         {
@@ -326,6 +486,7 @@ class SalesController extends Controller
             die("Error connecting to SAPB1: " . odbc_errormsg());
         }     
         $sql = 'CALL USP_BS_LOT_OINM_STOCKREQUEST(?,?,?,?,?,?)';
+
         $stmt = odbc_prepare($conDB, $sql);
         
         if (!$stmt) {
@@ -353,6 +514,7 @@ class SalesController extends Controller
         $ordertype=$request->ordertype;
         // pass data to the view and render the Blade template
         $tableHtml = view('sales.tabletemplate', compact('distinctLots', 'results','ordertype'))->render();
+        odbc_close($conDB);
          return  $tableHtml;
     }
     function getpromotion(Request $request)
@@ -399,6 +561,7 @@ class SalesController extends Controller
         foreach ($results as $item) {
             $listrs[$item["ProItemCode"]] = (int)$item["TotalQuantity"];
           }
+          odbc_close($conDB);
        return $listrs;
     }
      

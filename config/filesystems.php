@@ -55,6 +55,10 @@ return [
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
             'throw' => false,
         ],
+        'network' => [
+            'driver' => 'local',
+            'root' => '//115.84.182.179/b1_shr/',
+        ],
 
     ],
 
