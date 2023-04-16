@@ -347,11 +347,11 @@ function loadso(){
 		$.ajax({
           beforeSend: function (xhr) {
 			
-              xhr.setRequestHeader ("Authorization", "Basic "+'eyJDb21wYW55REIiOiIwMV9CVEdfU0FQX0xJVkUiLCJVc2VyTmFtZSI6Im1hbmFnZXIifTptYW5hZ2Vy');
-			 // xhr.setRequestHeader ("Authorization", "Basic "+'{{env('BSHeader')}}');
+             // xhr.setRequestHeader ("Authorization", "Basic "+'eyJDb21wYW55REIiOiIwMV9CVEdfU0FQX0xJVkUiLCJVc2VyTmFtZSI6Im1hbmFnZXIifTptYW5hZ2Vy');
+			  xhr.setRequestHeader ("Authorization", "Basic "+'{{env('BSHeader')}}');
           },
-		//url:" https://"+'{{env('SAP_SERVER')}}'+":"+'{{env('SAP_PORT')}}'+"/b1s/v1/Orders?$select=DocNum,DocEntry,DocDate,CardName,Address,U_SoPhieu,U_TruckInfo&$filter=U_SoPhieu eq '"+so+"'",
-        url:" https://"+'crm-grantthornton.xyz'+":"+'{{env('SAP_PORT')}}'+"/b1s/v1/Orders?$select=DocNum,DocEntry,DocDate,CardName,Address,U_SoPhieu,U_TruckInfo&$filter=U_SoPhieu eq '"+so+"'",
+		url:" https://"+'{{env('SAP_SERVER')}}'+":"+'{{env('SAP_PORT')}}'+"/b1s/v1/Orders?$select=DocNum,DocEntry,DocDate,CardName,Address,U_SoPhieu,U_TruckInfo&$filter=U_SoPhieu eq '"+so+"'",
+        //url:" https://"+'crm-grantthornton.xyz'+":"+'{{env('SAP_PORT')}}'+"/b1s/v1/Orders?$select=DocNum,DocEntry,DocDate,CardName,Address,U_SoPhieu,U_TruckInfo&$filter=U_SoPhieu eq '"+so+"'",
 		xhrFields: {
             withCredentials: true,
             rejectUnauthorized: false
