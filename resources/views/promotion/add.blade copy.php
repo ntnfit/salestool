@@ -384,109 +384,111 @@
             document.getElementById(tabName).style.display = "block";
             evt.currentTarget.className += " active";
         }
-    
+
         document.getElementById("defaultOpen").click();
-    
-        const config = [
-            {
-                typeSelect: 'protype',
-                myTable: 'proitems',
-                divcontent: 'promcontent'
-            },
-            {
-                typeSelect: 'mytype',
-                myTable: 'myitems',
-                divcontent: 'mymcontent'
+    </script>
+    <script>
+        // Lấy các phần tử HTML cần sử dụng
+        const typeSelect = document.getElementById('protype');
+        const myTable = document.getElementById('proitems');
+        const divcontent = document.getElementById('promcontent');
+        // Thêm event listener cho select option
+        typeSelect.addEventListener('change', function() {
+            // Lấy giá trị được chọn
+            const selectedValue = this.value;
+            console.log(selectedValue);
+
+            // Kiểm tra giá trị được chọn và ẩn hoặc hiển thị table tương ứng
+            if (selectedValue === '2' || selectedValue === '3' || selectedValue === '4') {
+                myTable.style.display = 'none'; // Ẩn table
+                divcontent.style.visibility = 'hidden';
+            } else if (selectedValue === '1') {
+                myTable.style.display = 'table'; // Hiển thị table
+                divcontent.style.visibility = 'visible';
             }
-        ];
-    
-        config.forEach(({ typeSelect, myTable, divcontent }) => {
-            const typeSelectElem = document.getElementById(typeSelect);
-            const myTableElem = document.getElementById(myTable);
-            const divcontentElem = document.getElementById(divcontent);
-    
-            typeSelectElem.addEventListener('change', function () {
-                const selectedValue = this.value;
-                console.log(selectedValue);
-    
-                if (selectedValue === '2' || selectedValue === '3' || selectedValue === '4') {
-                    myTableElem.style.display = 'none';
-                    divcontentElem.style.visibility = 'hidden';
-                } else if (selectedValue === '1') {
-                    myTableElem.style.display = 'table';
-                    divcontentElem.style.visibility = 'visible';
-                }
-            });
         });
-    
-        $(document).ready(function () {
-            const handleInputChange = (config) => {
-                const { itemName, qtyName, uomCodeName, baseQtyName, baseUomName } = config;
-                const row = $(event.target).closest('tr');
-                const itemCode = row.find(`select[name="${itemName}[]"]`).val();
-                const quantityInput = row.find(`input[name="${qtyName}[]"]`);
-                const quantity = quantityInput.val();
-                const uomCode = row.find(`select[name="${uomCodeName}[]"]`).val();
-                const baseUomInput = row.find(`select[name="${baseUomName}[]"]`);
-    
-                if (quantity === '') {
-                    quantityInput.val('0');
-                    quantity = '0';
-                }
-    
-                if (quantity && uomCode) {
-                    $.ajax({
-                        url: "{{ route('baseuom') }}",
-                        data: {
-                            itemcode: itemCode,
-                            quantity: quantity,
-                            uomcode: uomCode,
-                            _token: '{{ csrf_token() }}'
-                        },
-                        type: 'get'
-                    }).done(function (data) {
-                        const baseQtyInput = row.find(`input[name="${baseQtyName}[]"]`);
-                        baseQtyInput.val(data.baseQuantity);
-                        baseUomInput.val(data.baseUomCode);
-                    }).fail(function (data) {
-                        alert("UomCode invaild!")
-                    });
-                } else {
-                    const baseQtyInput = row.find(`input[name="${baseQtyName}[]"]`);
-                    baseQtyInput.val('');
-                    baseUomInput.val('');
-                }
-            };
-    
-            const configurations = [
-                {
-                    itemName: 'proitem',
-                    qtyName: 'proqty',
-                    uomCodeName: 'prouomcode',
-                    baseQtyName: 'probaseqty',
-                    baseUomName: 'probaseoum'
-               
-                },
-                {
-                    itemName: 'Item',
-                    qtyName: 'Qty',
-                    uomCodeName: 'UomCode',
-                    baseQtyName: 'BaseQty',
-                    baseUomName: 'BaseUom'
-                }
-             ];
+    </script>
+<script>
+$(document).ready(function() {
+  $('#proitems tbody').on('change', 'select[name="proitem[]"], input[name="proqty[]"], select[name="prouomcode[]"]', function(event) {
+    var row = $(event.target).closest('tr');
+    var itemCode = row.find('select[name="proitem[]"]').val();
+    var quantityInput = row.find('input[name="proqty[]"]');
+    var quantity = quantityInput.val();
+    var uomCode = row.find('select[name="prouomcode[]"]').val();
+    var baseUomInput = row.find('select[name="probaseoum[]"]');
 
-        configurations.forEach(config => {
-            const { itemName, qtyName, uomCodeName } = config;
-            const selector = `select[name="${itemName}[]"], input[name="${qtyName}[]"], select[name="${uomCodeName}[]"]`;
+    // If Quantity input is null, set value to 0
+    if (quantity === '') {
+      quantityInput.val('0');
+      quantity = '0';
+    }
 
-            $('#myTable tbody, #proitems tbody').on('change', selector, function (event) {
-                handleInputChange(config);
-            });
-        });
-    });
+    // Check if both Quantity and UOM have value before making the API call
+    if (quantity && uomCode) {
+      // Make API call to retrieve Base Quantity and Base UoM Code
+      $.ajax({
+        url: "{{route('baseuom')}}",
+        data:{ itemcode: itemCode, quantity: quantity, uomcode: uomCode, _token: '{{csrf_token()}}' },
+        type:'get'
+      }).done(function(data){
+        var baseQtyInput = row.find('input[name="probaseqty[]"]');
+       // console.log(data);
+        baseQtyInput.val(data.baseQuantity);
+        baseUomInput.val(data.baseUomCode); // Set the selected value of baseUomInput to data.baseUomCode
+      }).fail(function (data) {
+                  alert("UomCode invaild!")
+                });
+    } else {
+      // Clear the Base Quantity and Base UOM input fields
+      var baseQtyInput = row.find('input[name="probaseqty[]"]');
+      baseQtyInput.val('');
+      baseUomInput.val('');
+    }
+  });
+});
 </script>
-
+<script>
+    $(document).ready(function() {
+      $('#myTable tbody').on('change', 'select[name="Item[]"], input[name="Qty[]"], select[name="UomCode[]"]', function(event) {
+        var row = $(event.target).closest('tr');
+        var itemCode = row.find('select[name="Item[]"]').val();
+        var quantityInput = row.find('input[name="Qty[]"]');
+        var quantity = quantityInput.val();
+        var uomCode = row.find('select[name="UomCode[]"]').val();
+        var baseUomInput = row.find('select[name="BaseUom[]"]');
+    
+        // If Quantity input is null, set value to 0
+        if (quantity === '') {
+          quantityInput.val('0');
+          quantity = '0';
+        }
+    
+        // Check if both Quantity and UOM have value before making the API call
+        if (quantity && uomCode) {
+          // Make API call to retrieve Base Quantity and Base UoM Code
+          $.ajax({
+            url: "{{route('baseuom')}}",
+            data:{ itemcode: itemCode, quantity: quantity, uomcode: uomCode, _token: '{{csrf_token()}}' },
+            type:'get'
+          }).done(function(data){
+            var baseQtyInput = row.find('input[name="BaseQty[]"]');
+            //console.log(data);
+            baseQtyInput.val(data.baseQuantity);
+            baseUomInput.val(data.baseUomCode); // Set the selected value of baseUomInput to data.baseUomCode
+          })
+          .fail(function (data) {
+                  alert("UomCode invaild!")
+                });
+        } else {
+          // Clear the Base Quantity and Base UOM input fields
+          var baseQtyInput = row.find('input[name="BaseQty[]"]');
+          baseQtyInput.val('');
+          baseUomInput.val('');
+        }
+      });
+    });
+    </script>
     
   
 @endpush
