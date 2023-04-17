@@ -29,12 +29,15 @@ class DeliveryController extends Controller
                
                 $extension = $file->getClientOriginalExtension();
                 $fileName = $namefile ."_". time() . '.' . $extension;
-                //move_uploaded_file( $fileName,env('pathuploadSAP').$fileName);
-                $path = Storage::disk('network')->putFileAs('attachment', $file, $fileName);
-                $directory = dirname($path);
-                $filename = basename($path);
-                Storage::disk('network')->setVisibility($directory.'/'.$filename, Visibility::PUBLIC);
+
+                $file->move(base_path('\delivery'), $fileName);
+                // //move_uploaded_file( $fileName,env('pathuploadSAP').$fileName);
+                // $path = Storage::disk('network')->putFileAs('attachment', $file, $fileName);
+                // $directory = dirname($path);
+                // $filename = basename($path);
+                // Storage::disk('network')->setVisibility($directory.'/'.$filename, Visibility::PUBLIC);
                
+                dd("ok");
                 $attachment = [
                     "FileExtension" => $extension,
                     "FileName" => pathinfo($fileName,PATHINFO_FILENAME),

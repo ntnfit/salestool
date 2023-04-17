@@ -50,10 +50,11 @@ class SAPB1Controller extends Controller
             $data=$request->all();
             //$request->port
             $username = '{"CompanyDB":"'.$request->CompanyDB.'","UserName":"'.$request->username.'"}';
-            $password = "manager";
+            $password = $request->password;
             $authString = base64_encode("$username:$password");
             $headers = $authString;
 
+         
            $path = base_path('.env');
            
            $key="BSHeader";
