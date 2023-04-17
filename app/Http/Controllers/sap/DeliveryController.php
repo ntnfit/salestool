@@ -30,14 +30,12 @@ class DeliveryController extends Controller
                 $extension = $file->getClientOriginalExtension();
                 $fileName = $namefile ."_". time() . '.' . $extension;
 
-                $file->move(base_path('\delivery'), $fileName);
-                // //move_uploaded_file( $fileName,env('pathuploadSAP').$fileName);
-                // $path = Storage::disk('network')->putFileAs('attachment', $file, $fileName);
-                // $directory = dirname($path);
-                // $filename = basename($path);
-                // Storage::disk('network')->setVisibility($directory.'/'.$filename, Visibility::PUBLIC);
-               
-                dd("ok");
+                $destinationPath = 'C:\b1_shr\attachment'; // Specify the target folder
+
+                // Replace '\' with '\\' in the target folder path to avoid any escape sequence issues
+                $destinationPath = str_replace('\\', '\\\\', $destinationPath);
+
+                $file->move($destinationPath, $fileName);           
                 $attachment = [
                     "FileExtension" => $extension,
                     "FileName" => pathinfo($fileName,PATHINFO_FILENAME),
@@ -54,6 +52,7 @@ class DeliveryController extends Controller
             }
             
         }
+    
         $entry=$this->attachSAP($payload);
         $this->updatestatus($entry,$request->DocKey);
       
