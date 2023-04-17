@@ -27,7 +27,7 @@ $config = ['format' => 'L'];
     </div>
     
     <!-- form gird -->
-    <div id="MyGrid" class="ag-theme-alpine" style="height: 80%"></div>
+    <div id="MyGrid" class="ag-theme-alpine" style="height: 70%"></div>
   
   </form>
   

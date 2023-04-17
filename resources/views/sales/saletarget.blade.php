@@ -28,7 +28,7 @@ $config = ['format' => 'L'];
     </div>
     
     <!-- form gird -->
-    <div id="MyGrid" class="ag-theme-alpine" style="height: 80%"></div>
+    <div id="MyGrid" class="ag-theme-alpine" style="height: 70%"></div>
 
    
     
@@ -37,21 +37,11 @@ $config = ['format' => 'L'];
   </form>
   
   <div>
-  <x-adminlte-input-file name="ifPholder" igroup-size="sm" label="Select file" fgroup-class="col-md-3" style="float:left;" placeholder="Choose a file..." >
-    <x-slot name="prependSlot">
-        <div class="input-group-text bg-lightblue">
-            <i class="fas fa-upload"></i>
-        </div>
-    </x-slot>
-    </x-adminlte-input-file>
-    
-    <x-adminlte-button class="btn-flat" id="import" style=" margin-right: 20px;" type="button" label="Import Excel" theme="success" />
-
-    
+  <x-adminlte-button class="btn-flat" style="float: left; margin-right: 20px;"  id="save" type="submit" label="Save" theme="success" icon="fas fa-lg fa-save"/> 
     <x-adminlte-button class="btn-flat" id="copy" style=" margin-right: 20px; float: right;" type="button" label="Copy Target from Sales Manager" theme="success" />
     <x-adminlte-button class="btn-flat" id="approve" style="float: right; margin-right: 20px;" type="button" label="Approve" theme="success" />
     <x-adminlte-button class="btn-flat" id="export" style="float: right;margin-right: 20px;" type="button" label="Export Excel" theme="success" />
-    <x-adminlte-button class="btn-flat" style="float: right; margin-right: 20px;"  id="save" type="submit" label="Save" theme="success" icon="fas fa-lg fa-save"/> 
+    
     
   </div>   
       

@@ -66,7 +66,7 @@ $configss = [
       
     </div>
     <!-- form gird -->
-    <div id="MyGrid" class="ag-theme-alpine" style="height: 80%">
+    <div id="MyGrid" class="ag-theme-alpine" style="height: 70%">
     </div>
 
     
