@@ -452,7 +452,7 @@ class SalesController extends Controller
         $conDB = (new SAPB1Controller)->connect_sap();
         foreach($request->SoNo as $SoNo)
         {
-            $sql = 'select * from BS_STOCKOUTREQUEST where "StockNo"=?';
+            $sql = 'select * from BS_STOCKOUTREQUEST where "StatusSAP"=0 and "StockNo"=?';
             $stmt = odbc_prepare($conDB, $sql);
             odbc_execute($stmt, array($SoNo));
             $results = array();
@@ -460,7 +460,9 @@ class SalesController extends Controller
                 $results[] = $row;
             };
           
-            $sql = 'select * from BS_STOCKOUTREQUEST_Detail where "StockNo"=?';
+            $sql = 'select t1.* from BS_STOCKOUTREQUEST t0 join BS_STOCKOUTREQUEST_Detail t1
+            on t0."StockNo"=t1."StockNo"
+             where "StatusSAP"=0 and "StockNo"=?';
             $stmt = odbc_prepare($conDB, $sql);
             odbc_execute($stmt,array($SoNo));
             $line = array();
@@ -508,21 +510,7 @@ class SalesController extends Controller
             $stmt = odbc_prepare($conDB, $sql);
             odbc_execute($stmt, array($SoNo));
         }
-
-      
-
-       
-
-       
-
-        // // Get the response body as a string
-        // $responseBody = $response->getBody()->getContents();
-
-        // // Decode the response JSON
-        // $responseJson = json_decode($responseBody, true);
-
-    
-
+        
         return response()->json(["success" => true,"data"=>"okay"]);
 
     }
