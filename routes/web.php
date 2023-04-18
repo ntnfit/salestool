@@ -54,7 +54,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/promotions-add',[PromotionController::class,'dfPromotion'])->name('add-promotions');
     Route::get('/custmer-filter',[PromotionController::class,'ListCustomerDropDown'])->name('filterCus');
     Route::post('/promotions-submit',[PromotionController::class,'store'])->name('prosubmit');
-   
+    Route::get('/promotion/{proid}',[PromotionController::class,'edit'])->name('pro.edit');
+    Route::post('/promotion/{proid}',[PromotionController::class,'update'])->name('pro.update');
     // sale stock- request
         Route::get('/stock-request-list',[SalesController::class,'listSaleStock'])->name('sales.list');
 

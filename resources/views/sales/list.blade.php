@@ -11,7 +11,18 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 @section('content')
-
+@if(count($errors) >0)
+            <ul>
+                @foreach($errors->all() as $error)
+                    <li class="text-danger">{{ $error }}</li>
+                @endforeach
+            </ul>
+ @endif 
+ @if(session()->has('message'))
+ <div class="alert alert-success">
+	 {{ session()->get('message') }}
+ </div>
+@endif
     @php
         $config = ['format' => 'L'];
     @endphp

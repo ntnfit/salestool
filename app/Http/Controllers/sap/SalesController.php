@@ -423,6 +423,8 @@ class SalesController extends Controller
         $sqlupdate='call "SAL_UPDATE_ITM_NAME"'; 
         odbc_exec($conDB, $sqlupdate);
         odbc_close($conDB);
+        return  redirect()->route('sales.list')->with('message', 'update sucesss!');
+    
 
     }
     function applySAP()

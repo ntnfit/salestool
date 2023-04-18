@@ -10,6 +10,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
     integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    @php
+
+@endphp
 @section('content')
 
     <div class="content">
@@ -34,13 +37,13 @@
                         value="special" fgroup-class="col-xs-3" enable-old-support>
                     </x-adminlte-input>
 
-                    <x-adminlte-input name="rouding" style="margin-left: 1.5rem;" label="Rouding" type="checkbox"
+                    <x-adminlte-input name="rouding" style="margin-left: 1.5rem;" label="Rounding" type="checkbox"
                         label-class="text-lightblue" value="rouding" fgroup-class="col-xs-3 rouding" enable-old-support>
                     </x-adminlte-input>
                 </div>
             </div>
             <div class="row">
-                <x-adminlte-date-range name="period" label="Period" label-class="text-lightblue" fgroup-class="col-md-3" />
+                <x-adminlte-date-range name="period"    label="Period" label-class="text-lightblue" fgroup-class="col-md-3" />
                 <x-adminlte-input label="Quantity" label-class="text-lightblue" name="Quantity" type="number"
                     fgroup-class="col-md-3" enable-old-support>
                 </x-adminlte-input>

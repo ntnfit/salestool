@@ -8,7 +8,18 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.13.1/xlsx.full.min.js"></script>
 @section('content')
 
-
+@if(count($errors) >0)
+            <ul>
+                @foreach($errors->all() as $error)
+                    <li class="text-danger">{{ $error }}</li>
+                @endforeach
+            </ul>
+ @endif 
+ @if(session()->has('message'))
+ <div class="alert alert-success">
+	 {{ session()->get('message') }}
+ </div>
+@endif
 
     <div class="form-group col-md-12">
       <a style="float: right" href="{{route('add-promotions')}}"><x-adminlte-button label="add new" theme="primary" icon="fas fa-plus"/> </a>
@@ -105,7 +116,9 @@ const gridOptions = {
   },
   onRowDoubleClicked: function(params) {
                 var id = params.data.ProId;
-                window.location.href = "aabc.com/" + id;
+                var url = '{{ route("pro.edit", ":id") }}';
+                url = url.replace(':id', id);
+                window.location.href = url;
             },
     rowSelection: 'multiple'
 };

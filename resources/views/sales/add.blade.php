@@ -166,7 +166,10 @@
             overflow: visible;
             border: none;
             color: orange;
-        }
+        },
+        input[type="number"] {
+            width: 182.4px;
+            }
     </style>
 @stop
 @push('js')
