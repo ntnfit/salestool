@@ -114,16 +114,7 @@ class DeliveryController extends Controller
             "base_uri" => $serviceLayerUrl,
             "headers" => $headers,
         ]);
-        // $payload = [
-        //     "Attachments2_Lines" => [
-        //         [
-        //             "FileExtension" => $ext,
-        //             "FileName" => $filename,
-        //             "SourcePath" => $path,
-        //             "UserID" => "1"
-        //         ]
-        //     ]
-        // ];
+        
         // Make a request to the service layer
         $response = $client->request("POST", "/b1s/v1/Attachments2", [
             'verify' => false,

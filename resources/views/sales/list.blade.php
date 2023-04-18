@@ -56,10 +56,8 @@
         </div>
         <div id="myGrid" class="ag-theme-alpine" style="height: 70%">
         </div>
-        <x-adminlte-button class="btn-flat" id="apply" style="float: right;margin-right: 20px;" type="button"
+        <x-adminlte-button class="btn-flat" id="getSelectedRowsBtn" style="float: right;margin-right: 20px;" type="button"
             label="Apply SAP" theme="success" />
-        <x-adminlte-button class="btn-flat" id="confirm" style="float: right; margin-right: 20px; " type="button"
-            label="Confirm" theme="success" />
     </form>
 
 
@@ -113,8 +111,8 @@
             { headerName: '', field: '', maxWidth: 50,  headerCheckboxSelection: true, checkboxSelection: true, },
             {
              headerName: 'Doc No',
-                field: 'StockNo',
-                filter: 'agNumberColumnFilter'
+                field: 'StockNo'
+                
             },
             {
                 headerName: 'Doc Date',
@@ -217,6 +215,10 @@
                 field: 'ApplyStatus',
                
             },
+            {
+                field: 'StatusSAP',
+               
+            },
         ];
 
 
@@ -281,5 +283,33 @@
         });
             loadInitialData();
         });
+
+        document.querySelector("#getSelectedRowsBtn").addEventListener("click", function () {
+      const selectedRows = gridOptions.api.getSelectedRows().filter(row => row.StatusSAP ==0);
+      const selectedProIds = selectedRows.map((row) => row.StockNo);
+      console.log(selectedProIds);
+      if (selectedProIds.length === 0) {
+        alert("chứng từ đã chọn đã apply/hoặc bạn chưa chọn chứng từ nào!")
+   
+      }
+      else
+      {
+       
+            $.ajax({ 
+            type: 'GET', 
+            url: '{{route('sales.apply')}}', 
+            data: {SoNo:selectedProIds}, 
+            dataType: 'json',
+            success: function (data) { 
+                alert("đã apply thành công!")
+                 location.reload();
+        },
+        error: function(){
+            alert("đã apply thất bại!, vui lòng kiếm tra dữ liệu!");
+        }
+      })
+      }
+      
+    });
     </script>
 @stop

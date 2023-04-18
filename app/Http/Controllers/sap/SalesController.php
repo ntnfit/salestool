@@ -233,7 +233,8 @@ class SalesController extends Controller
                         $Itempost[] = array(
                             'Item' => $item,
                             'lot' => $lotKey,
-                            'Quantity' => $lotValue['Quantity']
+                            'Quantity' => $lotValue['Quantity'],
+                            'Type'=>$ordertype
                         );
                     }
                 }
@@ -262,7 +263,8 @@ class SalesController extends Controller
                     $ItemPro[] = array(
                         'Item' => $item,
                         'lot' => $lotKey,
-                        'Quantity' => $lotValue['Quantity']
+                        'Quantity' => $lotValue['Quantity'],
+                        'Type'=>'002'
                     );
                 }
             }
@@ -285,7 +287,7 @@ class SalesController extends Controller
         {
            
         $stmtline = odbc_prepare($conDB, $sqlinsertline);
-        $result = odbc_execute($stmtline, array($SOID,$item['Item'],$item['lot'],$ordertype,$item['Quantity'],$item['Quantity'],$datecreate));
+        $result = odbc_execute($stmtline, array($SOID,$item['Item'],$item['lot'],$item['Type'],$item['Quantity'],$item['Quantity'],$datecreate));
 
         }
 
@@ -362,7 +364,8 @@ class SalesController extends Controller
                         $Itempost[] = array(
                             'Item' => $item,
                             'lot' => $lotKey,
-                            'Quantity' => $lotValue['Quantity']
+                            'Quantity' => $lotValue['Quantity'],
+                            'Type' => $ordertype
                         );
                     }
                 }
@@ -391,7 +394,8 @@ class SalesController extends Controller
                     $ItemPro[] = array(
                         'Item' => $item,
                         'lot' => $lotKey,
-                        'Quantity' => $lotValue['Quantity']
+                        'Quantity' => $lotValue['Quantity'],
+                        'Type' => '002'
                     );
                 }
             }
@@ -414,7 +418,7 @@ class SalesController extends Controller
         {
            
         $stmtline = odbc_prepare($conDB, $sqlinsertline);
-        $result = odbc_execute($stmtline, array($SOID,$item['Item'],$item['lot'],$ordertype,$item['Quantity'],$item['Quantity'],$datecreate));
+        $result = odbc_execute($stmtline, array($SOID,$item['Item'],$item['lot'],$item['Type'],$item['Quantity'],$item['Quantity'],$datecreate));
 
         }
 
@@ -427,8 +431,9 @@ class SalesController extends Controller
     
 
     }
-    function applySAP()
+    function applySAP(Request $request)
     {
+
         $serviceLayerUrl = "https://".env('SAP_SERVER').":".env('SAP_PORT');
       
         $headers = [
@@ -441,20 +446,84 @@ class SalesController extends Controller
             "base_uri" => $serviceLayerUrl,
             "headers" => $headers,
         ]);
+        // json data
+        $attachment=[];
 
-        // Make a request to the service layer
-        $response = $client->request("GET", "/b1s/v1/Quotations",['verify' => false]);
+        $conDB = (new SAPB1Controller)->connect_sap();
+        foreach($request->SoNo as $SoNo)
+        {
+            $sql = 'select * from BS_STOCKOUTREQUEST where "StockNo"=?';
+            $stmt = odbc_prepare($conDB, $sql);
+            odbc_execute($stmt, array($SoNo));
+            $results = array();
+            while ($row = odbc_fetch_array($stmt)) {
+                $results[] = $row;
+            };
+          
+            $sql = 'select * from BS_STOCKOUTREQUEST_Detail where "StockNo"=?';
+            $stmt = odbc_prepare($conDB, $sql);
+            odbc_execute($stmt,array($SoNo));
+            $line = array();
+            while ($row = odbc_fetch_array($stmt)) {
+                $line[] = $row;
+            }
+            
+            $ldt=[];
+            foreach ($line as $dt)
+            {
+                $km="";
+                if($dt['TypePrd']=="002")
+                {
+                    $km="1";
+                }
+                else
+                {
+                    $km="0";
+                }
+                $ldt=[
+                    "ItemCode"=> $dt['ItemCode'],
+                    "Quantity"=> $dt['Quantity'],
+                    "TaxCode" => "SVN10",
+                    "WarehouseCode" => $results[0]['FromWhsCode'],
+                    "U_LoaiKM" => $km,
+                    "U_BatchNo" => $dt['LotNo']
+                ];
+                array_push($line, $line);
+            }
+            $body=[
+                "CardCode"=> $results[0]['CustCode'],
+                "Comments"=>"Apply from salesHub",
+                "U_SoPhieu"=>$SoNo,
+                "U_FromBIN"=> $results[0]['AbsEntry'],
+                "U_FromBinCode"=> $results[0]['BinCode'],
+                "DocumentLines"=>[$ldt]
+                
+            ];
+           
+         
+             // Make a request to the service layer
+        $response = $client->request("POST", "/b1s/v1/Quotations",['verify' => false, 'body' =>  json_encode($body)]);
 
-        // Get the response body as a string
-        $responseBody = $response->getBody()->getContents();
+          $sql = 'Update  BS_STOCKOUTREQUEST set "StatusSAP"=1 where "StockNo"=?';
+            $stmt = odbc_prepare($conDB, $sql);
+            odbc_execute($stmt, array($SoNo));
+        }
 
-        // Decode the response JSON
-        $responseJson = json_decode($responseBody, true);
+      
 
-        // Process the response JSON as needed
-        // ...
+       
 
-        return response()->json(["success" => true,"data"=>$responseJson]);
+       
+
+        // // Get the response body as a string
+        // $responseBody = $response->getBody()->getContents();
+
+        // // Decode the response JSON
+        // $responseJson = json_decode($responseBody, true);
+
+    
+
+        return response()->json(["success" => true,"data"=>"okay"]);
 
     }
     // function filter 
