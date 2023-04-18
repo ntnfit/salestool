@@ -541,6 +541,7 @@ tbody tr.matched {
                     itemlists: ItemList,
                     itemlots: ItemLot
                 },
+                
                 datatype: "json",
                 success: function(data) {
                     console.log('data: ', data);
