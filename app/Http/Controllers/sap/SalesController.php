@@ -128,12 +128,6 @@ class SalesController extends Controller
             die("Error executing SQL statement: " . odbc_errormsg());
         }
 
-        $results = array();
-        // Check if there are any results
-        if (odbc_num_rows($stmt) == 0) {
-            $results = [];
-        }
-
         // Retrieve the result set from the stored procedure
         $results = array();
         while ($row = odbc_fetch_array($stmt)) {
@@ -143,6 +137,7 @@ class SalesController extends Controller
         $distinctLots = array_unique(array_column($results, 'LotNo'));
        
         odbc_close($conDB);
+        
         return view('sales.edit',compact('results','distinctLots','orderTypes','so'));
     }
     function addView()
@@ -296,6 +291,8 @@ class SalesController extends Controller
         $sqlupdate='call "SAL_UPDATE_ITM_NAME"'; 
         odbc_exec($conDB, $sqlupdate);
         odbc_close($conDB);
+
+        return  redirect()->route('sales.list')->with('message', 'add sucesss!');
        
     }
     function update(Request $request,$id)

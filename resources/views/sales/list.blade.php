@@ -59,7 +59,12 @@
         <x-adminlte-button class="btn-flat" id="getSelectedRowsBtn" style="float: right;margin-right: 20px;" type="button"
             label="Apply SAP" theme="success" />
     </form>
-
+    <div id="loadingModal" class="modal">
+        <div class="modal-content">
+          <div class="loader"></div>
+          <p>Please wait...</p>
+        </div>
+      </div>
 
 @stop
 
@@ -71,6 +76,45 @@
             padding: 8px 24px;
             margin-top: 30px;
         }
+        .modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+  background-color: #fff;
+  border-radius: 5px;
+  width: 200px;
+  height: 100px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  padding: 20px;
+}
+
+/* Loading spinner styles */
+.loader {
+  border: 8px solid #f3f3f3;
+  border-top: 8px solid #3498db;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 2s linear infinite;
+  margin: auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
     </style>
 @stop
 
@@ -294,6 +338,12 @@
       }
       else
       {
+        const loadingModal = document.getElementById("loadingModal");
+        const submitBtn = document.getElementById("getSelectedRowsBtn");
+        loadingModal.style.display = "block";
+
+        // Disable the submit button
+        submitBtn.disabled = true;
        
             $.ajax({ 
             type: 'GET', 
@@ -306,6 +356,10 @@
         },
         error: function(){
             alert("đã apply thất bại!, vui lòng kiếm tra dữ liệu!");
+            loadingModal.style.display = "none";
+
+            // Enable the submit button
+            submitBtn.disabled = false;
         }
       })
       }

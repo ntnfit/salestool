@@ -30,7 +30,7 @@
             </div>
         </div>
     </div>
-    <form action="{{ route('sales.store') }}" method="post">
+    <form action="{{ route('sales.store') }}" method="post" id="addorder">
         @csrf
         <!-- header input  -->
         <div class="row">
@@ -120,6 +120,12 @@
         <input type="text" name="teams" id="teams" value="" hidden>
 
     </form>
+    <div id="loadingModal" class="modal">
+        <div class="modal-content">
+          <div class="loader"></div>
+          <p>Please wait...</p>
+        </div>
+      </div>
 @stop
 
 
@@ -170,6 +176,50 @@
         input[type="number"] {
             width: 182.4px;
             }
+
+/* Popup Modal styles */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+  background-color: #fff;
+  border-radius: 5px;
+  width: 200px;
+  height: 100px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  padding: 20px;
+}
+
+/* Loading spinner styles */
+.loader {
+  border: 8px solid #f3f3f3;
+  border-top: 8px solid #3498db;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 2s linear infinite;
+  margin: auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+
     </style>
 @stop
 @push('js')
@@ -440,5 +490,26 @@
                 document.getElementById("teams").value = BinCode;
             })
         })
+
+        const form = document.getElementById("addorder");
+const submitBtn = document.getElementById("save");
+const loadingModal = document.getElementById("loadingModal");
+
+form.addEventListener("submit", function(event) {
+  // Prevent the form from submitting normally
+  event.preventDefault();
+
+  // Show the loading modal
+  loadingModal.style.display = "block";
+
+  // Disable the submit button
+  submitBtn.disabled = true;
+
+  // Submit the form after a brief delay to allow the modal to show
+  setTimeout(function() {
+    form.submit();
+  }, 1000);
+});
+
     </script>
 @endpush
