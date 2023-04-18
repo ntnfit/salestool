@@ -305,11 +305,11 @@ class PromotionController extends Controller
         
         // clear row add again:
 
-        $sql='delete  from "BS_PRO_ITEMLIST" where "ProId"=('.$id.')';
+        $sql='delete  from "BS_PRO_ITEMLIST" where "ProId"='.$id.'';
         odbc_exec($conDB,$sql);
-        $sql='delete  from "BS_PRO_CUSTOMER" where "ProId"=('.$id.')';
+        $sql='delete  from "BS_PRO_CUSTOMER" where "ProId"='.$id.'';
         odbc_exec($conDB,$sql);
-        $sql='delete  from "BS_PROMOTION_ITEM" where "ProId"=('.$id.')';
+        $sql='delete  from "BS_PROMOTION_ITEM" where "ProId"='.$id.'';
         odbc_exec($conDB,$sql);
        
         // insert to row data

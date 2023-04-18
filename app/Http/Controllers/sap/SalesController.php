@@ -263,17 +263,17 @@ class SalesController extends Controller
                     $ItemPro[] = array(
                         'Item' => $item,
                         'lot' => $lotKey,
-                        'Quantity' => $lotValue['Quantity'],
-                        'Type'=>'002'
+                        'Quantity' => $lotValue['Quantity']
                     );
                 }
             }
         }
         }
         }
+       
         //insert data item to table line
         $sqlinsertline='insert into BS_STOCKOUTREQUEST_Detail 
-        ("StockNo","ItemCode","LotNo","TypePrd","QuantityPro","Quantity","CreatedDate) values(?,?,?,?,?,?,?)';
+        ("StockNo","ItemCode","LotNo","TypePrd","QuantityPro","Quantity","CreatedDate") values(?,?,?,?,?,?,?)';
         foreach ($Itempost as $item)
         {
            
@@ -287,7 +287,7 @@ class SalesController extends Controller
         {
            
         $stmtline = odbc_prepare($conDB, $sqlinsertline);
-        $result = odbc_execute($stmtline, array($SOID,$item['Item'],$item['lot'],$item['Type'],$item['Quantity'],$item['Quantity'],$datecreate));
+        $result = odbc_execute($stmtline, array($SOID,$item['Item'],$item['lot'],"002",$item['Quantity'],$item['Quantity'],$datecreate));
 
         }
 
@@ -300,16 +300,17 @@ class SalesController extends Controller
     }
     function update(Request $request,$id)
     {
-       
+        $conDB = (new SAPB1Controller)->connect_sap();
         if($request->sono)
         {
-            $sqldete='delete "BS_STOCKOUTREQUEST" where "StockNo"=\''.$request->sono.'\''; 
-            odbc_exec($conDB, $sqldete);
-            
-            $sqldeteline='delete BS_STOCKOUTREQUEST_Detail where "StockNo"=\''.$request->sono.'\'';            
-            odbc_exec($conDB, $sqldeteline);
+           
+            $sqldete='delete from "BS_STOCKOUTREQUEST" where "StockNo"=\''.$id.'\'';
+           
+            odbc_exec($conDB,$sqldete);          
+            $sqldeteline='delete from BS_STOCKOUTREQUEST_Detail where "StockNo"=\''.$id.'\'';
+            odbc_exec($conDB,$sqldeteline);
         }
-      $conDB =(new SAPB1Controller)->connect_sap();
+     
       //dd($Itempost);
         // post to header
         $date=(string)date("Ymd", strtotime($request->date));
@@ -394,8 +395,8 @@ class SalesController extends Controller
                     $ItemPro[] = array(
                         'Item' => $item,
                         'lot' => $lotKey,
-                        'Quantity' => $lotValue['Quantity'],
-                        'Type' => '002'
+                        'Quantity' => $lotValue['Quantity']
+                       
                     );
                 }
             }
@@ -404,9 +405,11 @@ class SalesController extends Controller
         }
         //insert data item to table line
         $sqlinsertline='insert into BS_STOCKOUTREQUEST_Detail 
-        ("StockNo","ItemCode","LotNo","TypePrd","QuantityPro","Quantity","CreatedDate) values(?,?,?,?,?,?,?)';
+        ("StockNo","ItemCode","LotNo","TypePrd","QuantityPro","Quantity","CreatedDate") values(?,?,?,?,?,?,?)';
         foreach ($Itempost as $item)
         {
+
+           
            
         $stmtline = odbc_prepare($conDB, $sqlinsertline);
         $result = odbc_execute($stmtline, array($SOID,$item['Item'],$item['lot'],$ordertype,$item['Quantity'],$item['Quantity'], $datecreate));
@@ -418,7 +421,7 @@ class SalesController extends Controller
         {
            
         $stmtline = odbc_prepare($conDB, $sqlinsertline);
-        $result = odbc_execute($stmtline, array($SOID,$item['Item'],$item['lot'],$item['Type'],$item['Quantity'],$item['Quantity'],$datecreate));
+        $result = odbc_execute($stmtline, array($SOID,$item['Item'],$item['lot'],"002",$item['Quantity'],$item['Quantity'],$datecreate));
 
         }
 
