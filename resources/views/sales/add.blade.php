@@ -6,14 +6,15 @@
 @section('plugins.Sweetalert2', true)
 @section('plugins.DateRangePicker', true)
 @section('plugins.TempusDominusBs4', true)
-
+@section('plugins.select2', true)
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
     integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
 @section('content')
+
 
     @php
         $config = ['format' => 'L', 'format' => 'yyyy/MM/DD'];
@@ -61,24 +62,33 @@
             </x-adminlte-select>
         </div>
         <div class="row">
-            <x-adminlte-select label="Customer Code" label-class="text-lightblue" igroup-size="sm" name="cuscode"
+            @php
+            $configss = [
+                'title' => 'Select data',
+                'liveSearch' => true,
+                'liveSearchPlaceholder' => 'Search...',
+                'showTick' => true,
+                'actionsBox' => true,
+            ];
+            @endphp
+            <x-adminlte-select-bs label="Customer Code" :config="$configss" label-class="text-lightblue" igroup-size="sm" name="cuscode"
                 id="cuscode" fgroup-class="col-md-2" enable-old-support>
                 <option value=""></option>
                 @foreach ($customers as $customer)
                     <option value="{{ $customer->CardCode }}">{{ $customer->CardCode . '--' . $customer->CardName }}
                     </option>
                 @endforeach
-            </x-adminlte-select>
-            <x-adminlte-select label="Warehouse" label-class="text-lightblue" igroup-size="sm" name="WhsCode" id="WhsCode"
+            </x-adminlte-select-bs>
+            <x-adminlte-select-bs label="Warehouse" label-class="text-lightblue" :config="$configss" igroup-size="sm" name="WhsCode" id="WhsCode"
                 fgroup-class="col-md-2" enable-old-support>
                 <option value=""></option>
                 @foreach ($whsCodes as $whsCode)
                     <option value="{{ $whsCode->WhsCode }}">{{ $whsCode->WhsCode . '--' . $whsCode->WhsName }}</option>
                 @endforeach
-            </x-adminlte-select>
-            <x-adminlte-select label="Team" label-class="text-lightblue" igroup-size="sm" name="bincode" id="bincode"
+            </x-adminlte-select-bs>
+            <x-adminlte-select label="Team" label-class="text-lightblue"  igroup-size="sm" name="bincode" id="bincode"
                 fgroup-class="col-md-2" enable-old-support>
-
+                <option value=""></option>
             </x-adminlte-select>
 
             <x-adminlte-input-date name="date" id="sodate" label="Date" :config="$configsodate"
@@ -130,6 +140,7 @@
 
 
 @section('css')
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
     <style>
         .btn-flat {
             font-size: small;
@@ -216,43 +227,93 @@
   100% { transform: rotate(360deg); }
 }
 
+/* Style the selected option */
+.select2-container .select2-selection--single .select2-selection__rendered {
+    color: #333;
+    line-height: 25px;
+    font-size: 13px;
+    background-color: #f2f2f2;
+    border: none;
+    padding: 0px 4px 2px 1px;
+    margin-left: -11px;
+    margin-top: -7px;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+/* Style the selected option's arrow */
+.select2-container .select2-selection--single .select2-selection__arrow {
+  height: 28px;
+  width: 28px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: #f2f2f2;
+  border: none;
+}
+
+/* Style the arrow icon */
+.select2-container .select2-selection--single .select2-selection__arrow b {
+  display: block;
+  height: 10px;
+  width: 10px;
+  margin: auto;
+  border-top: 5px solid #666;
+  border-right: 5px solid transparent;
+  border-left: 5px solid transparent;
+}
+
+/* Style the selected option when it's active */
+.select2-container--
 
 
     </style>
 @stop
 @push('js')
-    <script>
-        $(document).ready(function() {
-            $('#WhsCode').change(function() {
-                var selectedWhsCode = $(this).val(); // Get the value of the selected WhsCode
-                $.ajax({
-                    url: '{{ route('bincode') }}', // Replace this with the actual route for the bincode API
-                    type: 'GET',
-                    dataType: "json",
-                    data: {
-                        WhsCode: selectedWhsCode
-                    },
-                    success: function(data) {
-                        // Replace #bincode with the ID of the bincode select element
-                        var bincodeSelect = $('#bincode');
-                        bincodeSelect.empty(); // Clear any existing options
-                        // Check if the data has a length property before looping through it
-                        if (data.hasOwnProperty('length')) {
-                            $.each(data, function(index, value) {
-                                bincodeSelect.append($('<option>').text('').attr(
-                                    'value', ''));
-                                bincodeSelect.append($('<option>').text(value.BinCode)
-                                    .attr('value', value.AbsEntry));
-                            });
-                        }
-                    },
-                    error: function(jqXHR, textStatus, errorThrown) {
-                        // Handle any errors here
-                    }
-                });
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $('#WhsCode').change(function() {
+            var selectedWhsCode = $(this).val(); // Get the value of the selected WhsCode
+            $.ajax({
+                url: '{{ route('bincode') }}', // Replace this with the actual route for the bincode API
+                type: 'GET',
+                dataType: "json",
+                data: {
+                    WhsCode: selectedWhsCode
+                },
+                success: function(data) {
+                    
+                    console.log(data)
+                    $('#bincode').empty();
+                    setTimeout(function() {
+                        $.each(data, function(index, value) {
+                            var newOption = new Option(value.BinCode, value.AbsEntry, false, false);
+                            $('#bincode').append(newOption);
+                        });
+                        // Refresh the Select2 dropdown
+                        $('#bincode').select2({
+                      
+                        title: 'Select Bin Code',
+                        liveSearch: true,
+                        liveSearchPlaceholder:'Search...',
+                        showTick:true
+                        });
+
+                        // Refresh the Select2 dropdown
+                        $('#bincode').val('').trigger('change.select2');
+                     
+                        }, 10);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    // Handle any errors here
+                }
             });
         });
+    });
     </script>
+    
     <script>
         $('#search').click(function() {
 
@@ -472,6 +533,7 @@
 
         });
     </script>
+   
     <script>
         $(document).ready(function() {
             $('#cuscode').change(function() {
