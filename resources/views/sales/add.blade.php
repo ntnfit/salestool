@@ -14,16 +14,16 @@
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
 @section('content')
-@if(session()->has('message'))
- <div id="success-alert" class="alert alert-success">
-	 {{ session()->get('message') }}
- </div>
- <script>
-     setTimeout(function() {
-         $('#success-alert').fadeOut('slow');
-     }, 3000); // close after 3 seconds
- </script>
-@endif
+    @if (session()->has('message'))
+        <div id="success-alert" class="alert alert-success">
+            {{ session()->get('message') }}
+        </div>
+        <script>
+            setTimeout(function() {
+                $('#success-alert').fadeOut('slow');
+            }, 3000); // close after 3 seconds
+        </script>
+    @endif
     @php
         $config = ['format' => 'L', 'format' => 'yyyy/MM/DD'];
         $configsodate = ['autoclose' => true, 'format' => 'yyyy/MM/DD', 'immediateUpdates' => true, 'todayBtn' => true, 'todayHighlight' => true, 'setDate' => 0];
@@ -300,7 +300,7 @@
                     },
                     success: function(data) {
 
-                       // console.log(data)
+                        // console.log(data)
                         $('#bincode').empty();
                         setTimeout(function() {
                             $.each(data, function(index, value) {
@@ -419,7 +419,7 @@
                             var table = $(this).parents('table').eq(0)
                             var tbody = table.find('tbody').eq(0)
                             var rows = tbody.find('tr').toArray().sort(comparer($(this)
-                            .index()))
+                                .index()))
                             this.asc = !this.asc
                             if (!this.asc) {
                                 rows = rows.reverse()
@@ -513,7 +513,7 @@
                             newRow.find(".sotype").val('KM');
                             newRow.find(".totalrow").val(
                                 newQty
-                                ); // Update the "Total Qty" input field with the new quantity
+                            ); // Update the "Total Qty" input field with the new quantity
                             newRow.find(".Qtyout").val("");
 
                             newRow.find(".Qtyout").removeClass('Qtyout').addClass('qtypro');
@@ -604,47 +604,80 @@
             // Prevent the form from submitting normally
             event.preventDefault();
 
-            // // Validate the form data
-            // if (!ValidatePOID()) {
-            //     return false; // Cancel the form submission if validation fails
-            // }
-        
-            // Show the loading modal
-            loadingModal.style.display = "block";
+            // Check if the "promotion" button is disabled
+            const promotionBtn = document.getElementById("promotion");
+            if (promotionBtn.disabled) {
+                // If the button is disabled, simply validate and submit the form
+                
+                if (!ValidatePOID()) {
+                    alert("The POID has already in system, Please check again!")
+                    return false; // Cancel the form submission if validation fails
+                }
+                // Show the loading modal
+                loadingModal.style.display = "block";
+                submitBtn.disabled = true;
+                // Submit the form after a brief delay to allow the modal to show
+                setTimeout(function() {
+                    form.submit();
+                }, 1000);
+                return;
+            }
 
-            // Disable the submit button
-            submitBtn.disabled = true;
-
-            // Submit the form after a brief delay to allow the modal to show
-            setTimeout(function() {
-                form.submit();
-            }, 1000);
-
+            // If the button is not disabled, prompt the user to confirm
+            const confirmMsg = "Do you want to continue without the promotion?";
+            if (confirm(confirmMsg)) {
+                // If the user confirms, validate and submit the form
+              
+                if (!ValidatePOID()) {
+                    alert("The POID has already in system, Please check again!")
+                    return false; // Cancel the form submission if validation fails
+                  
+                }
+                // Show the loading modal
+                loadingModal.style.display = "block";
+                submitBtn.disabled = true;
+                // Submit the form after a brief delay to allow the modal to show
+                setTimeout(function() {
+                    form.submit();
+                }, 1000);
+            } else {
+                // If the user cancels, show an alert and enable the submit button
+              
+                submitBtn.disabled = false;
+            }
         });
 
-        // function ValidatePOID() {
-        //     const nameInput = document.getElementById("pono");
-            
 
-        //     if (nameInput.value.trim() !="") {
-              
-        //         type: 'GET',
-        //             url: '{{ route('filllot-items') }}',
-        //             data: {
-        //                 ordertype: ordertype,
-        //                 custcode: custcode,
-        //                 whscode: whscode,
-        //                 team: team,
-        //                 sodate: sodate,
-        //                 Podate: Podate
-        //             },
-        //             success: function(data) {
-        //         return false; // cancel submission
-        //     }
+        function ValidatePOID() {
+            const nameInput = document.getElementById("pono");
 
-          
-        //     return true; // allow submission
-        // }
+            if (nameInput.value.trim() !== "") {
+                let isValid = true;
 
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ route('checkPOID') }}',
+                    data: {
+                        po: nameInput.value.trim()
+                    },
+                    async: false,
+                    success: function(data) {
+                        console.log(data);
+                        if (data.data === 1) {
+                            isValid = false;
+                        }
+                    },
+                    error: function(data) {
+                        isValid = false;
+                        alert("Internal error: " + data);
+                        return false; // Cancel submission
+                    }
+                });
+
+                return isValid;
+            } else {
+                return true;
+            }
+        }
     </script>
 @endpush

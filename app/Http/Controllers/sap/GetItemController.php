@@ -68,8 +68,23 @@ class GetItemController extends Controller
     function ValiatePOID(Request $request)
     {
         $conDB = (new SAPB1Controller)->connect_sap();
-        $query='call "usp_Rpt_BS_Item_StockSalesAvailable_byLotNo_Total_web" (?,?)';
-        $stmt = odbc_prepare($conDB, $query);
+        $query='SELECT count(*) as NUM FROM BS_STOCKOUTREQUEST WHERE "POCardCode"=\'' . $request->po .'\' AND IFNULL("Canceled",\'\')'."<>'C'";
+        
+      $stmt = odbc_prepare($conDB, $query);
+        odbc_execute($stmt);
+        $results = array();
+        while ($row = odbc_fetch_array($stmt)) {
+            $results[] = $row;
+        }
+        
+        if($results[0]['NUM']!="0")
+        {
+            return response()->json(["success" => true,"data"=>1]);
+        }
+        else
+        {
+            return response()->json(["success" => true,"data"=>0]);
+        }
         
     }
     

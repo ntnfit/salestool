@@ -93,4 +93,5 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/fill-lot-items',[SalesController::class,'filterdata'])->name('filllot-items');
     Route::get('/getpromotion',[SalesController::class,'getpromotion'])->name('clickgetpromotion');
     Route::get('/saletotal',[GetItemController::class,'getsaletotal'])->name('report.saletotal');
+     Route::get('/checkPOID',[GetItemController::class,'ValiatePOID'])->name('checkPOID');
 });

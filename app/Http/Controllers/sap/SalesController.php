@@ -152,7 +152,7 @@ class SalesController extends Controller
     
     function store(Request $request)
     {
-       
+     
       // OPEN connect ODBC
       $conDB =(new SAPB1Controller)->connect_sap();
       //dd($Itempost);
