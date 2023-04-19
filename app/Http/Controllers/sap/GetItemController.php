@@ -64,5 +64,13 @@ class GetItemController extends Controller
         $results=json_encode($results);
         return  $results;
     }
+
+    function ValiatePOID(Request $request)
+    {
+        $conDB = (new SAPB1Controller)->connect_sap();
+        $query='call "usp_Rpt_BS_Item_StockSalesAvailable_byLotNo_Total_web" (?,?)';
+        $stmt = odbc_prepare($conDB, $query);
+        
+    }
     
 }

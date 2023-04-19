@@ -604,8 +604,12 @@
             // Prevent the form from submitting normally
             event.preventDefault();
 
-          
-                // Show the loading modal
+            // // Validate the form data
+            // if (!ValidatePOID()) {
+            //     return false; // Cancel the form submission if validation fails
+            // }
+        
+            // Show the loading modal
             loadingModal.style.display = "block";
 
             // Disable the submit button
@@ -616,8 +620,31 @@
                 form.submit();
             }, 1000);
 
-            
-            
         });
+
+        // function ValidatePOID() {
+        //     const nameInput = document.getElementById("pono");
+            
+
+        //     if (nameInput.value.trim() !="") {
+              
+        //         type: 'GET',
+        //             url: '{{ route('filllot-items') }}',
+        //             data: {
+        //                 ordertype: ordertype,
+        //                 custcode: custcode,
+        //                 whscode: whscode,
+        //                 team: team,
+        //                 sodate: sodate,
+        //                 Podate: Podate
+        //             },
+        //             success: function(data) {
+        //         return false; // cancel submission
+        //     }
+
+          
+        //     return true; // allow submission
+        // }
+
     </script>
 @endpush
