@@ -173,12 +173,13 @@ class SalesController extends Controller
                         ifnull(COUNT(\"StockNo\"),0)+1 AS NO 
                     FROM 
                         \"BS_STOCKOUTREQUEST\" 
-                    WHERE 
-                        \"StockDate\" = '".$date."' 
+                    WHERE   YEAR(\"StockDate\") = YEAR('".$date."') 
+                        AND MONTH(\"StockDate\") = MONTH('".$date."') 
                         AND \"OrderType\" = '".$ordertype."'
                 ) T0";
         
         $SOID = 'SO'.date("ym", strtotime($request->date)).odbc_result(odbc_exec($conDB, $sqlStockNo),1);
+      
         $Stocktype=2;
         $custcode=$request->cuscode;
         $custname=$request->custname;

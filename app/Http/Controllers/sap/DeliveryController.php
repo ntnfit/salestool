@@ -128,5 +128,10 @@ class DeliveryController extends Controller
         
         return $absoluteEntry;
     }
+
+    function TruckInfor(){
+
+        
+    }
    
 }
