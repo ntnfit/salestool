@@ -119,7 +119,7 @@ $config = [
                                         @endforeach
                                     </select>
                                 </td>
-                                <td><input type="number" name="Qty[]" class="qty form-control" value="{{$listItem['Quantity']}}" step="0.01"></td>
+                                <td><input type="number" name="Qty[]" class="qty form-control" value="{{number_format($listItem['Quantity'], 0, '', '')}}" step="0.01"></td>
                                 <td><select class="uom form-control" name="UomCode[]" >
                                         <option value="" selected></option>
                                         @foreach ($Uoms as $Uom)
@@ -130,7 +130,7 @@ $config = [
                                         @endif
                                         @endforeach
                                     </select></td>
-                                <td><input type="number" name="BaseQty[]" class="form-control" readonly="true" value="{{$listItem['BaseQuantity']}}"></td>
+                                <td><input type="number" name="BaseQty[]" class="form-control" readonly="true" value="{{number_format($listItem['BaseQuantity'], 0, '', '')}}"></td>
                                 <td>
                                     <select class="form-control" name="BaseUom[]" style="max-width:350px" readonly="true">
                                         <option value="" selected></option>
@@ -329,7 +329,7 @@ $config = [
                                             @endforeach
                                         </select>
                                     </td>
-                                    <td><input type="number" name="proqty[]" class="form-control" value="{{$proitem['ProQuantity']}}"></td>
+                                    <td><input type="number" name="proqty[]" class="form-control" value="{{number_format($proitem['ProQuantity'], 0, '', '')}}"></td>
                                     <td>
                                         <select class="form-control" name="prouomcode[]" style="max-width:350px">
                                             <option value="" selected></option>
@@ -342,7 +342,7 @@ $config = [
                                             @endforeach
                                         </select>
                                     </td>
-                                    <td><input type="number" name="probaseqty[]" class="form-control" readonly="true" value="{{$proitem['ProBaseQuantity']}}"></td>
+                                    <td><input type="number" name="probaseqty[]" class="form-control" readonly="true" value="{{number_format($proitem['ProBaseQuantity'], 0, '', '')}}"></td>
                                     <td>
                                        
                                             <select class="form-control" name="probaseoum[]" style="max-width:350px" readonly="true">

@@ -31,7 +31,7 @@
                         placeholder="" fgroup-class="col-md-3" disabled>
                     </x-adminlte-input>
                     <x-adminlte-input label="Promotion name" label-class="text-lightblue" name="promotionname"
-                        type="text" fgroup-class="col-md-6" enable-old-support>
+                        type="text" fgroup-class="col-md-6" enable-old-support required>
                     </x-adminlte-input>
                     <x-adminlte-input name="special" label="Special" type="checkbox" label-class="text-lightblue"
                         value="special" fgroup-class="col-xs-3" enable-old-support>
