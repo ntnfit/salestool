@@ -498,7 +498,7 @@ class SalesController extends Controller
             }
             $body=[
                 "CardCode"=> $results[0]['CustCode'],
-                "Comments"=>"Apply from salesHub",
+                "Comments"=>"Apply from salesHub ".$results[0]['Note'],
                 "U_SoPhieu"=>$SoNo,
                 "U_FromBIN"=> $results[0]['AbsEntry'],
                 "U_FromBinCode"=> $results[0]['BinCode'],
@@ -514,7 +514,7 @@ class SalesController extends Controller
             $stmt = odbc_prepare($conDB, $sql);
             odbc_execute($stmt, array($SoNo));
         }
-        
+        odbc_close($conDB); 
         return response()->json(["success" => true,"data"=>"okay"]);
 
     }
@@ -626,6 +626,18 @@ class SalesController extends Controller
           }
           odbc_close($conDB);
        return $listrs;
+    }
+    function CancelSO(Request $request)
+    {
+        $conDB = (new SAPB1Controller)->connect_sap();
+        foreach($request->SoNo as $SoNo)
+        {
+            $sql = 'update  BS_STOCKOUTREQUEST set "Note"=?, "Canceled"=? where "StockNo"=?';
+            $stmt = odbc_prepare($conDB, $sql);
+            odbc_execute($stmt, array('Cancled from SALEHUBS','C',$SoNo));
+        }
+        odbc_close($conDB);
+        return response()->json(["success" => true]);
     }
      
 }

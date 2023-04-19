@@ -83,7 +83,7 @@
                 name="cuscode" id="cuscode" fgroup-class="col-md-2" enable-old-support>
                 <option value=""></option>
                 @foreach ($customers as $customer)
-                    <option value="{{ $customer->CardCode }}">{{ $customer->CardCode . '--' . $customer->CardName }}
+                    <option value="{{ $customer->CardCode }}">{{ $customer->CardCode . '--' . $customer->CardName.'--StoreId: ' . $customer->U_SID }}
                     </option>
                 @endforeach
             </x-adminlte-select-bs>

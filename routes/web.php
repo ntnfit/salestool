@@ -66,6 +66,7 @@ Route::group(['middleware' => ['auth']], function() {
         Route::get('/promotion-click',[SalesController::class,'getpromotion'])->name('promotion.click');
         Route::post('/stock-update/{stockSO}',[SalesController::class,'update'])->name('sales.update');
         Route::get('/applysap',[SalesController::class,'applySAP'])->name('sales.apply');
+        Route::get('/cancel-so',[SalesController::class,'CancelSO'])->name('sales.cancel');
 
     //logistic
    Route::get('/truck-information',

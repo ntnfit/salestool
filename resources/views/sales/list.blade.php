@@ -11,18 +11,18 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 @section('content')
-@if(count($errors) >0)
-            <ul>
-                @foreach($errors->all() as $error)
-                    <li class="text-danger">{{ $error }}</li>
-                @endforeach
-            </ul>
- @endif 
- @if(session()->has('message'))
- <div class="alert alert-success">
-	 {{ session()->get('message') }}
- </div>
-@endif
+    @if (count($errors) > 0)
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li class="text-danger">{{ $error }}</li>
+            @endforeach
+        </ul>
+    @endif
+    @if (session()->has('message'))
+        <div class="alert alert-success">
+            {{ session()->get('message') }}
+        </div>
+    @endif
     @php
         $config = ['format' => 'L'];
     @endphp
@@ -33,16 +33,16 @@
     {{-- Setup data for datatables --}}
     <form>
         <div class="form-row">
-            <x-adminlte-input-date name="" id="fromDate" label="FromDate" :config="$config" label-class="text-lightblue"
-                igroup-size="sm" fgroup-class="col-md-3" placeholder="Choose a date...">
+            <x-adminlte-input-date name="" id="fromDate" label="FromDate" :config="$config"
+                label-class="text-lightblue" igroup-size="sm" fgroup-class="col-md-3" placeholder="Choose a date...">
                 <x-slot name="appendSlot">
                     <div class="input-group-text bg-gradient-danger">
                         <i class="fas fa-calendar-alt"></i>
                     </div>
                 </x-slot>
             </x-adminlte-input-date>
-            <x-adminlte-input-date name=""  id="toDate" label="ToDate" :config="$config" label-class="text-lightblue"
-                igroup-size="sm" fgroup-class="col-md-3" placeholder="Choose a date...">
+            <x-adminlte-input-date name="" id="toDate" label="ToDate" :config="$config"
+                label-class="text-lightblue" igroup-size="sm" fgroup-class="col-md-3" placeholder="Choose a date...">
                 <x-slot name="appendSlot">
                     <div class="input-group-text bg-gradient-danger">
                         <i class="fas fa-calendar-alt"></i>
@@ -58,63 +58,70 @@
         </div>
         <x-adminlte-button class="btn-flat" id="getSelectedRowsBtn" style="float: right;margin-right: 20px;" type="button"
             label="Apply SAP" theme="success" />
+        <x-adminlte-button class="btn-flat" id="cancelSQ" style="float: right;margin-right: 20px;" type="button"
+            label="Cancel Order" theme="danger" />
     </form>
     <div id="loadingModal" class="modal">
         <div class="modal-content">
-          <div class="loader"></div>
-          <p>Please wait...</p>
+            <div class="loader"></div>
+            <p>Please wait...</p>
         </div>
-      </div>
+    </div>
 
 @stop
 
 @section('css')
     <style media="only screen">
-      
         .btn-flat {
             font-size: small;
             padding: 8px 24px;
             margin-top: 30px;
         }
+
         .modal {
-  display: none;
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0,0,0,0.5);
-}
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
 
-.modal-content {
-  background-color: #fff;
-  border-radius: 5px;
-  width: 200px;
-  height: 100px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  padding: 20px;
-}
+        .modal-content {
+            background-color: #fff;
+            border-radius: 5px;
+            width: 200px;
+            height: 100px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            padding: 20px;
+        }
 
-/* Loading spinner styles */
-.loader {
-  border: 8px solid #f3f3f3;
-  border-top: 8px solid #3498db;
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  animation: spin 2s linear infinite;
-  margin: auto;
-}
+        /* Loading spinner styles */
+        .loader {
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #3498db;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 2s linear infinite;
+            margin: auto;
+        }
 
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
     </style>
 @stop
 
@@ -151,26 +158,31 @@
             browserDatePicker: true,
         };
 
-        const columnDefs = [
-            { headerName: '', field: '', maxWidth: 50,  headerCheckboxSelection: true, checkboxSelection: true, },
+        const columnDefs = [{
+                headerName: '',
+                field: '',
+                maxWidth: 50,
+                headerCheckboxSelection: true,
+                checkboxSelection: true,
+            },
             {
-             headerName: 'Doc No',
+                headerName: 'Doc No',
                 field: 'StockNo'
-                
+
             },
             {
                 headerName: 'Doc Date',
                 field: 'StockDate',
-                maxWidth:150
+                maxWidth: 150
             },
             {
                 headerName: 'StoreID',
                 field: 'U_SID',
-                maxWidth:150
+                maxWidth: 150
             },
             {
                 field: 'CustCode',
-              
+
             },
             {
                 field: 'CustName',
@@ -185,7 +197,7 @@
             {
                 headerName: 'SupportOrderNo',
                 field: 'AbsID',
-              
+
             },
             {
                 headerName: 'WhsCode',
@@ -198,38 +210,38 @@
             {
                 headerName: 'PoNo.',
                 field: 'POCardCode',
-               
+
             },
             {
                 headerName: 'Po Date',
                 field: 'PODate',
-              
+
             },
             {
                 headerName: 'TeamCode',
                 field: 'BinCode'
-               
+
             },
             {
                 field: 'ApplySAP'
-               
+
             },
             {
                 field: 'Note'
-             
+
             },
             {
                 field: 'SQNO'
-                
+
             },
             {
                 field: 'SONO'
-              
+
             },
             {
                 headerName: 'Delivery No.',
                 field: 'DeliveryNO'
-                
+
             },
             {
                 headerName: 'AR.NO',
@@ -237,7 +249,7 @@
             },
             {
                 field: 'DeliveryStatus'
-              
+
             },
             {
                 headerName: 'UserCreate',
@@ -245,23 +257,23 @@
             },
             {
                 field: 'DateCreate'
-             
+
             },
             {
                 field: 'DateUpdate'
-              
+
             },
             {
                 field: 'TotalWeight',
-              
+
             },
             {
                 field: 'ApplyStatus',
-               
+
             },
             {
                 field: 'StatusSAP',
-               
+
             },
         ];
 
@@ -278,92 +290,133 @@
             },
             onRowDoubleClicked: function(params) {
                 var id = params.data.StockNo;
-                var url = '{{ route("sales.edit", ":id") }}';
+                var url = '{{ route('sales.edit', ':id') }}';
                 url = url.replace(':id', id);
                 window.location.href = url;
             },
-        rowSelection: 'multiple'
+            rowSelection: 'multiple'
         };
 
         function onBtExport() {
             gridOptions.api.exportDataAsExcel();
         }
+
         function loadInitialData() {
-        // Make an API call to abc.com to retrieve 100 records
-        
-        // Update the grid with the retrieved data
-        gridOptions.api.setRowData({!!$results!!});
+            // Make an API call to abc.com to retrieve 100 records
+
+            // Update the grid with the retrieved data
+            gridOptions.api.setRowData({!! $results !!});
         }
-        function  loadFilteredData()
-        {
-            $.ajax({ 
-            type: 'GET', 
-            url: '{{route('sales.list')}}', 
-            data: filterData, 
-            dataType: 'json',
-            success: function (data) { 
-                gridOptions.api.setRowData(data);
-            }
-        });
-           
+
+        function loadFilteredData() {
+            $.ajax({
+                type: 'GET',
+                url: '{{ route('sales.list') }}',
+                data: filterData,
+                dataType: 'json',
+                success: function(data) {
+                    gridOptions.api.setRowData(data);
+                }
+            });
+
         }
-        let filterData={};
+        let filterData = {};
         // setup the grid after the page has finished loading
         document.addEventListener('DOMContentLoaded', function() {
-           
+
             var gridDiv = document.querySelector('#myGrid');
             new agGrid.Grid(gridDiv, gridOptions);
 
             const filterButton = document.querySelector('#filterButton');
             filterButton.addEventListener('click', function() {
-            // Get the filter values from the input fields
-            const filterInput1 = document.querySelector('#fromDate');
-            const filterInput2 = document.querySelector('#toDate');
-            filterData.fromdate = filterInput1.value;
-            filterData.todate = filterInput2.value;
+                // Get the filter values from the input fields
+                const filterInput1 = document.querySelector('#fromDate');
+                const filterInput2 = document.querySelector('#toDate');
+                filterData.fromdate = filterInput1.value;
+                filterData.todate = filterInput2.value;
 
-            // Load the filtered data from the API
-            loadFilteredData();
-        });
+                // Load the filtered data from the API
+                loadFilteredData();
+            });
             loadInitialData();
         });
 
-        document.querySelector("#getSelectedRowsBtn").addEventListener("click", function () {
-      const selectedRows = gridOptions.api.getSelectedRows().filter(row => row.StatusSAP ==0);
-      const selectedProIds = selectedRows.map((row) => row.StockNo);
-      console.log(selectedProIds);
-      if (selectedProIds.length === 0) {
-        alert("chứng từ đã chọn đã apply/hoặc bạn chưa chọn chứng từ nào!")
-   
-      }
-      else
-      {
-        const loadingModal = document.getElementById("loadingModal");
-        const submitBtn = document.getElementById("getSelectedRowsBtn");
-        loadingModal.style.display = "block";
+        document.querySelector("#getSelectedRowsBtn").addEventListener("click", function() {
+            const selectedRows = gridOptions.api.getSelectedRows().filter(row => row.StatusSAP == 0);
+            const selectedProIds = selectedRows.map((row) => row.StockNo);
+            console.log(selectedProIds);
+            if (selectedProIds.length === 0) {
+                alert("chứng từ đã chọn đã apply/hoặc bạn chưa chọn chứng từ nào!")
 
-        // Disable the submit button
-        submitBtn.disabled = true;
-       
-            $.ajax({ 
-            type: 'GET', 
-            url: '{{route('sales.apply')}}', 
-            data: {SoNo:selectedProIds}, 
-            dataType: 'json',
-            success: function (data) { 
-                alert("đã apply thành công!")
-                 location.reload();
-        },
-        error: function(){
-            alert("đã apply thất bại!, vui lòng kiếm tra dữ liệu!");
-            loadingModal.style.display = "none";
+            } else {
+                const loadingModal = document.getElementById("loadingModal");
+                const submitBtn = document.getElementById("getSelectedRowsBtn");
+                loadingModal.style.display = "block";
 
-            // Enable the submit button
-            submitBtn.disabled = false;
-        }
-      })
-      }
-      
-    });
+                // Disable the submit button
+                submitBtn.disabled = true;
+
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ route('sales.apply') }}',
+                    data: {
+                        SoNo: selectedProIds
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        alert("đã apply thành công!")
+                        location.reload();
+                    },
+                    error: function() {
+                        alert("đã apply thất bại!, vui lòng kiếm tra dữ liệu!");
+                        loadingModal.style.display = "none";
+
+                        // Enable the submit button
+                        submitBtn.disabled = false;
+                    }
+                })
+            }
+
+        });
+        //cancel document
+        document.querySelector("#cancelSQ").addEventListener("click", function() {
+            const selectedRows = gridOptions.api.getSelectedRows().filter(row => row.StatusSAP == 0);
+            const selectedProIds = selectedRows.map((row) => row.StockNo);
+            console.log(selectedProIds);
+            if (selectedProIds.length === 0) {
+                alert("chứng từ đã chọn đã cancled/hoặc bạn chưa chọn chứng từ nào!")
+
+            } else {
+                const loadingModal = document.getElementById("loadingModal");
+                const submitBtn = document.getElementById("getSelectedRowsBtn");
+
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ route('sales.cancel') }}',
+                    data: {
+                        SoNo: selectedProIds
+                    },
+                    dataType: 'json',
+                    async: false,
+                    beforeSend: function() {
+                        // Show the loading modal
+                        loadingModal.style.display = "block";
+                        // Disable the submit button
+                        submitBtn.disabled = true;
+                    },
+                    success: function(data) {
+                        alert("Canceled success!")
+                        location.reload();
+                    },
+                    error: function() {
+                        alert("Canceld failed !,Please validate data!");
+                        loadingModal.style.display = "none";
+
+                        // Enable the submit button
+                        submitBtn.disabled = false;
+                    }
+                })
+            }
+        })
     </script>
 @stop
