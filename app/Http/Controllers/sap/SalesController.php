@@ -299,7 +299,7 @@ class SalesController extends Controller
     function update(Request $request,$id)
     {
 
-        dd($request->all());
+      
         $conDB = (new SAPB1Controller)->connect_sap();
         if($request->sono)
         {
