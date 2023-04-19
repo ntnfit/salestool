@@ -293,7 +293,7 @@ class SalesController extends Controller
         odbc_exec($conDB, $sqlupdate);
         odbc_close($conDB);
 
-        return  redirect()->route('sales.list')->with('message', 'add sucesss!');
+        return  redirect()->route('sales.add')->with('message', 'add sucesss!');
        
     }
     function update(Request $request,$id)

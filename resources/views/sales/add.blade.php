@@ -14,8 +14,16 @@
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
 @section('content')
-
-
+@if(session()->has('message'))
+ <div id="success-alert" class="alert alert-success">
+	 {{ session()->get('message') }}
+ </div>
+ <script>
+     setTimeout(function() {
+         $('#success-alert').fadeOut('slow');
+     }, 3000); // close after 3 seconds
+ </script>
+@endif
     @php
         $config = ['format' => 'L', 'format' => 'yyyy/MM/DD'];
         $configsodate = ['autoclose' => true, 'format' => 'yyyy/MM/DD', 'immediateUpdates' => true, 'todayBtn' => true, 'todayHighlight' => true, 'setDate' => 0];

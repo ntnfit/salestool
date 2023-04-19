@@ -11,7 +11,16 @@
     integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 @section('content')
-
+@if(session()->has('message'))
+ <div id="success-alert" class="alert alert-success">
+	 {{ session()->get('message') }}
+ </div>
+ <script>
+     setTimeout(function() {
+         $('#success-alert').fadeOut('slow');
+     }, 3000); // close after 3 seconds
+ </script>
+@endif
     @php
         $config = ['format' => 'L', 'format' => 'yyyy/MM/DD'];
         $configsodate = ['autoclose' => true, 'format' => 'yyyy/MM/DD', 'immediateUpdates' => true, 'todayBtn' => true, 'todayHighlight' => true, 'setDate' => 0];
