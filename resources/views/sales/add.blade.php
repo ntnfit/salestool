@@ -173,9 +173,7 @@
             border: none;
             color: orange;
         },
-        input[type="number"] {
-            width: 182.4px;
-            }
+
 
 /* Popup Modal styles */
 .modal {
