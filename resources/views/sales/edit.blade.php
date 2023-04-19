@@ -80,6 +80,7 @@
                 <tr>
                     <th>STT</th>
                     <th>ItemCode</th>
+                    <th colspan="2">ItemName</th>
                     <th hidden>Type</th>
                     @foreach ($distinctLots as $lot)
                         <th class="orange">Stock Out</th>
@@ -100,6 +101,7 @@
                         if (!isset($consolidatedData[$consolidatedKey])) {
                             $consolidatedData[$consolidatedKey] = [
                                 'ItemCode' => $result['ItemCode'],
+                                'ItemName' => $result['ItemName'],
                                 'QuantityIn' => array_fill_keys($distinctLots, 0),
                                 'QuantityOut' => array_fill_keys($distinctLots, 0),
                             ];
@@ -115,6 +117,7 @@
                     <tr class="{{ $result['QuantityOut'] > 0 ? 'has-stockout' : '' }}">
                         <td>{{ $loop->iteration }}</td>
                         <td class="ItemCode">{{ $result['ItemCode'] }}</td>
+                        <td class="ItemName" colspan="2">{{ $result['ItemName'] }}</td>
                         <td hidden><input type="text" class="sotype" name="sotype[{{ $result['ItemCode'] }}][]"
                                 value=""></td>
                         @foreach ($distinctLots as $lot)
@@ -140,7 +143,8 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <th colspan="2">Total Quantity</th>
+                    <th ></th>
+                    <th colspan="3">Total Quantity</th>
                     @foreach ($distinctLots as $lot)
                         @php
                             $totalQuantity = 0;
