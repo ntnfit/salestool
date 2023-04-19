@@ -275,6 +275,10 @@
                 field: 'StatusSAP',
 
             },
+            {
+                field: 'Canceled',
+
+            },
         ];
 
 
@@ -342,7 +346,7 @@
         });
 
         document.querySelector("#getSelectedRowsBtn").addEventListener("click", function() {
-            const selectedRows = gridOptions.api.getSelectedRows().filter(row => row.StatusSAP == 0);
+            const selectedRows = gridOptions.api.getSelectedRows().filter(row => row.StatusSAP == 0 && row.Canceled !="C");
             const selectedProIds = selectedRows.map((row) => row.StockNo);
             console.log(selectedProIds);
             if (selectedProIds.length === 0) {
@@ -380,7 +384,7 @@
         });
         //cancel document
         document.querySelector("#cancelSQ").addEventListener("click", function() {
-            const selectedRows = gridOptions.api.getSelectedRows().filter(row => row.StatusSAP == 0);
+            const selectedRows = gridOptions.api.getSelectedRows().filter(row => row.StatusSAP == 0 &&  row.Canceled !="C");
             const selectedProIds = selectedRows.map((row) => row.StockNo);
             console.log(selectedProIds);
             if (selectedProIds.length === 0) {
