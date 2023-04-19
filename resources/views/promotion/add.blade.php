@@ -395,11 +395,6 @@
                 typeSelect: 'protype',
                 myTable: 'proitems',
                 divcontent: 'promcontent'
-            },
-            {
-                typeSelect: 'mytype',
-                myTable: 'myitems',
-                divcontent: 'mymcontent'
             }
         ];
     
