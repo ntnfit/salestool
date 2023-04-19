@@ -58,16 +58,16 @@
         <x-adminlte-select label="Customer Code" label-class="text-lightblue" igroup-size="sm" name="cuscode" id="cuscode"
             fgroup-class="col-md-2" enable-old-support>
 
-            <option value="{{ $so->CustCode }}">{{ $so->CustCode . '--' . $so->CustName }}</option>
+            <option value="{{ $so->CustCode }}" selected>{{ $so->CustCode . '--' . $so->CustName }}</option>
         </x-adminlte-select>
         <x-adminlte-select label="Warehouse" label-class="text-lightblue" igroup-size="sm" name="WhsCode" id="WhsCode"
             fgroup-class="col-md-2" enable-old-support>
-            <option value="{{ $so->FromWhsCode }}">{{ $so->FromWhsCode }}</option>
+            <option value="{{ $so->FromWhsCode }}" selected>{{ $so->FromWhsCode }}</option>
 
         </x-adminlte-select>
         <x-adminlte-select label="Team" label-class="text-lightblue" igroup-size="sm" name="bincode" id="bincode"
             fgroup-class="col-md-2" enable-old-support>
-            <option value="{{ $so->AbsEntry }}">{{ $so->BinCode }}</option>
+            <option value="{{ $so->AbsEntry }}" selected>{{ $so->BinCode }}</option>
         </x-adminlte-select>
 
         <x-adminlte-input-date name="date" id="sodate" label="Date" :config="$configsodate" label-class="text-lightblue"
@@ -192,6 +192,10 @@
         
 
     </div>
+
+    <input type="text" name="custname" id="custname" value="{{$so->CustName}}" hidden>
+    <input type="text" name="frmwhsname" id="frmwhsname" value="{{$so->FromWhsName}}" hidden>
+    <input type="text" name="teams" id="teams" value="{{$so->BinCode}}" hidden>
 </form>
 @stop
 @section('css')
@@ -254,7 +258,10 @@
             $('#tabledata').css({'pointer-events':'none'});
            }
           
+
+           
         });
+       
     </script>
 
 <script>

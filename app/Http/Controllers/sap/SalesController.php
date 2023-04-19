@@ -298,6 +298,8 @@ class SalesController extends Controller
     }
     function update(Request $request,$id)
     {
+
+        dd($request->all());
         $conDB = (new SAPB1Controller)->connect_sap();
         if($request->sono)
         {
@@ -338,6 +340,7 @@ class SalesController extends Controller
         "UserID","ApplyStatus")
         values
         (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
+
          $stmtsheader = odbc_prepare($conDB, $insertHeader);
         $result = odbc_execute($stmtsheader, array($SOID,$date,$Stocktype,$custcode,$custname,$FromWhsCode,$FromWhsName,
         $OrderType, $POCardCode, $PODate,$AbsId,$AbsEntry,$team,$note,$statusSAP,$datecreate,$userId,$applysap));
