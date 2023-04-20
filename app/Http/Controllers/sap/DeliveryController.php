@@ -174,5 +174,54 @@ class DeliveryController extends Controller
         return response()->json(["success" => true,"data"=>"okay"]);
 
     }
+    function TruckLockView()
+    {
+        $conDB = (new SAPB1Controller)->connect_sap();
+        $sql='select *,Case when "U_Status"=\'A\' then \'UnLock\'
+        else \'Lock\' end statusvh from "@BS_TRUCKINFO"';
+        $stmt = odbc_prepare($conDB, $sql);
+        odbc_execute($stmt);
+        $results = array();
+        while ($row = odbc_fetch_object($stmt)) {
+            $results[] = $row;
+        };
+        $results=json_encode( $results);
+        odbc_close($conDB);
+        return view ('logistic.lock',compact('results'));
+
+    }
+    function TruckLock(Request $request){
+        $conDB = (new SAPB1Controller)->connect_sap();
+        if (!empty($request->TruckCode))
+        {
+            if($request->type=="L")
+            {
+                foreach($request->TruckCode as $no)
+                {
+                    $sql='update "@BS_TRUCKINFO" set "U_Status"=? Where "Code"=?';       
+                    $stmt = odbc_prepare($conDB, $sql);
+                    odbc_execute($stmt,array('L',$no));
+    
+                };
+            }
+           else
+           {
+                foreach($request->TruckCode as $no)
+                {
+                    $sql='update "@BS_TRUCKINFO" set "U_Status"=? Where "Code"=?';       
+                    $stmt = odbc_prepare($conDB, $sql);
+                    odbc_execute($stmt,array('A',$no));
+
+                };
+           }
+
+
+            odbc_close($conDB);
+            
+        }
+       
+        return response()->json(["success" => true,"data"=>"okay"]);
+
+    }
    
 }

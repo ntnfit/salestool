@@ -72,11 +72,8 @@ Route::group(['middleware' => ['auth']], function() {
         //logistic
     Route::get('/truck-information',[DeliveryController::class,'truckview'])->name('logistic.truckinfor');
     Route::get('/truck-truckapply',[DeliveryController::class,'TruckApply'])->name('logistic.TruckApply');
-    Route::get('/lock-vehicle',
-    function () {
-        return view('logistic.lock');
-    })->name('logistic.lock');
-
+    Route::get('/lock-vehicle',[DeliveryController::class,'TruckLockView'])->name('logistic.lock');
+    Route::get('/vehicle-lock',[DeliveryController::class,'TruckLock'])->name('logistic.applylock');
     //SAP
     Route::get('/connect-setup',
     function () {

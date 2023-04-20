@@ -71,7 +71,6 @@ $configss = [
 
     
   </form>
-    <x-adminlte-button class="btn-flat" id="save" style="float: left;margin-left: 20px; " type="button" label="Save" theme="success"/>
       <x-adminlte-button class="btn-flat" id="print" style="float: right;  margin-right: 20px;" type="button" label="Print" theme="success" />
       <x-adminlte-button class="btn-flat" id="stockout" style="float: right;  margin-right: 20px;" type="button" label="Print stock out" theme="success" />
       <a href="{{route('logistic.lock')}}"> <x-adminlte-button class="btn-flat" id="lock" style="float: right;  margin-right: 20px;" type="button" label="Lock/ Unlock Vehicle" theme="success" /></a>

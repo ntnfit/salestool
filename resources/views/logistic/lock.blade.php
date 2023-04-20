@@ -16,14 +16,17 @@
     <div id="MyGrid" class="ag-theme-alpine" style="height: 80%">
     </div>
      
-    <x-adminlte-button class="btn-flat" id="lockall" style="float: left;font-size: small; margin-top:30px;padding: 8px 24px;" type="button" label="Lock All" theme="success"/>
-    <x-adminlte-button class="btn-flat" id="unall" style="float: left;font-size: small;margin-top:30px; margin-left: 20px;padding: 8px 24px;" type="button" label="Unlock All" theme="success"/>
+    <x-adminlte-button class="btn-flat" id="lock" style="float: left;font-size: small; margin-top:30px;padding: 8px 24px;" type="button" label="Lock All" theme="success"/>
+    <x-adminlte-button class="btn-flat" id="unlock" style="float: left;font-size: small;margin-top:30px; margin-left: 20px;padding: 8px 24px;" type="button" label="Unlock All" theme="success"/>
     <a href="{{route('logistic.truckinfor')}}"><x-adminlte-button class="btn-flat" id="back" style="float: right;font-size: small;margin-top:30px;padding: 8px 24px;" type="button" label="Back" theme="success"/></a>
-    <x-adminlte-button class="btn-flat" id="export" style="float: right;font-size: small;margin-top:30px; margin-right: 20px;padding: 8px 24px;" type="button" label="Export Excel" theme="success"/>
+    <x-adminlte-button class="btn-flat" id="export" onclick="onBtExport()" style="float: right;font-size: small;margin-top:30px; margin-right: 20px;padding: 8px 24px;" type="button" label="Export Excel" theme="success"/>
 </div>
-@php
-
-@endphp
+<div id="loadingModal" class="modal">
+  <div class="modal-content">
+      <div class="loader"></div>
+      <p>Please wait...</p>
+  </div>
+</div>
 
 
 
@@ -32,6 +35,53 @@
 
 
 @section('css')
+<style>
+          /* Popup Modal styles */
+          .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: #fff;
+            border-radius: 5px;
+            width: 200px;
+            height: 100px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* Loading spinner styles */
+        .loader {
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #3498db;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 2s linear infinite;
+            margin: auto;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+</style>
 @stop
 
 
@@ -71,15 +121,20 @@ var __basePath = './';</script>
 };
 
 const columnDefs = [
-    { field: 'Truck Code'},
-    { field: 'Truck Driver'},
-    { field: 'Truck Type'},
-    { field: 'Capacity'},
-    { field: 'Phone'},
-    { field: 'Status'},
-    { field: 'Lock',
-        },
-    { field: 'Unlock'},
+    {
+          headerName: '',
+          field: '',
+          maxWidth: 50,
+          headerCheckboxSelection: true,
+          checkboxSelection: true,
+          pinned: 'left',
+      },
+    { field: 'Code'},
+    { headerName:'TruckDriver', field: 'U_TruckDriver'},
+    { headerName:'Type',field: 'U_Type'},
+    { headerName:'Capacity',field: 'U_Capacity'},
+    { headerName:'Phone',field: 'U_Tel'},
+    { headerName:'Status',field: 'STATUSVH'},
 
 ];
 
@@ -94,6 +149,7 @@ const gridOptions = {
     filter: true,
     resizable: true,
   },
+  rowSelection: 'multiple'
 };
 function onBtExport() {
   gridOptions.api.exportDataAsExcel();
@@ -102,9 +158,88 @@ function onBtExport() {
 document.addEventListener('DOMContentLoaded', function () {
   var gridDiv = document.querySelector('#myGrid');
   new agGrid.Grid(gridDiv, gridOptions);
-  gridOptions.api.setRowData("")
+  gridOptions.api.setRowData({!!$results!!})
     });
+    document.querySelector("#lock").addEventListener("click", function() {
+            const selectedRows = gridOptions.api.getSelectedRows().filter(row => row.STATUSVH=="UnLock");
+            const selectedProIds = selectedRows.map((row) => row.Code);
+            const loadingModal = document.getElementById("loadingModal");
+            const submitBtn = document.getElementById("lock");
+            if(selectedProIds.lenght===0)
+            {
+              alert("TruckCode is empty!")
+            }
+            else
+            {
+              
+                loadingModal.style.display = "block";
 
+                // Disable the submit button
+                submitBtn.disabled = true;
+
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ route('logistic.applylock') }}',
+                    data: {
+                      TruckCode: selectedProIds,
+                      type:'L'
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        alert("đã lock thành công!")
+                        location.reload();
+                    },
+                    error: function() {
+                        alert("đã lock thất bại!, vui lòng kiếm tra dữ liệu!");
+                        loadingModal.style.display = "none";
+
+                        // Enable the submit button
+                        submitBtn.disabled = false;
+                    }
+                })
+            }
+            
+      });
+      document.querySelector("#unlock").addEventListener("click", function() {
+            const selectedRows = gridOptions.api.getSelectedRows().filter(row => row.STATUSVH=="Lock");
+            const selectedProIds = selectedRows.map((row) => row.Code);
+            const loadingModal = document.getElementById("loadingModal");
+            const submitBtn = document.getElementById("unlock");
+            if(selectedProIds.lenght===0)
+            {
+              alert("TruckCode is empty!")
+            }
+            else
+            {
+              
+                loadingModal.style.display = "block";
+
+                // Disable the submit button
+                submitBtn.disabled = true;
+
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ route('logistic.applylock') }}',
+                    data: {
+                      TruckCode: selectedProIds,
+                      type:'A'
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        alert("đã Unlock thành công!")
+                        location.reload();
+                    },
+                    error: function() {
+                        alert("đã Unlock thất bại!, vui lòng kiếm tra dữ liệu!");
+                        loadingModal.style.display = "none";
+
+                        // Enable the submit button
+                        submitBtn.disabled = false;
+                    }
+                })
+            }
+            
+      });
 </script>
 @endpush
 
