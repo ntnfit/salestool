@@ -129,9 +129,50 @@ class DeliveryController extends Controller
         return $absoluteEntry;
     }
 
-    function TruckInfor(){
+    function TruckInfor(Request $request){
+        $conDB = (new SAPB1Controller)->connect_sap();
+        $sql='call "USP_BS_TRUCKINFOMATION_DOUPPLICATE" (?,?,?)';
+        $stmt = odbc_prepare($conDB, $sql);
+        odbc_execute($stmt,array($request->fromDate,$request->toDate,1));
+        $results = array();
+        while ($row = odbc_fetch_object($stmt)) {
+            $results[] = $row;
+        }
+        odbc_close($conDB);
+        return json_encode($results);
 
-        
+    }
+    function truckview()
+    {
+        $conDB = (new SAPB1Controller)->connect_sap();
+        $sql='select * from "@BS_TRUCKINFO" Where "U_Status"=?';
+        $stmt = odbc_prepare($conDB, $sql);
+        odbc_execute($stmt,array('A'));
+        $results = array();
+        while ($row = odbc_fetch_object($stmt)) {
+            $results[] = $row;
+        };
+        odbc_close($conDB);
+        return view ('logistic.truckinfo',compact('results'));
+    }
+
+    function TruckApply(Request $request){
+        $conDB = (new SAPB1Controller)->connect_sap();
+        if (!empty($request->TruckCode) && !empty($request->No))
+        {
+            foreach($request->No as $no)
+            {
+                $sql='update ORDR set "U_TruckInfo"=? Where "DocNum"=?';       
+                $stmt = odbc_prepare($conDB, $sql);
+                odbc_execute($stmt,array($request->TruckCode,$no));
+
+            }
+            odbc_close($conDB);
+            
+        }
+       
+        return response()->json(["success" => true,"data"=>"okay"]);
+
     }
    
 }
