@@ -12,7 +12,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
     integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+
 @section('content')
     @if (session()->has('message'))
         <div id="success-alert" class="alert alert-success">
@@ -94,10 +94,10 @@
                     <option value="{{ $whsCode->WhsCode }}">{{ $whsCode->WhsCode . '--' . $whsCode->WhsName }}</option>
                 @endforeach
             </x-adminlte-select-bs>
-            <x-adminlte-select label="Team" label-class="text-lightblue" igroup-size="sm" name="bincode" id="bincode"
+            <x-adminlte-select-bs label="Team" label-class="text-lightblue" :config="$configss" igroup-size="sm" name="bincode" id="bincode"
                 fgroup-class="col-md-2" enable-old-support>
                 <option value=""></option>
-            </x-adminlte-select>
+            </x-adminlte-select-bs>
 
             <x-adminlte-input-date name="date" id="sodate" label="Date" :config="$configsodate"
                 label-class="text-lightblue" igroup-size="sm" fgroup-class="col-md-3" placeholder="Choose a date...">
@@ -242,50 +242,10 @@
             }
         }
 
-        /* Style the selected option */
-        .select2-container .select2-selection--single .select2-selection__rendered {
-            color: #333;
-            line-height: 25px;
-            font-size: 13px;
-            background-color: #f2f2f2;
-            border: none;
-            padding: 0px 4px 2px 1px;
-            margin-left: -11px;
-            margin-top: -7px;
-            box-sizing: border-box;
-            width: 100%;
-        }
-
-        /* Style the selected option's arrow */
-        .select2-container .select2-selection--single .select2-selection__arrow {
-            height: 28px;
-            width: 28px;
-            position: absolute;
-            top: 0;
-            right: 0;
-            background-color: #f2f2f2;
-            border: none;
-        }
-
-        /* Style the arrow icon */
-        .select2-container .select2-selection--single .select2-selection__arrow b {
-            display: block;
-            height: 10px;
-            width: 10px;
-            margin: auto;
-            border-top: 5px solid #666;
-            border-right: 5px solid transparent;
-            border-left: 5px solid transparent;
-        }
-
-        /* Style the selected option when it's active */
-        .select2-container--default .select2-results__option[aria-selected=true]:hover {
-            background-color: #e0e0e0;
-        }
     </style>
 @stop
 @push('js')
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
 
     <script>
         $(document).ready(function() {
@@ -300,27 +260,18 @@
                     },
                     success: function(data) {
 
-                        // console.log(data)
-                        $('#bincode').empty();
-                        setTimeout(function() {
-                            $.each(data, function(index, value) {
-                                var newOption = new Option(value.BinCode, value
-                                    .AbsEntry, false, false);
-                                $('#bincode').append(newOption);
-                            });
-                            // Refresh the Select2 dropdown
-                            $('#bincode').select2({
-
-                                title: 'Select Bin Code',
-                                liveSearch: true,
-                                liveSearchPlaceholder: 'Search...',
-                                showTick: true
-                            });
-
-                            // Refresh the Select2 dropdown
-                            $('#bincode').val('').trigger('change.select2');
-
-                        }, 10);
+                        var select = $('#bincode');
+                        select.empty();
+                        $.each(data, function(index, option) {
+                            select.append($('<option>', {
+                            value: option.BinCode,
+                            text: option.BinCode
+                            }));
+                        });
+                        // // Re-initialize the selectpicker
+                         select.selectpicker('refresh');
+                                        
+                        
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
                         // Handle any errors here
