@@ -87,5 +87,34 @@ class GetItemController extends Controller
         }
         
     }
+
+    function GetSupportOrder(Request $request)
+    {
+        $conDB = (new SAPB1Controller)->connect_sap();
+        $query='call "USP_BS_BLANKET" (?, ?)';
+        if($request->type=="01")// đơn hàng '01' -- SUPPORT
+        {
+            $stmt = odbc_prepare($conDB, $query);
+            odbc_execute($stmt,[$request->custcode,'01']);
+        }
+        else if($request->type=="02")//   if(==)// '02' -- SAMPLING
+        {
+            $stmt = odbc_prepare($conDB, $query);
+            odbc_execute($stmt,[$request->custcode,'02']);
+        }
+        else //03 FA
+        {
+            $stmt = odbc_prepare($conDB, $query);
+            odbc_execute($stmt,[$request->custcode,'03']);
+        }
+       
+       
+        $results = array();
+        while ($row = odbc_fetch_object($stmt)) {
+            $results[] = $row;
+        }
+      return $results;
+        
+    }
     
 }

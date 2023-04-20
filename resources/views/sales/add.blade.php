@@ -339,6 +339,7 @@
             var team = document.getElementById("bincode").value;
             var sodate = document.getElementById("sodate").value;
             var Podate = document.getElementById("podate").value;
+            var support = document.getElementById("sporderno").value;
             if (!ordertype) {
                 alert("Order Type is missing");
             } else if (!custcode) {
@@ -362,7 +363,8 @@
                         whscode: whscode,
                         team: team,
                         sodate: sodate,
-                        Podate: Podate
+                        Podate: Podate,
+                        sporderno:support
                     },
                     success: function(data) {
                         // Remove spinner icon
@@ -680,4 +682,127 @@
             }
         }
     </script>
+<script>
+ $(document).ready(function() {
+  $(function() {
+    $('#ordertype').change(function() {
+      if ($(this).val() === '001') {
+        $('#sporderno').empty();
+        $('#search').prop('disabled', false);
+        
+      } else {
+        $('#search').prop('disabled', true);
+        const ordertype = $('#ordertype').val();
+        const custcode = $('#cuscode').val();
+        if (custcode) {
+          let type="";
+          if(ordertype=="002")
+          {
+              type="01";//support
+          }
+          else if (ordertype=="003")
+          {
+              type="02";//Sampling
+          }
+          else
+          {
+              type="03"; //DA
+          }
+          console.log("loadata");
+          $.ajax({
+            url: '{{route('GetSupportOrder')}}',
+            datatype:'json',
+            method: 'get',
+            async:false,
+            data: { type: type, custcode: custcode },
+            success: function(response) {
+              console.log(response);
+              const select = $('#sporderno');
+              select.empty();
+              select.append(`<option value=""></option>`);
+              for (const option of response) {
+                select.append(`<option value="${option.AbsID}">${option.AbsID}</option>`);
+              }
+              select.off('change').on('change', function() {
+                if ($(this).val()) {
+                  $('#search').prop('disabled', false);
+                } else {
+                  $('#search').prop('disabled', true);
+                }
+              });
+              $('#search').prop('disabled', true);
+            },
+            error: function(error) {
+              // Handle error here
+            }
+          });
+        }
+      }
+    });
+  });
+  
+  $(function() {
+    $('#cuscode').change(function() {
+      const ordertype = $('#ordertype').val();
+      const custcode = $('#cuscode').val();
+      if (ordertype && ordertype !== '001') {
+        if (custcode) {
+          let type="";
+          if(ordertype=="002")
+          {
+              type="01";//support
+          }
+          else if (ordertype=="003")
+          {
+              type="02";//Sampling
+          }
+          else
+          {
+              type="03"; //DA
+          }
+          // Make AJAX call here
+          $.ajax({
+            url: '{{route('GetSupportOrder')}}',
+            datatype:'json',
+            method: 'get',
+            async:false,
+            data: { type: type, custcode: custcode },
+            success: function(response) {
+              console.log(response);
+              const select = $('#sporderno');
+              select.empty();
+              select.append(`<option value=""></option>`);
+              for (const option of response) {
+                select.append(`<option value="${option.AbsID}">${option.AbsID}</option>`);
+              }
+              select.off('change').on('change', function() {
+                if ($(this).val()) {
+                  $('#search').prop('disabled', false);
+                } else {
+                  $('#search').prop('disabled', true);
+                }
+              });
+              $('#search').prop('disabled', true);
+            },
+            error: function(error) {
+              // Handle error here
+            }
+          });
+        } else {
+          alert('Please choose a customer code');
+        }
+      }
+    });
+  });
+});
+
+</script>
+<script>
+  $(document).ready(function() {
+    $('#sodate').val(moment().format('YYYY/MM/DD')); // set the value of the input element to the current date
+    $('#sodate').datetimepicker(); // initialize the datetimepicker
+  });
+</script>
+
+
 @endpush

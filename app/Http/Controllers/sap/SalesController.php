@@ -153,6 +153,15 @@ class SalesController extends Controller
     function store(Request $request)
     {
      
+        $prefix="";
+        
+        if($request->ordertype=="001")
+        {
+            $prefix='SO';
+        }
+        else{
+            $prefix='PR';
+        }
       // OPEN connect ODBC
       $conDB =(new SAPB1Controller)->connect_sap();
       //dd($Itempost);
@@ -175,10 +184,10 @@ class SalesController extends Controller
                         \"BS_STOCKOUTREQUEST\" 
                     WHERE   YEAR(\"StockDate\") = YEAR('".$date."') 
                         AND MONTH(\"StockDate\") = MONTH('".$date."') 
-                        AND \"OrderType\" = '".$ordertype."'
+                        
                 ) T0";
-        
-        $SOID = 'SO'.date("ym", strtotime($request->date)).odbc_result(odbc_exec($conDB, $sqlStockNo),1);
+               // AND \"OrderType\" = '".$ordertype."'
+        $SOID = $prefix.date("ym", strtotime($request->date)).odbc_result(odbc_exec($conDB, $sqlStockNo),1);
       
         $Stocktype=2;
         $custcode=$request->cuscode;
@@ -189,7 +198,7 @@ class SalesController extends Controller
         $POCardCode=$request->pono;
         $PODate=date("Ymd", strtotime($request->podate));
         $AbsEntry=$request->bincode;
-        $AbsId=null;//Sale blanket id
+        $AbsId=$request->sporderno;
         $team=$request->teams;
         $note=$request->note;
         $statusSAP=0;
@@ -529,7 +538,15 @@ class SalesController extends Controller
         }
         else
         {
-            $so='SO'.substr(date("Y"), -2).date("m").'99999999999999';
+            if($request->sporderno)
+            {
+                $so='PR'.substr(date("Y"), -2).date("m").'99999999999999';
+            }
+            else
+            {
+                $so='SO'.substr(date("Y"), -2).date("m").'99999999999999';
+            }
+           
         }
        
         $blanket=0;

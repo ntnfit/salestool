@@ -91,4 +91,5 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/saletotal',[GetItemController::class,'getsaletotal'])->name('report.saletotal');
     Route::get('/checkPOID',[GetItemController::class,'ValiatePOID'])->name('checkPOID');
     Route::get('/get-truck-infor',[DeliveryController::class,'TruckInfor'])->name('truck.get'); 
+    Route::get('/get-support-no',[GetItemController::class,'GetSupportOrder'])->name('GetSupportOrder');
 });

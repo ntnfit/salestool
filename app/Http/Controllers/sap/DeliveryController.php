@@ -223,5 +223,21 @@ class DeliveryController extends Controller
         return response()->json(["success" => true,"data"=>"okay"]);
 
     }
+    function UpdateDriver(Request $request)
+    {
+        $conDB = (new SAPB1Controller)->connect_sap();
+        if (!empty($request->No))
+        {
+                foreach($request->No as $no)
+                {
+                    $sql='update ORDR set "U_TruckInfo"=? Where "DocNum"=?';       
+                    $stmt = odbc_prepare($conDB, $sql);
+                    odbc_execute($stmt,array('L',$no));
+    
+                };
+        }
+        odbc_close($conDB);
+        return response()->json(["success" => true,"data"=>"okay"]);
+    }
    
 }
