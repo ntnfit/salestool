@@ -262,9 +262,10 @@
 
                         var select = $('#bincode');
                         select.empty();
+                        console.log(data);
                         $.each(data, function(index, option) {
                             select.append($('<option>', {
-                            value: option.BinCode,
+                            value: option.AbsEntry,
                             text: option.BinCode
                             }));
                         });
