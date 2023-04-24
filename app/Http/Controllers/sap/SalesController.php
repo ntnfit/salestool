@@ -503,7 +503,7 @@ class SalesController extends Controller
                     "U_LoaiKM" => $km,
                     "U_BatchNo" => $dt['LotNo']
                 ];
-                array_push($line, $line);
+                array_push($ldt, $ldt);
             }
             $body=[
                 "CardCode"=> $results[0]['CustCode'],
