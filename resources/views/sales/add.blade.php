@@ -671,9 +671,11 @@ tbody tr.matched {
       if ($(this).val() === '001') {
         $('#sporderno').empty();
         $('#search').prop('disabled', false);
+        $('#promotion').prop('disabled', false);
         
       } else {
         $('#search').prop('disabled', true);
+        $('#promotion').prop('disabled', true);
         const ordertype = $('#ordertype').val();
         const custcode = $('#cuscode').val();
         if (custcode) {
