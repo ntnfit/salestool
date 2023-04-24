@@ -465,7 +465,7 @@ class SalesController extends Controller
         $conDB = (new SAPB1Controller)->connect_sap();
         foreach($request->SoNo as $SoNo)
         {
-            $sql = 'select * from BS_STOCKOUTREQUEST where t0."StatusSAP"=0 and "StockNo"=?';
+            $sql = 'select * from BS_STOCKOUTREQUEST where "StatusSAP"=0 and "StockNo"=?';
             $stmt = odbc_prepare($conDB, $sql);
             odbc_execute($stmt, array($SoNo));
             $results = array();
@@ -510,11 +510,11 @@ class SalesController extends Controller
                 "U_SoPhieu"=>$SoNo,
                 "U_FromBIN"=> $results[0]['AbsEntry'],
                 "U_FromBinCode"=> $results[0]['BinCode'],
-                "DocumentLines"=>[$ldt]
+                "DocumentLines"=>$ldt
                 
             ];
            
-        
+      
              // Make a request to the service layer
         $response = $client->request("POST", "/b1s/v1/Quotations",['verify' => false, 'body' =>  json_encode($body)]);
 
