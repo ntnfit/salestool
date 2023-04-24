@@ -568,7 +568,7 @@ class SalesController extends Controller
         $sql = 'CALL USP_BS_LOT_OINM_STOCKREQUEST(?,?,?,?,?,?)';
 
         $stmt = odbc_prepare($conDB, $sql);
-        
+          
         if (!$stmt) {
             // Handle SQL error
             die("Error preparing SQL statement: " . odbc_errormsg());
@@ -589,11 +589,12 @@ class SalesController extends Controller
         while ($row = odbc_fetch_array($stmt)) {
             $results[] = $row;
         }
+       
         // get number lot
         $distinctLots = array_unique(array_column($results, 'LotNo'));
         $ordertype=$request->ordertype;
         // pass data to the view and render the Blade template
-        $tableHtml = view('sales.tabletemplate', compact('distinctLots', 'results','ordertype'))->render();
+        $tableHtml = view('sales.tabletemplate', compact('distinctLots', 'results','ordertype','blanket'))->render();
         odbc_close($conDB);
          return  $tableHtml;
     }
