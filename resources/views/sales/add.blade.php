@@ -241,6 +241,16 @@
                 transform: rotate(360deg);
             }
         }
+        #searchInput {
+  margin-bottom: 10px;
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+tbody tr.matched {
+  background-color: #f0f0f0;
+}
 
     </style>
 @stop
@@ -395,6 +405,26 @@
                         function getCellValue(row, index) {
                             return $(row).children('td').eq(index).text()
                         };
+                        const searchInput = document.getElementById('searchInput');
+                            const rows = document.querySelectorAll('tbody tr');
+
+                            searchInput.addEventListener('keyup', function(event) {
+                            const query = event.target.value.toLowerCase();
+
+                            rows.forEach(function(row) {
+                                const name = row.querySelector('td:nth-child(1)').textContent.toLowerCase();
+                                const age = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+                                const city = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+                                const match = name.indexOf(query) > -1 || age.indexOf(query) > -1 || city.indexOf(query) > -1;
+
+                                if (match) {
+                                row.style.display = '';
+                                } else {
+                                row.style.display = 'none';
+                                }
+                            });
+                            });
+
 
                     }
                 })

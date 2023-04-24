@@ -1,3 +1,4 @@
+<input type="text" id="searchInput" placeholder="Search...">
 <table id="tableadd">
     <thead>
         <tr>
