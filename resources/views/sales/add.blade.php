@@ -157,29 +157,33 @@
         }
 
         table {
-            border-collapse: collapse;
-            width: 100%;
-        }
+  border-collapse: collapse;
+  width: 100%;
+}
 
-        th,
-        td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: center;
-        }
+thead {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background-color: #ddd;
+}
 
-        th {
-            background-color: #f2f2f2;
-        }
+th,
+td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
 
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
 
-        td:first-child,
-        th:first-child {
-            text-align: left;
-        }
+td:first-child,
+th:first-child {
+  text-align: left;
+}
+
 
         .orange {
             color: orange;
@@ -360,7 +364,7 @@ tbody tr.matched {
                             var sumcol = 0;
                             var columnIndex = $(this).parent().index();
                             $('#tabledata tr:not(:first):not(:last)').each(function() {
-                                console.log("coll")
+                              
                                 var cellValue = parseInt($(this).find('td:eq(' +
                                     columnIndex + ') input.Qtyout').val());
                                 if (!isNaN(cellValue)) {
@@ -368,7 +372,7 @@ tbody tr.matched {
                                 }
                             });
                             $('tfoot tr th').eq(columnIndex - 2).text(sumcol || 0);
-
+                            
                             var sumpro = 0;
                             var $row = $(this).closest('tr');
                             $row.find('input.qtypro').each(function() {
@@ -384,6 +388,15 @@ tbody tr.matched {
                                 alert('Quantity exceeds promotion quantity');
                                 $row.find('input.qtypro').val('');
                             }
+
+                            // total stock out total
+                            let total = 0;
+                                const totalRowElements = document.querySelectorAll('input.totalrow');
+
+                                totalRowElements.forEach((element) => {
+                                total += parseFloat(element.value);
+                                });
+                                document.querySelector('th.totalstockout').textContent = total;
 
                         });
 
