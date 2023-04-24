@@ -334,7 +334,15 @@ tbody tr.matched {
                         // Re-enable button
                         $('#search').prop('disabled', false);
                         document.getElementById("tabledata").innerHTML = data;
-                        $('#promotion').removeAttr('disabled');
+                        if(ordertype==="001")
+                        {
+                            $('#promotion').prop('disabled', false);
+                        }
+                        else
+                        {
+                            $('#promotion').prop('disabled', true);
+                        }
+                        
                         // Listen for changes to input fields in the rendered table
                         $('#tabledata input.Qtyout').on('input', function() {
 
@@ -671,11 +679,11 @@ tbody tr.matched {
       if ($(this).val() === '001') {
         $('#sporderno').empty();
         $('#search').prop('disabled', false);
-        $('#promotion').prop('disabled', false);
+      
         
       } else {
         $('#search').prop('disabled', true);
-        $('#promotion').prop('disabled', true);
+      
         const ordertype = $('#ordertype').val();
         const custcode = $('#cuscode').val();
         if (custcode) {

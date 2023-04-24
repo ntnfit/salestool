@@ -465,7 +465,7 @@ class SalesController extends Controller
         $conDB = (new SAPB1Controller)->connect_sap();
         foreach($request->SoNo as $SoNo)
         {
-            $sql = 'select * from BS_STOCKOUTREQUEST where "StatusSAP"=0 and "StockNo"=?';
+            $sql = 'select * from BS_STOCKOUTREQUEST where t0."StatusSAP"=0 and "StockNo"=?';
             $stmt = odbc_prepare($conDB, $sql);
             odbc_execute($stmt, array($SoNo));
             $results = array();
@@ -479,7 +479,7 @@ class SalesController extends Controller
             $stmt = odbc_prepare($conDB, $sql);
             odbc_execute($stmt,array($SoNo));
             $line = array();
-            while ($row = odbc_fetch_array($stmt)) {
+            while ($row = odbc_fetch_object($stmt)) {
                 $line[] = $row;
             }
             
@@ -487,7 +487,7 @@ class SalesController extends Controller
             foreach ($line as $dt)
             {
                 $km="";
-                if($dt['TypePrd']=="002")
+                if($dt->TypePrd=="002")
                 {
                     $km="1";
                 }
@@ -495,15 +495,14 @@ class SalesController extends Controller
                 {
                     $km="0";
                 }
-                $ldt=[
-                    "ItemCode"=> $dt['ItemCode'],
-                    "Quantity"=> $dt['Quantity'],
+                $ldt[]=[
+                    "ItemCode"=> $dt->ItemCode,
+                    "Quantity"=> $dt->Quantity,
                     "TaxCode" => "SVN10",
                     "WarehouseCode" => $results[0]['FromWhsCode'],
                     "U_LoaiKM" => $km,
-                    "U_BatchNo" => $dt['LotNo']
+                    "U_BatchNo" => $dt->LotNo
                 ];
-                array_push($ldt, $ldt);
             }
             $body=[
                 "CardCode"=> $results[0]['CustCode'],
@@ -515,7 +514,7 @@ class SalesController extends Controller
                 
             ];
            
-         
+        
              // Make a request to the service layer
         $response = $client->request("POST", "/b1s/v1/Quotations",['verify' => false, 'body' =>  json_encode($body)]);
 
