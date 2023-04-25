@@ -68,11 +68,12 @@
                               
                 @endif
                 @foreach ($distinctLots as $lot)
-               
+                   
                     <td class="{{ $result['QuantityOut'][$lot] > 0 ? 'orange' : '' }}">
+                   
                        @if($blanket!=0)
                             @if($result['QuantityIn'][$lot] > 0)
-                                    <input type="number" class="Qtyout" style="text-color:orange;  width: 182.4px;"
+                                    <input type="number" class="Qtyout" style="text-color:orange"
                                         name="stockOuts[{{ $result['ItemCode'] }}][{{ $lot }}][]"
                                         value="{{ $result['QuantityOut'][$lot] }}" max="{{$result['OpenQty'][$lot] }}" min="0">
                                 @else
@@ -84,7 +85,7 @@
                         @else
 
                                 @if($result['QuantityIn'][$lot] > 0)
-                                    <input type="number" class="Qtyout" style="text-color:orange;  width: 182.4px;"
+                                    <input type="number" class="Qtyout" style="text-color:orange;"
                                         name="stockOuts[{{ $result['ItemCode'] }}][{{ $lot }}][]"
                                         value="{{ $result['QuantityOut'][$lot] }}" max="{{ $result['QuantityIn'][$lot] }}" min="0">
                                 @else
@@ -94,8 +95,11 @@
                                       @endif
                          @endif
                     </td>
-          
+                    @if($result['QuantityIn'][$lot] > 0)
                     <td class="inlot">{{ $result['QuantityIn'][$lot] }}</td>
+                    @else
+                    <td class="inlot"></td>
+                    @endif
                 @endforeach
 
                 <td> <input type="number" class="totalrow" value="{{ array_sum($result['QuantityOut']) }}"

@@ -158,7 +158,8 @@
 
         table {
   border-collapse: collapse;
-  width: 100%;
+  max-width: 75%;
+  
 }
 
 thead {
@@ -174,14 +175,51 @@ td {
   padding: 8px;
   text-align: center;
 }
+th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background-color: #ddd;
+}
 
 tr:nth-child(even) {
   background-color: #f2f2f2;
+  max-width: 35%;
 }
 
 td:first-child,
 th:first-child {
   text-align: left;
+}
+td:first-child,
+
+td:nth-child(2),
+
+td:nth-child(3) {
+  position: sticky;
+  left: 0;
+ 
+  background-color: #ddd; /* ensure that the fixed columns have the same background color as the table */
+}
+
+td:first-child {
+    /* text-align: left; */
+    width: 50px;
+    min-width: 50px;
+    max-width: 50px;
+    left: 0px !important;
+}
+td:nth-child(2) {
+    width: 100px;
+    min-width: 100px;
+    max-width: 100px;
+    left: 50px;
+}
+td:nth-child(3) {
+    width: 150px;
+    min-width: 150px;
+    max-width: 150px;
+    left: 150px;
 }
 
 
@@ -252,9 +290,15 @@ th:first-child {
   border: 1px solid #ccc;
 }
 
+
+input.Qtyout {
+    max-width: 60px;
+}
 tbody tr.matched {
   background-color: #f0f0f0;
 }
+
+
 
     </style>
 @stop
@@ -500,7 +544,7 @@ tbody tr.matched {
                 datatype: "json",
                 success: function(data) {
                     console.log('data: ', data);
-                    promotions = data;
+                    promotions = data.promotiodt;
                     // Loop through each row in the table with ID "tableadd"
                     $("#tableadd tbody tr").each(function(index) {
                         var itemCode = $(this).find("td.ItemCode").text()
@@ -514,7 +558,7 @@ tbody tr.matched {
                                 promotionQty; // Calculate the new quantity by adding the promotion quantity
                             // Clone the current row, update the "Total Qty" input field with the new quantity, and append it to the table
                             var newRow = $(this).clone(true, true);
-
+                            newRow.css('background-color', '#DFF0D8');
                             newRow.find(".sotype").val('KM');
                             newRow.find(".totalrow").val(
                                 newQty
@@ -537,6 +581,8 @@ tbody tr.matched {
                     });
                     // Add new rows for items in the promotions list that are not in the table
                     $.each(promotions, function(itemCode, promotionQty) {
+                        var itemname=data.ItemName;
+                        var nameItem=itemname[itemCode];
                         var found = false;
                         $("#tableadd tbody tr").each(function() {
                             if ($(this).find(".ItemCode").text().trim() == itemCode) {
@@ -551,7 +597,9 @@ tbody tr.matched {
                                 .prev(); // Get the second last row of the table
                             var newRow = secondLastRow.clone(true,
                                 true); // Clone the second last row
+                                newRow.css('background-color', '#DFF0D8');
                             newRow.find(".ItemCode").text(itemCode);
+                            newRow.find(".ItemName").text(nameItem);
                             newRow.find(".inlot").text("");
                             newRow.find(".sotype").val('KM');
                             newRow.find(".Qtyout").remove();

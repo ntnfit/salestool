@@ -637,12 +637,16 @@ class SalesController extends Controller
         while ($row = odbc_fetch_array($stmt)) {
             $results[] = $row;
         }
+       
         $listrs = array();
+        $itemName=array();
         foreach ($results as $item) {
-            $listrs[$item["ProItemCode"]] = (int)$item["TotalQuantity"];
+            $listrs[$item["ProItemCode"]] = (int)$item["TotalQuantity"];   
+            $itemName[$item["ProItemCode"]] = $item["ItemName"];       
           }
+         
           odbc_close($conDB);
-       return $listrs;
+       return response()->json(["promotiodt" => $listrs,"ItemName"=>$itemName]);
     }
     function CancelSO(Request $request)
     {
