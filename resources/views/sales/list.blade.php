@@ -388,7 +388,7 @@
             const selectedProIds = selectedRows.map((row) => row.StockNo);
             console.log(selectedProIds);
             if (selectedProIds.length === 0) {
-                alert("chứng từ đã chọn đã cancled/hoặc bạn chưa chọn chứng từ nào!")
+                alert("chứng từ đã chọn đã canceled/hoặc bạn chưa chọn chứng từ nào!")
 
             } else {
                 const loadingModal = document.getElementById("loadingModal");
