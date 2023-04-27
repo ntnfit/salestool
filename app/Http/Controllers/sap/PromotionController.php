@@ -362,4 +362,8 @@ class PromotionController extends Controller
         return redirect()->route('list-promotion')->with('message', 'add promotion successfully.');
 
     }
+    function terminated(Request $request)
+    {
+        
+    }
 }
