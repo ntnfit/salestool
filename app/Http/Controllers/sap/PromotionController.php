@@ -117,7 +117,7 @@ class PromotionController extends Controller
             $Customers .= '<tr class="tr_clone">
                     <td>
                         <select class="items" name="cus[]" data-placeholder="Select an customer">
-                            <option value="'.$result->CardCode.'" selected>'.$result->CardName.'--'.$result->GroupName.'--'.$result->ChannelName.'--'.$result->RouteName.'--'.$result->LocationName.'--'.'betagen'.'</option> 
+                            <option value="'.$result->CardCode.'" selected>'.$result->CardCode.'--'.$result->CardName.'--'.$result->GroupName.'--'.$result->ChannelName.'--'.$result->RouteName.'--'.$result->LocationName.'--'.'betagen'.'</option> 
                         </select>
                     </td>
                     <td>

@@ -16,8 +16,8 @@
     <div id="MyGrid" class="ag-theme-alpine" style="height: 80%">
     </div>
      
-    <x-adminlte-button class="btn-flat" id="lock" style="float: left;font-size: small; margin-top:30px;padding: 8px 24px;" type="button" label="Lock All" theme="success"/>
-    <x-adminlte-button class="btn-flat" id="unlock" style="float: left;font-size: small;margin-top:30px; margin-left: 20px;padding: 8px 24px;" type="button" label="Unlock All" theme="success"/>
+    <x-adminlte-button class="btn-flat" id="lock" style="float: left;font-size: small; margin-top:30px;padding: 8px 24px;" type="button" label="Lock" theme="success"/>
+    <x-adminlte-button class="btn-flat" id="unlock" style="float: left;font-size: small;margin-top:30px; margin-left: 20px;padding: 8px 24px;" type="button" label="Unlock" theme="success"/>
     <a href="{{route('logistic.truckinfor')}}"><x-adminlte-button class="btn-flat" id="back" style="float: right;font-size: small;margin-top:30px;padding: 8px 24px;" type="button" label="Back" theme="success"/></a>
     <x-adminlte-button class="btn-flat" id="export" onclick="onBtExport()" style="float: right;font-size: small;margin-top:30px; margin-right: 20px;padding: 8px 24px;" type="button" label="Export Excel" theme="success"/>
 </div>

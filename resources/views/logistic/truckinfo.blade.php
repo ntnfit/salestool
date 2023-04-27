@@ -223,6 +223,10 @@ label.text-lightblue.truckcode {
     field: 'CardName',
   },
   {
+    headerName: 'Weight',
+    field: 'Weight',
+  },
+  {
     headerName: 'Warehouse',
     field: 'WhsName',
   },
@@ -250,10 +254,7 @@ label.text-lightblue.truckcode {
     headerName: 'Quantity',
     field: 'Quantity',
   },
-  {
-    headerName: 'Weight',
-    field: 'Weight',
-  },
+  
   {
     headerName: 'Truck Type',
     field: 'TruckType',
@@ -399,7 +400,7 @@ label.text-lightblue.truckcode {
           filterData.toDate = filterInput2.value.replace(/\//g, '');
           if(filterInput1.value=="")
           {
-            alert("Please choose fromdate!");
+            alert("Please choose From date!");
           }
           else if(filterInput2.value=="")
           {

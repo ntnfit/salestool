@@ -121,7 +121,7 @@
                 <div>
 
                     <label for="note" style="margin-right: 30px; margin-top: 100px;"> Note:</label>
-                    <input type="text" id="note" name="note" style="width: 400px; height: 80px;">
+                    <input type="text" id="note" name="note">
 
                 </div>
                 <x-adminlte-button class="btn-flat" style="float: left; margin-left: 20px;" id="save"
@@ -155,7 +155,15 @@
             padding: 8px 24px;
             margin-top: 70px;
         }
-
+        #note {
+        width: 400px; 
+        height: 80px;
+        padding: 12px 20px;
+        margin: 8px 0;
+        box-sizing: border-box;
+        border: 1px solid lightgrey;
+        border-radius: 4px;
+        }
         table {
   border-collapse: collapse;
   max-width: 75%;

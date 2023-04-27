@@ -212,11 +212,13 @@
 
                 </div>
             </div>
+            
             <div class="row"id="promcontent">
 
                 <div class="tab" style="margin: 7px;">
+                    
                     <div class="tableFixHead">
-                        <table class="table table-bordered" id="proitems">
+                        <table class="table table-bordered" id="proitems" >
                             <thead>
                                 <tr>
                                     <th class="header-label">ItemCode</th>

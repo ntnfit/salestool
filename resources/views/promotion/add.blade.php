@@ -30,7 +30,7 @@
                     <x-adminlte-input label="ID" label-class="text-lightblue" name="ID" type="text"
                         placeholder="" fgroup-class="col-md-3" disabled>
                     </x-adminlte-input>
-                    <x-adminlte-input label="Promotion name" label-class="text-lightblue" name="promotionname"
+                    <x-adminlte-input label="Promotion Name" label-class="text-lightblue" name="promotionname"
                         type="text" fgroup-class="col-md-6" enable-old-support required>
                     </x-adminlte-input>
                     <x-adminlte-input name="special" label="Special" type="checkbox" label-class="text-lightblue"
@@ -38,7 +38,7 @@
                     </x-adminlte-input>
 
                     <x-adminlte-input name="rouding" style="margin-left: 1.5rem;" label="Rounding" type="checkbox"
-                        label-class="text-lightblue" value="rouding" fgroup-class="col-xs-3 rouding" enable-old-support>
+                        label-class="text-lightblue" checked value="rouding" fgroup-class="col-xs-3 rouding" enable-old-support>
                     </x-adminlte-input>
                 </div>
             </div>
@@ -55,11 +55,11 @@
                 </x-adminlte-input>
             </div>
             <!-- row input -->
-            <div class="tab">
-                <button class="tablinks" type="button" onclick="openTab(event, 'tab-1')" id="defaultOpen">Item</button>
+            <div class="tab"  style="border-radius: 4px;">
+                <button class="tablinks"  type="button" onclick="openTab(event, 'tab-1')" id="defaultOpen">Item</button>
                 <button class="tablinks" type="button" onclick="openTab(event, 'tab-2')">Customer</button>
             </div>
-            <div id="tab-1" class="tabcontent">
+            <div id="tab-1" class="tabcontent" style="border: 1px solid lightgrey; border-radius: 4px;" >
                 @php
                     $configItem = [
                         'title' => 'Select ItemCode - ItemName',
@@ -116,7 +116,7 @@
                     </table>
                 </div>
             </div>
-            <div id="tab-2" class="tabcontent">
+            <div id="tab-2" class="tabcontent" style="border: 1px solid lightgrey;">
                 <div class="row datasearch">
 
                     @php
@@ -179,14 +179,14 @@
                     </x-adminlte-select-bs>
                     <x-adminlte-button class="btn-flat" id="search"
                         style="float: right;margin-top: 34px;font-size: small;height: 31px;" type="button"
-                        label="search" theme="success" icon="fas fa-lg fa-save" />
+                        label="Search" theme="success" icon="fas fa-lg fa-save" />
                 </div>
                 <div class="tableFixHead">
                     <!-- các trường nhập liệu của tab customer -->
                     <table id="tablecustomer" class="table-bordered">
                         <thead>
                             <tr>
-                                <th class="header-label">Customer data</th>
+                                <th class="header-label">Customer Data</th>
                                 <th class="header-label">Action</th>
                             </tr>
                         </thead>
@@ -215,57 +215,62 @@
 
                 </div>
             </div>
-            <div class="row"id="promcontent">
-
-                <div class="tab" style="margin: 7px;">
-                    <div class="tableFixHead">
-                        <table class="table table-bordered" id="proitems">
-                            <thead>
-                                <tr>
-                                    <th class="header-label">ItemCode</th>
-                                    <th class="header-label">Quantity</th>
-                                    <th class="header-label">UoM Codde</th>
-                                    <th class="header-label">Base Quantity</th>
-                                    <th class="header-label">Base UoM Code</th>
-                                    <th class="header-label">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr class="tr_clone_proitem">
-                                    <td>
-                                        <select class="proitem" name="proitem[]" data-placeholder="Select an itemcode">
-                                            <option></option>
-                                            @foreach ($ItemCodes as $ItemCode)
-                                                <option value="{{ $ItemCode->ItemCode }}">
-                                                    {{ $ItemCode->ItemCode . '--' . $ItemCode->ItemName }}</option>
-                                            @endforeach
-                                        </select>
-                                    </td>
-                                    <td><input type="number" name="proqty[]" class="form-control"></td>
-                                    <td>
-                                        <select class="form-control" name="prouomcode[]" style="max-width:350px">
-                                            <option value="" selected></option>
-                                            @foreach ($Uoms as $Uom)
-                                                <option value="{{ $Uom->UomEntry }}">{{ $Uom->UomName }}</option>
-                                            @endforeach
-                                        </select>
-                                    </td>
-                                    <td><input type="number" name="probaseqty[]" class="form-control" readonly="true"></td>
-                                    <td>
-                                       
-                                            <select class="form-control" name="probaseoum[]" style="max-width:350px" readonly="true">
+            
+            <br>
+            <div style="border: 1px solid lightgrey; background-color: white;border-radius: 4px;" >
+                <label for="promcontent" style="color:orange; margin-left: 5px; font-size:15px; "> Promotion Item</label>  
+            
+                <div class="row"id="promcontent" >                                    
+                    <div class="tab" style="margin: 1px;">
+                        <div class="tableFixHead" style=" background-color: white;">
+                            <table class="table table-bordered" id="proitems" >
+                                <thead>
+                                    <tr>
+                                        <th class="header-label">ItemCode</th>
+                                        <th class="header-label">Quantity</th>
+                                        <th class="header-label">UoM Code</th>
+                                        <th class="header-label">Base Quantity</th>
+                                        <th class="header-label">Base UoM Code</th>
+                                        <th class="header-label">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="tr_clone_proitem">
+                                        <td>
+                                            <select class="proitem" name="proitem[]" data-placeholder="Select an itemcode">
+                                                <option></option>
+                                                @foreach ($ItemCodes as $ItemCode)
+                                                    <option value="{{ $ItemCode->ItemCode }}">
+                                                        {{ $ItemCode->ItemCode . '--' . $ItemCode->ItemName }}</option>
+                                                @endforeach
+                                            </select>
+                                        </td>
+                                        <td><input type="number" name="proqty[]" class="form-control"></td>
+                                        <td>
+                                            <select class="form-control" name="prouomcode[]" style="max-width:350px">
                                                 <option value="" selected></option>
                                                 @foreach ($Uoms as $Uom)
                                                     <option value="{{ $Uom->UomEntry }}">{{ $Uom->UomName }}</option>
                                                 @endforeach
-                                            </select></td>
-                                    <td><button type="button" class="btn btn-outline-danger"
-                                            onclick="removeRow(this, '#proitems')"><i class="fa fa-trash"
-                                                aria-hidden="true"></i> </button></td>
-                                </tr>
+                                            </select>
+                                        </td>
+                                        <td><input type="number" name="probaseqty[]" class="form-control" readonly="true"></td>
+                                        <td>
+                                        
+                                                <select class="form-control" name="probaseoum[]" style="max-width:350px" readonly="true">
+                                                    <option value="" selected></option>
+                                                    @foreach ($Uoms as $Uom)
+                                                        <option value="{{ $Uom->UomEntry }}">{{ $Uom->UomName }}</option>
+                                                    @endforeach
+                                                </select></td>
+                                        <td><button type="button" class="btn btn-outline-danger"
+                                                onclick="removeRow(this, '#proitems')"><i class="fa fa-trash"
+                                                    aria-hidden="true"></i> </button></td>
+                                    </tr>
 
-                            </tbody>
-                        </table>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -275,6 +280,8 @@
         label="Save" theme="success" icon="fas fa-lg fa-save" />
     </form>
     </div>
+
+
     <script>
         $(document).ready(function() {
             // Initialize Select2 on the dropdown
@@ -367,6 +374,15 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
     <link rel="stylesheet" href="{{ asset('../css/tabformpromotion.css') }}">
     <link rel="stylesheet" href="{{ asset('../css/table.css') }}">
+    <style>
+        .tabcontent{
+            background-color: white;
+        }
+       #tablecustomer{
+        margin: 0;
+       }
+    </style>
+
 @stop
 
 @push('js')
