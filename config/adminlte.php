@@ -358,16 +358,12 @@ return [
                 
                 
                 [
-                    'text' => 'list Sale stock request',
+                    'text' => 'List Sales Stock Request',
                     'url'  => '/stock-request-list',
                 ],
                 [
-                    'text' => 'Add Sales stock',
+                    'text' => 'Add Sales Stock',
                     'url'  => '/stock-request',
-                ],
-                [
-                    'text' => 'Update delivery info',
-                    'url'  => 'update-delivery-info',
                 ],
                 [
                     'text' => 'truck information',
