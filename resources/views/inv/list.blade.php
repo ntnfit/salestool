@@ -1,10 +1,10 @@
 @extends('adminlte::page')
-@section('title', 'List Stock Out Request - Sales Order')
+@section('title', 'List Inventory Transfer Request')
 @section('plugins.Datatables', true)
 @section('plugins.DateRangePicker', true)
 @section('plugins.TempusDominusBs4', true)
 @section('content_header')
-    <h5>List Stock Out Request - Sales Order</h5>
+    <h5>List Inventory Transfer Request</h5>
 @stop
 
 <script src="https://unpkg.com/jquery/dist/jquery.min.js"></script>
@@ -27,7 +27,7 @@
         $config = ['format' => 'L'];
     @endphp
 
-    <p style="float:right"><a href="{{ route('sales.add') }}">
+    <p style="float:right"><a href="{{ route('inv.add') }}">
             <x-adminlte-button label="Add New" theme="primary" icon="fas fa-plus" />
         </a> </p>
     {{-- Setup data for datatables --}}
@@ -58,7 +58,9 @@
         </div>
         <x-adminlte-button class="btn-flat" id="getSelectedRowsBtn" style="float: right;margin-right: 20px;" type="button"
             label="Apply SAP" theme="success" />
-        <x-adminlte-button class="btn-flat" id="cancelSQ" style="float: right;margin-right: 20px;" type="button"
+            <x-adminlte-button class="btn-flat" id="confirm" style="float: right;margin-right: 20px;" type="button"
+            label="Confirm" theme="success" />
+        <x-adminlte-button class="btn-flat" id="cancelinv" style="float: right;margin-right: 20px;" type="button"
             label="Cancel Order" theme="danger" />
     </form>
     <div id="loadingModal" class="modal">
@@ -84,7 +86,6 @@
         .row-red {
             background-color: #FFABAB !important;
         }
-
         .modal {
             display: none;
             position: fixed;
@@ -129,8 +130,6 @@
                 transform: rotate(360deg);
             }
         }
-
-        
     </style>
 @stop
 
@@ -166,6 +165,7 @@
             },
             browserDatePicker: true,
         };
+
         const columnDefs = [{
                 headerName: '',
                 field: '',
@@ -184,30 +184,6 @@
                 maxWidth: 150
             },
             {
-                headerName: 'StoreID',
-                field: 'U_SID',
-                maxWidth: 150
-            },
-            {
-                field: 'CustCode',
-
-            },
-            {
-                field: 'CustName',
-            },
-            {
-                field: 'saleSup'
-            },
-            {
-                headerName: 'OrderTypeName',
-                field: 'Name'
-            },
-            {
-                headerName: 'SupportOrderNo',
-                field: 'AbsID',
-
-            },
-            {
                 headerName: 'WhsCode',
                 field: 'FromWhsCode'
             },
@@ -216,44 +192,41 @@
                 field: 'FromWhsName'
             },
             {
-                headerName: 'PoNo.',
-                field: 'POCardCode',
-
-            },
-            {
-                headerName: 'Po Date',
-                field: 'PODate',
-
-            },
-            {
                 headerName: 'TeamCode',
                 field: 'BinCode'
 
             },
             {
+                headerName: 'To WhsCode',
+                field: 'ToWhsCode'
+            },
+            {
+                headerName: 'To WhsName',
+                field: 'ToWhsName'
+            },
+            {
+                headerName: 'To TeamCode',
+                field: 'BinCode1'
+
+            },
+            
+            {
+                headerName: 'Transfer Request No.',
+                field: 'TransferReqNo',
+
+            },
+            
+            {
                 field: 'ApplySAP'
+
+            },
+            {
+                field: 'Confirm'
 
             },
             {
                 field: 'Note'
 
-            },
-            {
-                field: 'SQNO'
-
-            },
-            {
-                field: 'SONO'
-
-            },
-            {
-                headerName: 'Delivery No.',
-                field: 'DeliveryNO'
-
-            },
-            {
-                headerName: 'AR.NO',
-                field: 'ARNo'
             },
             {
                 field: 'DeliveryStatus'
@@ -311,13 +284,12 @@
             },
             onRowDoubleClicked: function(params) {
                 var id = params.data.StockNo;
-                var url = '{{ route('sales.edit', ':id') }}';
+                var url = '{{ route('inv.edit', ':id') }}';
                 url = url.replace(':id', id);
                 window.location.href = url;
             },
             rowSelection: 'multiple'
         };
-       
 
         function onBtExport() {
             gridOptions.api.exportDataAsExcel();
@@ -333,7 +305,7 @@
         function loadFilteredData() {
             $.ajax({
                 type: 'GET',
-                url: '{{ route('sales.list') }}',
+                url: '{{ route('inv.list') }}',
                 data: filterData,
                 dataType: 'json',
                 success: function(data) {
@@ -380,7 +352,7 @@
 
                 $.ajax({
                     type: 'GET',
-                    url: '{{ route('sales.apply') }}',
+                    url: '{{ route('inv.apply') }}',
                     data: {
                         SoNo: selectedProIds
                     },
@@ -401,7 +373,7 @@
 
         });
         //cancel document
-        document.querySelector("#cancelSQ").addEventListener("click", function() {
+        document.querySelector("#cancelinv").addEventListener("click", function() {
             const selectedRows = gridOptions.api.getSelectedRows().filter(row => row.StatusSAP == 0 &&  row.Canceled !="C");
             const selectedProIds = selectedRows.map((row) => row.StockNo);
             console.log(selectedProIds);
@@ -414,7 +386,7 @@
 
                 $.ajax({
                     type: 'GET',
-                    url: '{{ route('sales.cancel') }}',
+                    url: '{{ route('inv.cancel') }}',
                     data: {
                         SoNo: selectedProIds
                     },
@@ -440,5 +412,43 @@
                 })
             }
         })
+        //confirm document
+        document.querySelector("#confirm").addEventListener("click", function() {
+            const selectedRows = gridOptions.api.getSelectedRows().filter(row => row.TransferReqNo != 0 && row.Canceled !="C");
+            const selectedProIds = selectedRows.map((row) => row.TransferReqNo);
+            console.log(selectedProIds);
+            if (selectedProIds.length === 0) {
+                alert("chứng từ đã chọn đã confirm/hoặc bạn chưa chọn chứng từ nào!")
+
+            } else {
+                const loadingModal = document.getElementById("loadingModal");
+                const submitBtn = document.getElementById("getSelectedRowsBtn");
+                loadingModal.style.display = "block";
+
+                // Disable the submit button
+                submitBtn.disabled = true;
+
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ route('inv.confirm') }}',
+                    data: {
+                        SoNo: selectedProIds
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        alert("đã confirm thành công!")
+                        location.reload();
+                    },
+                    error: function() {
+                        alert("đã confirm thất bại!, vui lòng kiếm tra dữ liệu!");
+                        loadingModal.style.display = "none";
+
+                        // Enable the submit button
+                        submitBtn.disabled = false;
+                    }
+                })
+            }
+
+        });
     </script>
 @stop

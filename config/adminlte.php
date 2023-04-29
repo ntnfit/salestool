@@ -380,6 +380,23 @@ return [
             ],
         ],
         [
+            'text'    => 'Inventory',
+            'icon'    => 'fa-solid fa-list-radio',
+            'can' => 'sales-module',
+            'submenu' => [
+                
+                
+                [
+                    'text' => 'List Stock Request',
+                    'url'  => '/stock-inv-list',
+                ],
+                [
+                    'text' => 'Inventory request form',
+                    'url'  => '/inv-request',
+                ]
+            ],
+        ],
+        [
             'text'    => 'Users & Roles management',
             'icon'    => 'fa-solid fa-list-radio',
             'submenu' => [

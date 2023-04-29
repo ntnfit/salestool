@@ -187,8 +187,6 @@
             type="submit" label="Save" theme="success" icon="fas fa-lg fa-save" />
             <x-adminlte-button class="btn-flat" id="promotion" style="float: right; margin-right: 20px;margin-top: 10px;"
             type="button" label="Get Promotion" theme="success" disabled />
-        <x-adminlte-button class="btn-flat" style="float: right;margin-right: 20px;margin-top: 10px;" id="apply"
-            type="button" label="apply SAP" theme="success" />
         
 
     </div>
@@ -252,10 +250,17 @@
     <script>
         $(document).ready(function() {
             var status='{{$so->StatusSAP}}';
-           
+            var canceled='{{$so->Canceled}}';
            if(status!=="0")
            {
             $('#tabledata').css({'pointer-events':'none'});
+            const saveButton = document.getElementById('save');
+            saveButton.disabled = true;
+           }
+           if (canceled==="C")
+           {
+            const saveButton = document.getElementById('save');
+            saveButton.disabled = true;
            }
           
 

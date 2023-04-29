@@ -14,6 +14,7 @@ use App\Http\Controllers\sap\DeliveryController;
 use App\Http\Controllers\sap\ImageUploadController;
 use App\Http\Controllers\sap\ListEmployeeController;
 use App\Http\Controllers\sap\SalesController;
+use App\Http\Controllers\sap\InvController;
 
         Auth::routes();
 
@@ -74,6 +75,16 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/truck-truckapply',[DeliveryController::class,'TruckApply'])->name('logistic.TruckApply');
     Route::get('/lock-vehicle',[DeliveryController::class,'TruckLockView'])->name('logistic.lock');
     Route::get('/vehicle-lock',[DeliveryController::class,'TruckLock'])->name('logistic.applylock');
+
+    // inventory
+    Route::get('/stock-inv-list',[InvController::class,'listInvStock'])->name('inv.list');
+    Route::get('/inv-request',[InvController::class,'addView'])->name('inv.add');
+    Route::post('/inv-request',[InvController::class,'store'])->name('inv.store');
+    Route::get('/inv-request-edit/{stockSO}',[InvController::class,'edit'])->name('inv.edit');
+    Route::post('/inv-update/{stockSO}',[InvController::class,'update'])->name('inv.update');
+    Route::get('/applysap-inv',[InvController::class,'applySAP'])->name('inv.apply');
+    Route::get('/cancel-inv',[InvController::class,'Cancel'])->name('inv.cancel');
+    Route::get('/confirm-inv',[InvController::class,'confirm'])->name('inv.confirm');
     //SAP
     Route::get('/connect-setup',
     function () {
@@ -87,6 +98,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/base-uom',[PromotionController::class,'check_baseUoM'])->name('baseuom');
     Route::get('/bincode',[GetItemController::class,'getTeam'])->name('bincode');
     Route::get('/fill-lot-items',[SalesController::class,'filterdata'])->name('filllot-items');
+    Route::get('/fill-lot-inv',[InvController::class,'loaddata'])->name('fill-inv');
     Route::get('/getpromotion',[SalesController::class,'getpromotion'])->name('clickgetpromotion');
     Route::get('/saletotal',[GetItemController::class,'getsaletotal'])->name('report.saletotal');
     Route::get('/checkPOID',[GetItemController::class,'ValiatePOID'])->name('checkPOID');

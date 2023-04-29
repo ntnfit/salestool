@@ -196,7 +196,11 @@ class SalesController extends Controller
         $FromWhsName=$request->frmwhsname;
         $OrderType=$request->ordertype;
         $POCardCode=$request->pono;
-        $PODate=date("Ymd", strtotime($request->podate));
+        $PODate="";
+        if($request->podate)
+        {
+            $PODate=date("Ymd", strtotime($request->podate));
+        }
         $AbsEntry=$request->bincode;
         $AbsId=$request->sporderno;
         $team=$request->teams;
@@ -510,6 +514,7 @@ class SalesController extends Controller
                 "U_SoPhieu"=>$SoNo,
                 "U_FromBIN"=> $results[0]['AbsEntry'],
                 "U_FromBinCode"=> $results[0]['BinCode'],
+                "U_OrderType"=> $results[0]['OrderType'],
                 "DocumentLines"=>$ldt
                 
             ];
@@ -588,7 +593,7 @@ class SalesController extends Controller
         while ($row = odbc_fetch_array($stmt)) {
             $results[] = $row;
         }
-       
+        sort($results);
         // get number lot
         $distinctLots = array_unique(array_column($results, 'LotNo'));
         $ordertype=$request->ordertype;

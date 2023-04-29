@@ -199,6 +199,15 @@ label.text-lightblue.truckcode {
       },
         {headerName: "Truck Info", field: "U_TruckInfo",rowGroup: true, enableRowGroup: true,sort: 'asc',hide:true },
         {
+    headerName: 'Weight',
+    field: 'Weight',
+    aggFunc: (params) => {
+        let sum = 0;
+        params.values.forEach((value) => (sum += parseFloat(value)));
+        return sum.toFixed(3);
+    }
+  },
+        {
     headerName: 'Type',
     field: 'TypeName',
   },
@@ -222,10 +231,7 @@ label.text-lightblue.truckcode {
     headerName: 'Card Name',
     field: 'CardName',
   },
-  {
-    headerName: 'Weight',
-    field: 'Weight',
-  },
+  
   {
     headerName: 'Warehouse',
     field: 'WhsName',
