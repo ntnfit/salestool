@@ -347,6 +347,14 @@ return [
                     'text' => 'Promotions',
                     'url'  => 'promotions-list',
                 ],
+                [
+                    'text' => 'List Date promotion',
+                    'url'  => 'promotions-list-date',
+                ],
+                [
+                    'text' => 'Add Promotions',
+                    'url'  => 'promotions-add',
+                ],
                 
             ],
         ],

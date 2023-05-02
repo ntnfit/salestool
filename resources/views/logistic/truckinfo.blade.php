@@ -57,6 +57,7 @@ $configss = [
                     <option value="{{ $result->Code }}">{{ 'Code:'.$result->Code . '--Driver: ' . $result->U_TruckDriver.'--Type: '. $result->U_Type.'--Capacity: '.$result->U_Capacity.'--Tel: '.$result->U_Tel}}
                     </option>
                 @endforeach
+                <option value="">null</option>
       </x-adminlte-select-bs>
       <x-adminlte-button class="btn" id="apply" style="float: right;margin-top: 30px;font-size: small;height: 31px;margin-left:10px;" type="button" label="Apply" theme="success" />
       
@@ -212,6 +213,10 @@ label.text-lightblue.truckcode {
     field: 'TypeName',
   },
   {
+    headerName: 'Del No',
+    field: 'U_DelNo',
+  },
+  {
     headerName: 'Doc Entry',
     field: 'DocEntry',
   },
@@ -301,10 +306,7 @@ label.text-lightblue.truckcode {
     headerName: 'Status',
     field: 'StatusIDName',
   },
-  {
-    headerName: 'Del No',
-    field: 'U_DelNo',
-  },
+  
   {
     headerName: 'Truck Weight',
     field: 'TruckWeight',
@@ -422,7 +424,30 @@ label.text-lightblue.truckcode {
           }
          
       });
+
       loadInitialData();
+               
+      gridOptions.api.addEventListener('selectionChanged', function() {
+ // Get the selected rows
+const selectedRows = gridOptions.api.getSelectedRows();
+
+// If there is only one row selected, check for other rows with the same DelNo and select them
+if (selectedRows.length === 1) {
+  const selectedDelNo = selectedRows[0].U_DelNo;
+  const selectedTruckInfo = selectedRows[0].U_TruckInfo;
+
+  gridOptions.api.forEachNode(function(node) {
+    if (node.group || !node.data.U_DelNo) {
+      return;
+    }
+    if (node.data.U_TruckInfo === selectedTruckInfo && node.data.U_DelNo === selectedDelNo && !node.isSelected()) {
+      node.setSelected(true);
+    }
+  });
+}
+
+});
+
 
       document.querySelector("#apply").addEventListener("click", function() {
             const selectedRows = gridOptions.api.getSelectedRows().filter(row => row.DocNum);
@@ -430,11 +455,8 @@ label.text-lightblue.truckcode {
             const TruckCode=document.getElementById('truckcode').value;
             const loadingModal = document.getElementById("loadingModal");
             const submitBtn = document.getElementById("apply");
-            if(TruckCode=="")
-            {
-              alert("TruckCode is empty!")
-            }
-            else if ( selectedProIds.length === 0)
+        
+             if ( selectedProIds.length === 0)
             {
               alert("Please choose DocNum!")
             }
@@ -472,5 +494,126 @@ label.text-lightblue.truckcode {
             
       })
   });
+
+            document.querySelector("#print").addEventListener("click", function() {
+            const selectedRows = gridOptions.api.getSelectedRows().filter(row => row.DocNum);
+            const selectedProIds = selectedRows.map((row) => row.DocNum);
+            const selectPramaDoc =selectedRows.map((row) => row.DocNum+'-'+row.TypeName);
+
+            // Get distinct values of TruckInfor
+            const truckInforSet = new Set(selectedRows.map((row) => row.U_TruckInfo).filter(Boolean));
+            const truckInforArray = Array.from(truckInforSet);
+
+            // Get distinct values of U_DelNo
+            const uDelNoSet = new Set(selectedRows.map((row) => row.U_DelNo).filter(Boolean));
+            const uDelNoArray = Array.from(uDelNoSet);
+
+            // Check if any selected row has null or empty TruckInfor
+            const hasNullTruckInfor = selectedRows.some(row => !row.U_TruckInfo);
+
+            if (hasNullTruckInfor) {
+              alert('Please apply the truck code before printing!');
+              return;
+            }
+
+            if (selectedProIds.length === 0) {
+              alert("Please choose DocNum!");
+              return;
+            }
+            if(uDelNoArray.length === 0)
+            {
+              alert("Please Stock-out before print! !");
+              return;
+            }
+            if(uDelNoArray.length >1 )
+            {
+              alert("Cannot select more than 2 Do No!");
+              return;
+            }
+            if (truckInforArray.length >1) {
+              alert("Cannot select more than 2 TruckCode!!");
+              return;
+            }
+            console.log("TruckInfor:"+truckInforArray);
+            console.log("DelNo:"+uDelNoArray);
+            console.log("Prama"+selectPramaDoc);
+            const url = '{{ route('print-do') }}'+'?type=print'+ '&pra=' + encodeURIComponent(selectPramaDoc);
+                          // redirect to the new URL
+          window.open(url, '_blank');
+          });
+
+          document.querySelector("#stockout").addEventListener("click", function() {
+            const selectedRows = gridOptions.api.getSelectedRows().filter(row => row.DocNum);
+            const selectedProIds = selectedRows.map((row) => row.DocNum);
+            const selectPramaDoc =selectedRows.map((row) => row.DocNum+'-'+row.TypeName);
+
+            // Get distinct values of TruckInfor
+            const truckInforSet = new Set(selectedRows.map((row) => row.U_TruckInfo).filter(Boolean));
+            const truckInforArray = Array.from(truckInforSet);
+
+            // Get distinct values of U_DelNo
+            const uDelNoSet = new Set(selectedRows.map((row) => row.U_DelNo).filter(Boolean));
+            const uDelNoArray = Array.from(uDelNoSet);
+
+            // Check if any selected row has null or empty TruckInfor
+            const hasNullTruckInfor = selectedRows.some(row => !row.U_TruckInfo);
+
+            if (hasNullTruckInfor) {
+              alert('Please apply the truck code before printing!');
+              return;
+            }
+
+            if (truckInforArray.length >1) {
+              alert("Cannot select more than 2 TruckCode!!");
+              return;
+            }
+            if (selectedProIds.length === 0) {
+              alert("Please choose DocNum!");
+              return;
+            }
+
+            if(uDelNoArray.length >1 )
+            {
+              alert("Cannot select more than 2 DO No!");
+              return;
+            }
+            const loadingModal = document.getElementById("loadingModal");
+            const submitBtn = document.getElementById("apply");
+            console.log("TruckInfor:"+truckInforArray);
+            console.log("DelNo:"+uDelNoArray);
+            console.log("Prama"+selectPramaDoc);
+            loadingModal.style.display = "block";
+
+                // Disable the submit button
+                submitBtn.disabled = true;
+
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ route('applyDo') }}',
+                    data: {
+                      delno: uDelNoArray,
+                      Prama: selectPramaDoc,
+                      No:selectedProIds,
+                      type:"01"
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        location.reload();
+                        const url = '{{ route('print-do') }}'+'?type=stockout'+ '&pra=' + encodeURIComponent(selectPramaDoc);
+                          // redirect to the new URL
+                          window.location.href = url;
+
+                    },
+                    error: function() {
+                        alert("sorry, It happen error please contact administrator!");
+                        loadingModal.style.display = "none";
+
+                        // Enable the submit button
+                        submitBtn.disabled = false;
+                    }
+                })
+
+          });
+
 </script>
 @endpush

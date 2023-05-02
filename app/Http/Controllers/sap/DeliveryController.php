@@ -158,7 +158,7 @@ class DeliveryController extends Controller
 
     function TruckApply(Request $request){
         $conDB = (new SAPB1Controller)->connect_sap();
-        if (!empty($request->TruckCode) && !empty($request->No))
+        if (!empty($request->No))
         {
             foreach($request->No as $no)
             {

@@ -15,7 +15,7 @@ use App\Http\Controllers\sap\ImageUploadController;
 use App\Http\Controllers\sap\ListEmployeeController;
 use App\Http\Controllers\sap\SalesController;
 use App\Http\Controllers\sap\InvController;
-
+use App\Http\Controllers\ExportCrystalReportController;
         Auth::routes();
 
         Route::get('sapb1',[SAPB1Controller::class,'connect']);
@@ -53,11 +53,14 @@ Route::group(['middleware' => ['auth']], function() {
        
     //promotions route
     Route::get('/promotions-list',[PromotionController::class,'listPromotion'])->name('list-promotion');
+    Route::get('/promotions-list-date',[PromotionController::class,'listPromotionDate'])->name('list-promotion-date');
     Route::get('/promotions-add',[PromotionController::class,'dfPromotion'])->name('add-promotions');
     Route::get('/custmer-filter',[PromotionController::class,'ListCustomerDropDown'])->name('filterCus');
     Route::post('/promotions-submit',[PromotionController::class,'store'])->name('prosubmit');
     Route::get('/promotion/{proid}',[PromotionController::class,'edit'])->name('pro.edit');
+    Route::get('/promotion-date/{proid}',[PromotionController::class,'edit_prodate'])->name('prodate.edit');
     Route::post('/promotion/{proid}',[PromotionController::class,'update'])->name('pro.update');
+    Route::get('/pro-terminate',[PromotionController::class,'terminated'])->name('pro.terminated');
 // sale stock- request
     Route::get('/stock-request-list',[SalesController::class,'listSaleStock'])->name('sales.list');
 
@@ -104,4 +107,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/checkPOID',[GetItemController::class,'ValiatePOID'])->name('checkPOID');
     Route::get('/get-truck-infor',[DeliveryController::class,'TruckInfor'])->name('truck.get'); 
     Route::get('/get-support-no',[GetItemController::class,'GetSupportOrder'])->name('GetSupportOrder');
+    Route::get('/applyDo', [ExportCrystalReportController::class,'applyDo'])->name('applyDo');
+    Route::get('/export-truckinfor', [ExportCrystalReportController::class,'print_do'])->name('print-do');
+
+
 });

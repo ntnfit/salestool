@@ -35,7 +35,6 @@
       </div>
   </div>
 
-
     <style media="only screen">
             html, body {
                 height: 100%;
@@ -60,7 +59,7 @@
             .row-red {
             background-color: #FFABAB !important;
         }
-        .modal {
+            .modal {
             display: none;
             position: fixed;
             z-index: 1;
@@ -105,6 +104,7 @@
             }
         }
         </style>
+        
 @endsection
 @push('js')
 		<script>var __basePath = './';</script>
@@ -143,20 +143,17 @@ const columnDefs = [
     { headerName: '', field: '', maxWidth: 50,  headerCheckboxSelection: true, checkboxSelection: true, },
   { headerName:"ProId",field: 'ProId',maxWidth: 100 
     },
-  {headerName:"Promotion Name",field: 'PromotionName'},
-  {  headerName:"Promotion Type",field: 'ProtypeName' },
+  {headerName:"Promotion Name",field: 'ProName'},
+  {  headerName:"Promotion Type",field: 'PromotionType' },
   { headerName:"From Date",field: 'Fromdate' },
   {
     headerName:"To Date",field: 'ToDate'
   },
-  { field: 'Quatity' },
-  { field: 'TotalAmount'},
-  { field: 'DiscountAmt' },
-  { field: 'Special' },
+
   { field: 'Rouding' },
-  { field: 'DateCreate' },
-  { field: 'DateUpdate' },
-  { field: 'hasTerminate' },
+  { field: 'DateCreated' },
+  { field: 'DateUpdated' },
+
 ];
 
 const gridOptions = {
@@ -177,12 +174,13 @@ const gridOptions = {
   },
   onRowDoubleClicked: function(params) {
                 var id = params.data.ProId;
-                var url = '{{ route("pro.edit", ":id") }}';
+                var url = '{{ route("prodate.edit", ":id") }}';
                 url = url.replace(':id', id);
                 window.location.href = url;
             },
     rowSelection: 'multiple'
 };
+//terminate
 document.querySelector("#getSelectedRowsBtn").addEventListener("click", function () {
       const selectedRows = gridOptions.api.getSelectedRows();
       const selectedProIds = selectedRows.map((row) => row.ProId);
@@ -202,7 +200,7 @@ document.querySelector("#getSelectedRowsBtn").addEventListener("click", function
                     url: '{{ route('pro.terminated') }}',
                     data: {
                         SoNo: selectedProIds,
-                        protype:"1"
+                        protype:"5"
                     },
                     dataType: 'json',
                     success: function(data) {

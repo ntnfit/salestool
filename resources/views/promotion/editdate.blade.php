@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Add promotions')
+@section('title', 'Edit promotions')
 @section('plugins.Datatables', true)
 
 @section('plugins.Sweetalert2', true)
@@ -11,60 +11,62 @@
     integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     @php
-
+$config = [
+    "timePicker" => true,
+    "startDate" => $header[0]['FromDate'],
+    "endDate" => $header[0]['ToDate'],
+    "locale" => ["format" => "YYYY-MM-DD"],
+];
 @endphp
 @section('content')
 
     <div class="content">
-        <form action="{{ route('prosubmit') }}" method="post">
+        <form action="{{ route('pro.update', ['proid' => $header[0]['ProID']]) }}" method="post">
             @csrf
             <!-- header input  -->
             <div class="row">
                 <x-adminlte-select label="Type Promotion" label-class="text-lightblue" name="protype" id="protype"
-                    fgroup-class="col-md-3" enable-old-support>
-                   
-                    @foreach ($PromTypes as $promtype)
-                        <option value="{{ $promtype->ProtypeID }}">{{ $promtype->ProtypeName }}</option>
-                    @endforeach
-                    <option value="5">Date Promotion</option>
+                    fgroup-class="col-md-3" enable-old-support readonly="true">
+                    <option value="5">Date promotion</option>
                 </x-adminlte-select>
                 <div class="row col-md-9" style="float:right">
-                    <x-adminlte-input label="ID" label-class="text-lightblue" name="ID" type="text"
-                        placeholder="" fgroup-class="col-md-3" disabled>
+                    <x-adminlte-input label="ID" label-class="text-lightblue" name="ID" type="text" value="{{$header[0]['ProID']}}"
+                        placeholder="" fgroup-class="col-md-3" readonly="true">
                     </x-adminlte-input>
-                    <x-adminlte-input label="Promotion Name" label-class="text-lightblue" name="promotionname"
-                        type="text" fgroup-class="col-md-5" enable-old-support required>
+                    <x-adminlte-input label="Promotion name" label-class="text-lightblue" name="promotionname" value="{{$header[0]['ProName']}}"
+                        type="text" fgroup-class="col-md-6" enable-old-support>
                     </x-adminlte-input>
-                    <x-adminlte-input name="special" label="Special" type="checkbox" label-class="text-lightblue"
-                        value="special" fgroup-class="col-xs-3" enable-old-support>
+        
+                    @if($header[0]['Rouding']==1) 
+                    <x-adminlte-input name="rouding" style="margin-left: 1.5rem;" label="Rounding" type="checkbox"
+                        label-class="text-lightblue" value="rouding" fgroup-class="col-xs-3 rouding" enable-old-support checked>
                     </x-adminlte-input>
-
-                    <x-adminlte-input name="rouding" id="rouding" style="margin-left: 1.5rem;" label="Rounding" type="checkbox"
-                        label-class="text-lightblue" value="rouding" checked fgroup-class="col-xs-3 rouding" enable-old-support>
+                    @else
+                    <x-adminlte-input name="rouding" style="margin-left: 1.5rem;" label="Rounding" type="checkbox"
+                    label-class="text-lightblue" value="rouding" fgroup-class="col-xs-3 rouding" enable-old-support>
+                </x-adminlte-input>
+                     @endif
+                     @if($header[0]['FixCust']==1)
+                    <x-adminlte-input name="fixcus" label="Fix customer" type="checkbox" label-class="text-lightblue"
+                        value="fixcus" fgroup-class="col-xs-3" enable-old-support  checked>
                     </x-adminlte-input>
-                    <x-adminlte-input name="fixcus" id="fixcus" style="margin-left: 1.5rem;" label="Fix customer" type="checkbox"
-                        label-class="text-lightblue" value="fixcus" disabled fgroup-class="col-xs-3 rouding" enable-old-support>
+                    @else
+                    <x-adminlte-input name="fixcus" label="Fix customer" type="checkbox" label-class="text-lightblue"
+                        value="fixcus" fgroup-class="col-xs-3" enable-old-support >
                     </x-adminlte-input>
+                    @endif
                 </div>
             </div>
             <div class="row">
-                <x-adminlte-date-range name="period"    label="Period" label-class="text-lightblue" fgroup-class="col-md-3" />
-                <x-adminlte-input label="Quantity" label-class="text-lightblue" name="Quantity" type="number"
-                    fgroup-class="col-md-3" enable-old-support>
-                </x-adminlte-input>
-                <x-adminlte-input label="Amount" label-class="text-lightblue" name="Amount" type="number"
-                    fgroup-class="col-md-3" enable-old-support>
-                </x-adminlte-input>
-                <x-adminlte-input label="Dis.Percent" label-class="text-lightblue" name="dispercent" type="number"
-                    min="0" max="100" step="0.01" fgroup-class="col-md-3" enable-old-support>
-                </x-adminlte-input>
+                <x-adminlte-date-range name="period" label="Period" :config="$config" label-class="text-lightblue" fgroup-class="col-md-3" />
+               
             </div>
             <!-- row input -->
-            <div class="tab"  style="border-radius: 4px;">
-                <button class="tablinks"  type="button" onclick="openTab(event, 'tab-1')" id="defaultOpen">Item</button>
+            <div class="tab">
+                <button class="tablinks" type="button" onclick="openTab(event, 'tab-1')" id="defaultOpen">Item</button>
                 <button class="tablinks" type="button" onclick="openTab(event, 'tab-2')">Customer</button>
             </div>
-            <div id="tab-1" class="tabcontent" style="border: 1px solid lightgrey; border-radius: 4px;" >
+            <div id="tab-1" class="tabcontent">
                 @php
                     $configItem = [
                         'title' => 'Select ItemCode - ItemName',
@@ -79,19 +81,82 @@
                         <thead>
                             <tr>
                                 <th class="header-label">ItemCode</th>
-                                <th class="header-label">Quantity</th>                          
+                                <th class="header-label">Quantity</th>
                                 <th class="header-label">UoM Codde</th>
-                                <th class="header-label batch" hidden>Batch No.</th>
+                                <th class="header-label batch">Batch No.</th>
                                 <th class="header-label">Base Quantity</th>
                                 <th class="header-label">Base UoM Code</th>
-                                <th class="header-label Itemselectdate" hidden>ItemPro</th>
-                                <th class="header-label proqtydate" hidden>Quantity</th>                          
-                                <th class="header-label probatchdate" hidden>Batch No.</th>
+                                <th class="header-label Itemselectdate">ItemPro</th>
+                                <th class="header-label proqtydate">Quantity</th>                          
+                                <th class="header-label probatchdate">Batch No.</th>
                                 <th class="header-label">Action</th>
                             </tr>
                         </thead>
 
                         <tbody>
+                            @foreach($listItems as $listItem)
+                            <tr class="tr_clone_itemlist">
+                                <td class="Itemselect">
+                                    <select class="itemlist" id="Item" name="Item[]" data-placeholder="Select an itemcode">
+                                        <option value="" selected></option>
+                                        @foreach ($ItemCodes as $ItemCode)
+                                          @if($listItem['ItemCode']== $ItemCode->ItemCode)
+                                            <option value="{{ $ItemCode->ItemCode }}" selected>
+                                                {{ $ItemCode->ItemCode . '--' . $ItemCode->ItemName }}</option>
+                                            @else
+                                            <option value="{{ $ItemCode->ItemCode }}" >
+                                                {{ $ItemCode->ItemCode . '--' . $ItemCode->ItemName }}</option>
+                                            @endif
+                                        @endforeach
+                                    </select>
+                                </td>
+                                <td><input type="number" name="Qty[]" class="qty form-control" value="{{number_format($listItem['InputQty'], 0, '', '')}}" step="0.01"></td>
+                                <td><select class="uom form-control" name="UomCode[]" >
+                                        <option value="" selected></option>
+                                        @foreach ($Uoms as $Uom)
+                                        @if($listItem['InputUoMCode']== $Uom->UomEntry)
+                                            <option value="{{ $Uom->UomEntry }}" selected>{{ $Uom->UomName }}</option>
+                                        @else
+                                            <option value="{{ $Uom->UomEntry }}">{{ $Uom->UomName }}</option>
+                                        @endif
+                                        @endforeach
+                                    </select></td>
+                                <td class="batch"><input type="text" name="Batch[]" value="{{$listItem['BatchNo']}}" class="form-control batch"></td>
+                                <td><input type="number" name="BaseQty[]" class="form-control" readonly="true" value="{{number_format($listItem['Quantity'], 0, '', '')}}"></td>
+                                <td>
+                                    <select class="form-control" name="BaseUom[]" style="max-width:350px" readonly="true">
+                                        <option value="" selected></option>
+                                        @foreach ($Uoms as $Uom)
+                                        @if($listItem['UoMCode'] == $Uom->UomEntry)
+                                            <option value="{{ $Uom->UomEntry }}" selected>{{ $Uom->UomName }}</option>
+                                            @else
+                                            <option value="{{ $Uom->UomEntry }}">{{ $Uom->UomName }}</option>
+                                        @endif
+                                        @endforeach
+                                    </select>
+                                </td>
+                                
+                                <td class="Itemselectdate" >
+                                        <select class="itemlist" id="Itemdate" name="Itemdate[]" data-placeholder="Select an itemcode">
+                                            <option value="" selected></option>
+                                            @foreach ($ItemCodes as $ItemCode)
+                                            @if($listItem['ProItemCode']== $ItemCode->ItemCode)
+                                            <option value="{{ $ItemCode->ItemCode }}" selected>
+                                                {{ $ItemCode->ItemCode . '--' . $ItemCode->ItemName }}</option>
+                                            @else
+                                            <option value="{{ $ItemCode->ItemCode }}" >
+                                                {{ $ItemCode->ItemCode . '--' . $ItemCode->ItemName }}</option>
+                                            @endif
+                                            @endforeach
+                                        </select>
+                                </td>
+                                <td class="proqtydate"><input type="number" name="ProQtydate[]"  value="{{$listItem['ProQuantity']}}" class="form-control"></td>
+                                <td class="probatchdate"><input type="text" name="ProBatchdate[]" value="{{$listItem['ProDate']}}" class="form-control" ></td>
+                                <td><button type="button" class="btn btn-outline-danger"
+                                        onclick="removeRow(this, '#myTable')"><i class="fa fa-trash"
+                                            aria-hidden="true"></i> </button></td>
+                            </tr>
+                            @endforeach
                             <tr class="tr_clone_itemlist">
                                 <td class="Itemselect">
                                     <select class="itemlist" id="Item" name="Item[]" data-placeholder="Select an itemcode">
@@ -109,7 +174,7 @@
                                             <option value="{{ $Uom->UomEntry }}">{{ $Uom->UomName }}</option>
                                         @endforeach
                                     </select></td>
-                                <td class="batch" hidden><input type="text" name="Batch[]" class="form-control batch"></td>
+                                <td class="batch" ><input type="text" name="Batch[]" class="form-control batch"></td>
                                 <td><input type="number" name="BaseQty[]" class="form-control" readonly="true"></td>
                                 <td>
                                     <select class="form-control" name="BaseUom[]" style="max-width:350px" readonly="true">
@@ -118,7 +183,7 @@
                                             <option value="{{ $Uom->UomEntry }}">{{ $Uom->UomName }}</option>
                                         @endforeach
                                     </select></td>
-                                    <td class="Itemselectdate" hidden>
+                                    <td class="Itemselectdate">
                                         <select class="itemlist" id="Itemdate" name="Itemdate[]" data-placeholder="Select an itemcode">
                                             <option value="" selected></option>
                                             @foreach ($ItemCodes as $ItemCode)
@@ -127,8 +192,8 @@
                                             @endforeach
                                         </select>
                                     </td>
-                                    <td class="proqtydate" hidden><input type="number" name="ProQtydate[]" class="form-control"></td>
-                                    <td class="probatchdate" hidden><input type="text" name="ProBatchdate[]" class="form-control" ></td>
+                                    <td class="proqtydate"><input type="number" name="ProQtydate[]" class="form-control"></td>
+                                    <td class="probatchdate"><input type="text" name="ProBatchdate[]" class="form-control" ></td>
                                 <td><button type="button" class="btn btn-outline-danger"
                                         onclick="removeRow(this, '#myTable')"><i class="fa fa-trash"
                                             aria-hidden="true"></i> </button></td>
@@ -137,7 +202,7 @@
                     </table>
                 </div>
             </div>
-            <div id="tab-2" class="tabcontent" style="border: 1px solid lightgrey;">
+            <div id="tab-2" class="tabcontent">
                 <div class="row datasearch">
 
                     @php
@@ -200,18 +265,37 @@
                     </x-adminlte-select-bs>
                     <x-adminlte-button class="btn-flat" id="search"
                         style="float: right;margin-top: 34px;font-size: small;height: 31px;" type="button"
-                        label="Search" theme="success" icon="fas fa-lg fa-save" />
+                        label="search" theme="success" icon="fas fa-lg fa-save" />
                 </div>
                 <div class="tableFixHead">
                     <!-- các trường nhập liệu của tab customer -->
                     <table id="tablecustomer" class="table-bordered">
                         <thead>
                             <tr>
-                                <th class="header-label">Customer Data</th>
+                                <th class="header-label">Customer data</th>
                                 <th class="header-label">Action</th>
                             </tr>
                         </thead>
                         <tbody>
+                            @foreach ($customerdt as $dt)
+                            <tr class="tr_clone">
+                                <td>
+                                    <select class="items" name="cus[]" data-placeholder="Select an customer">
+                                       
+                                            <option value="{{ $dt['CustCode']}}" selected>
+                                                {{ $dt['CustCode'] . '--' . $dt['CustName'] . '--' .
+                                                $dt['ChannelCode'].'--'.$dt['RouteCode'].'--'.$dt['LocationCode']
+                                                }}
+                                                </option>
+                                        
+                                    </select>
+                                </td>
+
+                                <td><button type="button" class="btn btn-outline-danger"
+                                        onclick="removeRow(this, '#tablecustomer')"><i class="fa fa-trash"
+                                            aria-hidden="true"></i> </button></td>
+                            </tr>
+                            @endforeach
                             <tr class="tr_clone">
                                 <td>
                                     <select class="items" name="cus[]" data-placeholder="Select an customer">
@@ -230,79 +314,18 @@
                                         onclick="removeRow(this, '#tablecustomer')"><i class="fa fa-trash"
                                             aria-hidden="true"></i> </button></td>
                             </tr>
-                            
                         </tbody>
                     </table>
 
                 </div>
             </div>
-            
-            <br>
-            <div style="border: 1px solid lightgrey; background-color: white;border-radius: 4px;" >
-                <label for="promcontent" style="color:orange; margin-left: 5px; font-size:15px; "> Promotion Item</label>  
-            
-                <div class="row"id="promcontent" >                                    
-                    <div class="tab" style="margin: 1px;">
-                        <div class="tableFixHead" style=" background-color: white;">
-                            <table class="table table-bordered" id="proitems" >
-                                <thead>
-                                    <tr>
-                                        <th class="header-label">ItemCode</th>
-                                        <th class="header-label">Quantity</th>
-                                        <th class="header-label">UoM Code</th>
-                                        <th class="header-label">Base Quantity</th>
-                                        <th class="header-label">Base UoM Code</th>
-                                        <th class="header-label">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr class="tr_clone_proitem">
-                                        <td>
-                                            <select class="proitem" name="proitem[]" data-placeholder="Select an itemcode">
-                                                <option></option>
-                                                @foreach ($ItemCodes as $ItemCode)
-                                                    <option value="{{ $ItemCode->ItemCode }}">
-                                                        {{ $ItemCode->ItemCode . '--' . $ItemCode->ItemName }}</option>
-                                                @endforeach
-                                            </select>
-                                        </td>
-                                        <td><input type="number" name="proqty[]" class="form-control"></td>
-                                        <td>
-                                            <select class="form-control" name="prouomcode[]" style="max-width:350px">
-                                                <option value="" selected></option>
-                                                @foreach ($Uoms as $Uom)
-                                                    <option value="{{ $Uom->UomEntry }}">{{ $Uom->UomName }}</option>
-                                                @endforeach
-                                            </select>
-                                        </td>
-                                        <td><input type="number" name="probaseqty[]" class="form-control" readonly="true"></td>
-                                        <td>
-                                        
-                                                <select class="form-control" name="probaseoum[]" style="max-width:350px" readonly="true">
-                                                    <option value="" selected></option>
-                                                    @foreach ($Uoms as $Uom)
-                                                        <option value="{{ $Uom->UomEntry }}">{{ $Uom->UomName }}</option>
-                                                    @endforeach
-                                                </select></td>
-                                        <td><button type="button" class="btn btn-outline-danger"
-                                                onclick="removeRow(this, '#proitems')"><i class="fa fa-trash"
-                                                    aria-hidden="true"></i> </button></td>
-                                    </tr>
-
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
+           
     </div>
     </div>
     <x-adminlte-button class="btn-flat" style="float: right; margin-top:10px" id="submit" type="submit"
         label="Save" theme="success" icon="fas fa-lg fa-save" />
     </form>
     </div>
-
-
     <script>
         $(document).ready(function() {
             // Initialize Select2 on the dropdown
@@ -395,15 +418,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
     <link rel="stylesheet" href="{{ asset('../css/tabformpromotion.css') }}">
     <link rel="stylesheet" href="{{ asset('../css/table.css') }}">
-    <style>
-        .tabcontent{
-            background-color: white;
-        }
-       #tablecustomer{
-        margin: 0;
-       }
-    </style>
-
 @stop
 
 @push('js')
@@ -431,7 +445,7 @@
             {
                 typeSelect: 'protype',
                 myTable: 'proitems',
-                divcontent: 'promcontent',
+                divcontent: 'promcontent'
             }
         ];
     
@@ -447,48 +461,9 @@
                 if (selectedValue === '2' || selectedValue === '3' || selectedValue === '4') {
                     myTableElem.style.display = 'none';
                     divcontentElem.style.visibility = 'hidden';
-                    $('#rouding').prop('checked', false);
-                    $('#fixcus').prop('disabled', true);
-
-                    $('th.header-label.batch').prop('hidden', true);
-                    $('.batch').prop('hidden', true);
-                    $('th.header-label.Itemselectdate').prop('hidden', true);
-                    $('.Itemselectdate').prop('hidden', true);
-                    $('th.header-label.proqtydate').prop('hidden', true);
-                    $('.proqtydate').prop('hidden', true);
-                    $('th.header-label.probatchdate').prop('hidden', true);
-                    $('.probatchdate').prop('hidden', true);
-                }
-                else if(selectedValue === '5')
-                {
-                    myTableElem.style.display = 'none';
-                    divcontentElem.style.visibility = 'hidden';
-                    $('#rouding').prop('checked', true);
-                    $('#fixcus').prop('disabled', false); 
-
-                    $('th.header-label.batch').prop('hidden', false);
-                    $('.batch').prop('hidden', false);
-                    $('th.header-label.Itemselectdate').prop('hidden', false);
-                    $('.Itemselectdate').prop('hidden', false);
-                    $('th.header-label.proqtydate').prop('hidden', false);
-                    $('.proqtydate').prop('hidden', false);
-                    $('th.header-label.probatchdate').prop('hidden', false);
-                    $('.probatchdate').prop('hidden', false);
-
                 } else if (selectedValue === '1') {
                     myTableElem.style.display = 'table';
                     divcontentElem.style.visibility = 'visible';
-                    $('#rouding').prop('checked', true);
-                    $('#fixcus').prop('disabled', true);
-
-                    $('th.header-label.batch').prop('hidden', true);
-                    $('.batch').prop('hidden', true);
-                    $('th.header-label.Itemselectdate').prop('hidden', true);
-                    $('.Itemselectdate').prop('hidden', true);
-                    $('th.header-label.proqtydate').prop('hidden', true);
-                    $('.proqtydate').prop('hidden', true);
-                    $('th.header-label.probatchdate').prop('hidden', true);
-                    $('.probatchdate').prop('hidden', true);
                 }
             });
         });
@@ -561,5 +536,6 @@
     });
 </script>
 
-
+    
+  
 @endpush
