@@ -372,18 +372,25 @@ return [
                 [
                     'text' => 'Add Sales Stock',
                     'url'  => '/stock-request',
-                ],
+                ]
+            ],
+        ],
+        [
+            'text'    => 'Logistics',
+            'icon'    => 'fa-solid fa-list-radio',
+            'can' => 'sales-module',
+            'submenu' => [
                 [
-                    'text' => 'truck information',
+                    'text' => 'Truck information',
                     'url'  => 'truck-information',
                 ],
                 [
-                    'text' => 'update delivery status',
+                    'text' => 'Update delivery status',
                     'url'  => '/delivery',
                 ],
                 [
                     'text' => 'Print Delivery Notes',
-                    'url'  => 'print-delivery-notes',
+                    'url'  => 'print-so-no-list',
                 ],
             ],
         ],
