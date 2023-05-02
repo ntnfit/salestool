@@ -239,5 +239,34 @@ class DeliveryController extends Controller
         odbc_close($conDB);
         return response()->json(["success" => true,"data"=>"okay"]);
     }
-   
+    function SoNotPrint()
+    {
+        $conDB = (new SAPB1Controller)->connect_sap();
+        $sql='call USP_BS_PrintInvoice_NotPrint';
+        $stmt = odbc_prepare($conDB, $sql);
+        odbc_execute($stmt);
+        $results = array();
+        while ($row = odbc_fetch_object($stmt)) {
+            $results[] = $row;
+        };
+        $results=json_encode( $results);
+        odbc_close($conDB);
+        return view ('logistic.printDoNote',compact('results'));
+    }
+    function updatePrinted()
+    {
+        $conDB = (new SAPB1Controller)->connect_sap();
+        if (!empty($request->No))
+        {
+                foreach($request->No as $no)
+                {
+                    $sql='update ORDR set "U_TruckInfo"=? Where "DocNum"=?';       
+                    $stmt = odbc_prepare($conDB, $sql);
+                    odbc_execute($stmt,array('L',$no));
+    
+                };
+        }
+        odbc_close($conDB);
+        return response()->json(["success" => true,"data"=>"okay"]);
+    }
 }

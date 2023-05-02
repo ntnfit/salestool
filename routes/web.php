@@ -78,6 +78,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/truck-truckapply',[DeliveryController::class,'TruckApply'])->name('logistic.TruckApply');
     Route::get('/lock-vehicle',[DeliveryController::class,'TruckLockView'])->name('logistic.lock');
     Route::get('/vehicle-lock',[DeliveryController::class,'TruckLock'])->name('logistic.applylock');
+    Route::get('/print-so-no-list',[DeliveryController::class,'SoNotPrint'])->name('logistic.sonotprint');
 
     // inventory
     Route::get('/stock-inv-list',[InvController::class,'listInvStock'])->name('inv.list');

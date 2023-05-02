@@ -1,9 +1,7 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+@extends('adminlte::page')
+
+@section('title', 'Saletotal')
+    
 
     <!-- Bootstrap CSS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
@@ -12,9 +10,8 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.13.1/xlsx.full.min.js"></script> 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/css/bootstrap-select.min.css">
-    <title>Sales Hub</title>
-  </head>
-  <body>
+  
+    @section('content')
     <div id="spinner-div" class="pt-5">
     <div class="spinner-border text-primary" role="status">
     </div>
@@ -69,7 +66,23 @@
   <strong>Loading...</strong>
   <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
 </div>
-
+@endsection
+@section('css')
+<style>
+  #spinner-div {
+  position: fixed;
+  display: none;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.8);
+  z-index: 2;
+}
+</style>
+@endsection
+@push('js')
 <script>
   $(document).ready(function() {
   
@@ -153,18 +166,5 @@
 </script>
 <!-- MDB -->
 
-<style>
-  #spinner-div {
-  position: fixed;
-  display: none;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  text-align: center;
-  background-color: rgba(255, 255, 255, 0.8);
-  z-index: 2;
-}
-</style>
-  </body>
-</html>
+
+@endpush
