@@ -299,6 +299,11 @@
             document.querySelector("#print").addEventListener("click", function() {
                 const selectedRows = gridOptions.api.getSelectedRows().filter(row => row.DocEntry);
                 const selectedProIds = selectedRows.map((row) => row.DocEntry);
+                // Get distinct values of TruckInfor
+            const groupset = new Set(selectedRows.map((row) => row.GroupName).filter(Boolean));
+            const groupData = Array.from(groupset);
+
+
                 if (selectedProIds.length === 0) {
                 alert("Please choose DocNum!");
                 return;
@@ -320,6 +325,30 @@
                     console.log(selectedOption);
                     console.log(selectedProIds);
                     // Make an Ajax request here...
+                    $.ajax({
+                    type: 'GET',
+                    url: '{{ route('printed.do') }}',
+                    data: {
+                      layout:selectedOption, 
+                      No:selectedProIds,
+                      groupcode:groupData
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        location.reload();
+                        const url = '{{ route('printed.layout') }}'+'?so='+selectedProIds+'&layout='+selectedOption+ '&group=' + encodeURIComponent(groupData);
+                          // redirect to the new URL
+                          window.location.href = url;
+
+                    },
+                    error: function() {
+                        alert("sorry, It happen error please contact administrator!");
+                        loadingModal.style.display = "none";
+
+                        // Enable the submit button
+                        submitBtn.disabled = false;
+                    }
+                })
 
                     // Close the modal
                     $('#myModal').modal('hide');

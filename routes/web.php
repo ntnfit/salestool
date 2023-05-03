@@ -79,7 +79,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/lock-vehicle',[DeliveryController::class,'TruckLockView'])->name('logistic.lock');
     Route::get('/vehicle-lock',[DeliveryController::class,'TruckLock'])->name('logistic.applylock');
     Route::get('/print-so-no-list',[DeliveryController::class,'SoNotPrint'])->name('logistic.sonotprint');
-
+    Route::get('/printed', [DeliveryController::class,'updatePrinted'])->name('printed.do');
+    Route::get('/printe-layout', [DeliveryController::class,'PrintLayoutDO'])->name('printed.layout');
     // inventory
     Route::get('/stock-inv-list',[InvController::class,'listInvStock'])->name('inv.list');
     Route::get('/inv-request',[InvController::class,'addView'])->name('inv.add');
@@ -110,6 +111,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/get-support-no',[GetItemController::class,'GetSupportOrder'])->name('GetSupportOrder');
     Route::get('/applyDo', [ExportCrystalReportController::class,'applyDo'])->name('applyDo');
     Route::get('/export-truckinfor', [ExportCrystalReportController::class,'print_do'])->name('print-do');
+    
 
 
 });

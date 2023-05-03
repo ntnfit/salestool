@@ -307,7 +307,7 @@ class InvController extends Controller
           
             $sql = 'select t1.* from BS_STOCKOUTREQUEST t0 join BS_STOCKOUTREQUEST_Detail t1
             on t0."StockNo"=t1."StockNo"
-             where t0."StatusSAP"=0 and t0."StockNo"=?';
+             where "Quantity"<>0 and  t0."StatusSAP"=0 and t0."StockNo"=?';
             $stmt = odbc_prepare($conDB, $sql);
             odbc_execute($stmt,array($SoNo));
             $line = array();

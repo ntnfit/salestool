@@ -260,13 +260,135 @@ class DeliveryController extends Controller
         {
                 foreach($request->No as $no)
                 {
-                    $sql='update ORDR set "U_TruckInfo"=? Where "DocNum"=?';       
+                    $sql='update ORDR set "Printed"=? Where "DocNum"=?';       
                     $stmt = odbc_prepare($conDB, $sql);
-                    odbc_execute($stmt,array('L',$no));
+                    odbc_execute($stmt,array('N',$no));
     
                 };
         }
         odbc_close($conDB);
         return response()->json(["success" => true,"data"=>"okay"]);
+    }
+    function PrintLayoutDO(Request $request)
+    {
+        $conDB = (new SAPB1Controller)->connect_sap();
+        $results = array();
+        $layout=$request->layout;
+        if ($layout=="vin") {
+           
+            
+            $sql='call "usp_NNHD_PhieuGiaoHang_Delivery_VIN"(?)';
+            $stmt = odbc_prepare($conDB, $sql);
+            odbc_execute($stmt,array($request->so));
+            
+            while ($row = odbc_fetch_object($stmt)) {
+                $results[] = $row;
+            };
+        $groupedDocuments=collect($results)->groupBy('DocEntry');
+        return view ('layoutsap.vin',compact('groupedDocuments'));
+           
+        }
+        else if ($layout=="ck")
+        {
+            $sql='call "usp_NNHD_PhieuGiaoHang_Delivery"(?)';
+            $stmt = odbc_prepare($conDB, $sql);
+            odbc_execute($stmt,array($request->so));
+            while ($row = odbc_fetch_object($stmt)) {
+                $results[] = $row;
+            };
+            $groupedDocuments=collect($results)->groupBy('DocEntry');
+            return view ('layoutsap.ck',compact('groupedDocuments'));
+        }
+        else if ($layout=="aeon")
+        {
+            $sql='call "usp_NNHD_PhieuGiaoHang_Delivery"(?)';
+            $stmt = odbc_prepare($conDB, $sql);
+            odbc_execute($stmt,array($request->so));
+            while ($row = odbc_fetch_object($stmt)) {
+                $results[] = $row;
+            };
+            $groupedDocuments=collect($results)->groupBy('DocEntry');
+            return view ('layoutsap.aeon',compact('groupedDocuments'));
+        }
+        else if ($layout=="aeonkm")
+        {
+            $sql='call "usp_NNHD_PhieuGiaoHang_Delivery_DIS"(?)';
+            $stmt = odbc_prepare($conDB, $sql);
+            odbc_execute($stmt,array($request->so));
+            while ($row = odbc_fetch_object($stmt)) {
+                $results[] = $row;
+            };
+            $groupedDocuments=collect($results)->groupBy('DocEntry');
+            return view ('layoutsap.aeonkm',compact('groupedDocuments'));
+        }
+        else if ($layout=="lotte")
+        {
+            $sql='call "usp_NNHD_PhieuGiaoHang_Delivery"(?)';
+            $stmt = odbc_prepare($conDB, $sql);
+            odbc_execute($stmt,array($request->so));
+            while ($row = odbc_fetch_object($stmt)) {
+                $results[] = $row;
+            };
+            $groupedDocuments=collect($results)->groupBy('DocEntry');
+            return view ('layoutsap.lotte',compact('groupedDocuments'));
+        }
+        else if ($layout=="lottekm")
+        {
+            $sql='call "usp_NNHD_PhieuGiaoHang_Delivery_DIS"(?)';
+            $stmt = odbc_prepare($conDB, $sql);
+            odbc_execute($stmt,array($request->so));
+            while ($row = odbc_fetch_object($stmt)) {
+                $results[] = $row;
+            };
+            $groupedDocuments=collect($results)->groupBy('DocEntry');
+            return view ('layoutsap.lottekm',compact('groupedDocuments'));
+
+        }
+        else if ($layout=="metro")
+        {
+            $sql='call "usp_NNHD_PhieuGiaoHang_Delivery"(?)';
+            $stmt = odbc_prepare($conDB, $sql);
+            odbc_execute($stmt,array($request->so));
+            while ($row = odbc_fetch_object($stmt)) {
+                $results[] = $row;
+            };
+            $groupedDocuments=collect($results)->groupBy('DocEntry');
+            return view ('layoutsap.metro',compact('groupedDocuments'));
+        }
+        else if ($layout=="metrokm")
+        {
+            $sql='call "usp_NNHD_PhieuGiaoHang_Delivery_DIS"(?)';
+            $stmt = odbc_prepare($conDB, $sql);
+            odbc_execute($stmt,array($request->so));
+            while ($row = odbc_fetch_object($stmt)) {
+                $results[] = $row;
+            };
+            $groupedDocuments=collect($results)->groupBy('DocEntry');
+            return view ('layoutsap.metrokm',compact('groupedDocuments'));
+
+        }
+        else if ($layout=="betagenkm")
+        {
+            $sql='call "usp_NNHD_PhieuGiaoHang_Delivery_DIS"(?)';
+            $stmt = odbc_prepare($conDB, $sql);
+            odbc_execute($stmt,array($request->so));
+            while ($row = odbc_fetch_object($stmt)) {
+                $results[] = $row;
+            };
+           
+        }
+        else {
+            //layout Betagen
+            $sql='call "usp_NNHD_PhieuGiaoHang_Delivery"(?)';
+            $stmt = odbc_prepare($conDB, $sql);
+            odbc_execute($stmt,array($request->so));
+            while ($row = odbc_fetch_object($stmt)) {
+                $results[] = $row;
+            };
+            $groupedDocuments=collect($results)->groupBy('DocEntry');
+            return view ('layoutsap.betagen',compact('groupedDocuments'));
+          }
+
+          odbc_close($conDB);
     }
 }
