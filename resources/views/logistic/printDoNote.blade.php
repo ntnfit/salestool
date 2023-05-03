@@ -338,7 +338,7 @@
                         location.reload();
                         const url = '{{ route('printed.layout') }}'+'?so='+selectedProIds+'&layout='+selectedOption+ '&group=' + encodeURIComponent(groupData);
                           // redirect to the new URL
-                          window.location.href = url;
+                          window.open(url, '_blank');
 
                     },
                     error: function() {
