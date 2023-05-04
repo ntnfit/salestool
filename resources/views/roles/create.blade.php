@@ -2,6 +2,7 @@
 
 @section('title', 'Roles create')
 @section('plugins.Sweetalert2', true)
+<link rel="shortcut icon" href="{{ asset('favicons/favicon.ico') }}"/>
 @section('content')
 <div class="row">
     <div class="col-lg-12 margin-tb">

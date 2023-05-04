@@ -2,7 +2,7 @@
 
 @section('title', 'SaleDetail')
 
-
+<link rel="shortcut icon" href="{{ asset('favicons/favicon.ico') }}"/>
 
 @section('content')
     <div class="container shadow min-vh-50 py-5">

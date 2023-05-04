@@ -2,7 +2,7 @@
 
 @section('title', 'Saletotal')
 
-
+<link rel="shortcut icon" href="{{ asset('favicons/favicon.ico') }}"/>
 
 @section('content')
     <div id="spinner-div" class="pt-5">

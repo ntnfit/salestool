@@ -1,6 +1,7 @@
 @extends('adminlte::page')
 
 @section('title', 'Customer data')
+<link rel="shortcut icon" href="{{ asset('favicons/favicon.ico') }}"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
     <script src="https://unpkg.com/jquery/dist/jquery.min.js"></script>	
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>

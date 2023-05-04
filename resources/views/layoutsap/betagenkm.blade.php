@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Phiếu giao hàng KM</title>
+    <link rel="shortcut icon" href="{{ asset('favicons/favicon.ico') }}"/>
     <style>
         @page {
             size: A4 portrait;

@@ -1,6 +1,7 @@
 @extends('adminlte::page')
 
 @section('title', 'List delivery')
+<link rel="shortcut icon" href="{{ asset('favicons/favicon.ico') }}"/>
 @section('plugins.Datatables', true)
 @section('content_header')
     <h1>List delivery</h1>

@@ -6,7 +6,7 @@
 @section('content_header')
     <h5>List Stock Out Request - Sales Order</h5>
 @stop
-
+<link rel="shortcut icon" href="{{ asset('favicons/favicon.ico') }}"/>
 <script src="https://unpkg.com/jquery/dist/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>

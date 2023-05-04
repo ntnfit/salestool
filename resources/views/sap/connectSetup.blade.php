@@ -2,6 +2,7 @@
 
 @section('title', 'Connection Settings')
 @section('plugins.Sweetalert2', true)
+<link rel="shortcut icon" href="{{ asset('favicons/favicon.ico') }}"/>
 @section('content_header')
     <h1>Connection config</h1>
 @stop

@@ -4,6 +4,7 @@
 <head>
     @if ($type == 'print')
         <title>Truck Information</title>
+        <link rel="shortcut icon" href="{{ asset('favicons/favicon.ico') }}"/>
     @else
         <title>Phiếu Xuất Kho</title>
     @endif
