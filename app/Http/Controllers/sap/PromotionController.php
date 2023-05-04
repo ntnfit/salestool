@@ -304,11 +304,11 @@ class PromotionController extends Controller
                         $customercode=$request->cus[$key];
                         if($request->protype!="5")
                         {
-                            $insertCusQuery='insert into "BS_DatePromotion_Cust" ("ProId","CustCode","CustName","GroupCode","ChannelCode","RouteCode","LocationCode")';
+                            $insertCusQuery='insert into BS_PRO_CUSTOMER  ("ProId","CustCode","CustName","GroupCode","ChannelCode","RouteCode","LocationCode")';
                         }
                         else
                         {
-                            $insertCusQuery='insert into BS_PRO_CUSTOMER ("ProId","ProCustCode","ProCustName","GroupCode","ChannelCode","RouteCode","LocationCode")';
+                            $insertCusQuery='insert into "BS_DatePromotion_Cust" ("ProId","ProCustCode","ProCustName","GroupCode","ChannelCode","RouteCode","LocationCode")';
                         }
 
                        
