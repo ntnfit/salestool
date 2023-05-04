@@ -459,8 +459,8 @@
                         if (node.group || !node.data.U_DelNo) {
                             return;
                         }
-                        if (node.data.U_TruckInfo === selectedTruckInfo && node.data.U_DelNo ===
-                            selectedDelNo && !node.isSelected()) {
+                      //  if (node.data.U_TruckInfo === selectedTruckInfo && node.data.U_DelNo ===
+                        if (node.data.U_DelNo ==selectedDelNo && !node.isSelected()) {
                             node.setSelected(true);
                         }
                     });
@@ -545,10 +545,10 @@
                 alert("Cannot select more than 2 Do No!");
                 return;
             }
-            if (truckInforArray.length > 1) {
-                alert("Cannot select more than 2 TruckCode!!");
-                return;
-            }
+            // if (truckInforArray.length > 1) {
+            //     alert("Cannot select more than 2 TruckCode!!");
+            //     return;
+            // }
             console.log("TruckInfor:" + truckInforArray);
             console.log("DelNo:" + uDelNoArray);
             console.log("Prama" + selectPramaDoc);
@@ -578,10 +578,10 @@
                 return;
             }
 
-            if (truckInforArray.length > 1) {
-                alert("Cannot select more than 2 TruckCode!!");
-                return;
-            }
+            // if (truckInforArray.length > 1) {
+            //     alert("Cannot select more than 2 TruckCode!!");
+            //     return;
+            // }
             if (selectedProIds.length === 0) {
                 alert("Please choose DocNum!");
                 return;

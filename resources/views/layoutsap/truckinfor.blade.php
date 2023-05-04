@@ -110,6 +110,7 @@
 </head>
 
 <body>
+    @foreach ($data as $truckInfo => $group)
     <div class="container">
         <div class="header">
             <div class="logo">
@@ -118,19 +119,19 @@
             <div class="header-info">
 
                 @if ($type == 'print')
-                    <p>DocDate: {{(new DateTime($data->last()->last()->DocDate))->format('y/m/d') }}</h1>
+                    <p>DocDate: {{(new DateTime($group->last()->last()->DocDate))->format('y/m/d') }}</h1>
                     @else
-                    <p>DocDate: {{ (new DateTime($data->last()->DocDate))->format('y/m/d') }}</p>
+                    <p>DocDate: {{ (new DateTime($group->last()->DocDate))->format('y/m/d') }}</p>
                 @endif
 				@if ($type == 'print')
-                    <p>TruckNo: {{ $data->first()->first()->U_TruckInfo }}</h1>
+                    <p>TruckNo: {{ $group->first()->first()->U_TruckInfo }}</h1>
                     @else
-                    <p>TruckNo: {{ $data->last()->U_TruckInfo }}</p>
+                    <p>TruckNo: {{ $group->last()->U_TruckInfo }}</p>
                 @endif
 				@if ($type == 'print')
-                    <p>Capacity: {{ $data->first()->first()->Capacity }}</h1>
+                    <p>Capacity: {{ $group->first()->first()->Capacity }}</h1>
                     @else
-                    <p>Capacity: {{ $data->last()->Capacity }}</p>
+                    <p>Capacity: {{ $group->last()->Capacity }}</p>
                 @endif
               
                 
@@ -147,9 +148,9 @@
 
             <div class="header-info">
 				@if ($type == 'print')
-				<p>No: {{$data->last()->last()->DocList }}</h1>
+				<p>No: {{$group->last()->last()->DocList }}</h1>
 				@else
-				<p>No: {{ $data->last()->DocList }}</p>
+				<p>No: {{ $group->last()->DocList }}</p>
 			@endif
             </div>
         </div>
@@ -179,29 +180,29 @@
                     $index = 1;
                 @endphp
                 @if ($type == 'print')
-                    @foreach ($data as $customer => $rows)
+                @foreach ($group as $cardCode => $items)
                         @php
-                            $totalQuantity = $rows->sum('Quantity');
+                            $totalQuantity = $items->sum('Quantity');
                         @endphp
-                        @foreach ($rows as $row)
+                       @foreach ($items as $item)
                             <tr>
                                 @if ($loop->first)
-                                    <td rowspan="{{ count($rows) }}">{{ $customer . '  ' . $rows->first()->CardName }}</td>
+                                <td rowspan="{{ count($items) }}">{{ $cardCode. '  ' . $item->CardName }}</td>
                                 @endif
                                 <td>{{ $index++ }}</td>
-                                <td>{{ $row->ItemCode }}</td>
-                                <td>{{ $row->Dscription }}</td>
-                                <td>{{ $row->Quantity }}</td>
-                                <td>{{ $row->UomName }}</td>
-                                <td>{{ $row->U_BatchNo }}</td>
-                                <td>{{ $row->U_AdmissionDate }}</td>
+                                <td>{{ $item->ItemCode }}</td>
+                                <td>{{ $item->Dscription }}</td>
+                                <td>{{ number_format($item->Quantity,2) }}</td>
+                                <td>{{ $item->UomName }}</td>
+                                <td>{{ $item->U_BatchNo }}</td>
+                                <td>{{ $item->U_AdmissionDate }}</td>
                             </tr>
                         @endforeach
 
                         <tr>
                             <td colspan="2"></td>
                             <td colspan="2"></td>
-                            <td>{{ $totalQuantity }}</td>
+                            <td>{{ number_format($totalQuantity,2) }}</td>
                             <td colspan="2"></td>
                             <td></td>
                         </tr>
@@ -210,19 +211,19 @@
                     @php
                         $totalQuantity = 0;
                     @endphp
-                    @foreach ($data as $items => $row)
+                    @foreach ($group as $item)
                         <tr>
                             @php
                                 
-                                $totalQuantity += $row->Quantity;
+                                $totalQuantity += $item->Quantity;
                             @endphp
                             <td>{{ $index++ }}</td>
-                            <td>{{ $row->ItemCode }}</td>
-                            <td>{{ $row->Dscription }}</td>
-                            <td>{{ $row->Quantity }}</td>
-                            <td>{{ $row->UomName }}</td>
-                            <td>{{ $row->U_BatchNo }}</td>
-                            <td>{{ $row->Comments }}</td>
+                            <td>{{ $item->ItemCode }}</td>
+                            <td>{{ $item->Dscription }}</td>
+                            <td>{{ number_format($item->Quantity,2) }}</td>
+                            <td>{{ $item->UomName }}</td>
+                            <td>{{ $item->U_BatchNo }}</td>
+                            <td>{{ $item->Comments }}</td>
                         </tr>
                     @endforeach
                     <tr>
@@ -232,7 +233,7 @@
                         @else
                             <td colspan="1"></td>
                         @endif
-                        <td>{{ $totalQuantity }}</td>
+                        <td>{{ number_format($totalQuantity,2) }}</td>
                         <td colspan="2"></td>
                         <td></td>
                     </tr>
@@ -241,6 +242,7 @@
         </table>
 
     </div>
+    @endforeach
 </body>
 
 </html>

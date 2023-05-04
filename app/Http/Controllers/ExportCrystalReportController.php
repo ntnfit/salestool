@@ -103,11 +103,11 @@ class ExportCrystalReportController extends Controller
         };
         if($request->type=="stockout")
             {
-                $data=collect($results);  
+                $data=collect($results)->groupBy('U_TruckInfo');  
             }
             else
             {
-                $data = collect($results)->groupBy('CardCode');
+                $data = collect($results)->groupBy(['U_TruckInfo', 'CardCode']);
                 
                
             }
