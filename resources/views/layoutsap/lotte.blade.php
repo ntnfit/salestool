@@ -154,9 +154,9 @@
                                 <td class="text-center">{{ $document->ItemCust }}</td>
                                 <td class="text-center">{{ $document->Mavach }}</td>
                                 <td>{{ $document->TenHang }}</td>
-                                <td class="text-center">{{ $document->QuiCach }}</td>
-                                <td class="text-center">{{ $document->unitMsr }}</td>
-                                <td class="text-center">{{ number_format($document->Quantity,2) }}</td>
+                                <td class="text-center">{{ $document->CustQC }}</td>
+                                <td class="text-center">{{ $document->CustUomQuyDoi }}</td>
+                                <td class="text-center">{{ number_format($document->DelQtybyThung,2) }}</td>
                                 <td class="text-center">{{ number_format($document->DGThung,2) }}</td>
                                 <td class="text-center">{{number_format($document->LineTotal,2) }}</td>
                             </tr>
