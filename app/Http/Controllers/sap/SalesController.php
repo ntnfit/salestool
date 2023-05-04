@@ -477,8 +477,11 @@ class SalesController extends Controller
                 $results[] = $row;
             };
           
-            $sql = 'select t1.* from BS_STOCKOUTREQUEST t0 join BS_STOCKOUTREQUEST_Detail t1
+            $sql = 'select t1.*,t3."AgrLineNum","AgrNo" from BS_STOCKOUTREQUEST t0 join BS_STOCKOUTREQUEST_Detail t1
             on t0."StockNo"=t1."StockNo"
+            left join OOAT t2 on t2."Number"=T0."AbsID"
+            LEFT JOIN OAT1 T3 on t2."AbsID"=t3."AgrNo" 
+            and t1."ItemCode"=t3."ItemCode"
              where "Quantity"<>0 and t0."StatusSAP"=0 and t0."StockNo"=?';
             $stmt = odbc_prepare($conDB, $sql);
             odbc_execute($stmt,array($SoNo));
@@ -505,7 +508,9 @@ class SalesController extends Controller
                     "TaxCode" => "SVN10",
                     "WarehouseCode" => $results[0]['FromWhsCode'],
                     "U_LoaiKM" => $km,
-                    "U_BatchNo" => $dt->LotNo
+                    "U_BatchNo" => $dt->LotNo,
+                    "AgreementNo" =>$dt->AgrNo,
+                    "AgreementRowNumber"=>$dt->AgrLineNum
                 ];
             }
             $body=[
