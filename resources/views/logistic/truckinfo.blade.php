@@ -615,8 +615,9 @@
                     location.reload();
                     const url = '{{ route('print-do') }}' + '?type=stockout' + '&pra=' +
                         encodeURIComponent(selectPramaDoc);
-                    // redirect to the new URL
-                    window.location.href = url;
+
+                        window.open(url, '_blank','noopener');
+                 
 
                 },
                 error: function() {
