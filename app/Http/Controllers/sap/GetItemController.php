@@ -64,6 +64,25 @@ class GetItemController extends Controller
         $results=json_encode($results);
         return  $results;
     }
+    function getsaledetail(Request $request)
+    {
+        $conDB = (new SAPB1Controller)->connect_sap();
+        
+        $query='call "usp_Rpt_BS_Item_StockSalesAvailable_byLotNo_Detail" (?,?,?,?)';
+        $stmt = odbc_prepare($conDB, $query);
+       
+        if (!odbc_execute($stmt, array( date('Ymd', strtotime($request->fromdate)), date('Ymd', strtotime($request->todate)),$request->whscode, $request->bincode))) {
+            // Handle execution error
+            die("Error executing SQL statement: " . odbc_errormsg());
+        }
+
+        $results = array();
+        while ($row = odbc_fetch_array($stmt)) {
+            $results[] = $row;
+        }
+        $results=json_encode($results);
+        return  $results;
+    }
 
     function ValiatePOID(Request $request)
     {
@@ -115,6 +134,35 @@ class GetItemController extends Controller
         }
       return $results;
         
+    }
+    function salebycust (Request $request)
+    {
+        $conDB = (new SAPB1Controller)->connect_sap();
+        $sql='call "usp_Rpt_TotalSalesByCustGroup_Customer_WEB" (?,?,?)';
+        $stmt = odbc_prepare($conDB, $sql);
+        odbc_execute($stmt,array($request->fromDate,$request->toDate,$request->channel));
+        $results = array();
+        while ($row = odbc_fetch_object($stmt)) {
+            $results[] = $row;
+        }
+        odbc_close($conDB);
+        return json_encode($results);
+    }
+    function salebycustpro (Request $request)
+    {
+        $conDB = (new SAPB1Controller)->connect_sap();
+        $sql='call "usp_Rpt_TotalSalesByCustGroup_Customer_Product_WEB" (?,?,?)';
+        
+        $stmt = odbc_prepare($conDB, $sql);
+       
+        odbc_execute($stmt,array($request->fromDate,$request->toDate,$request->channel));
+        $results = array();
+        while ($row = odbc_fetch_object($stmt)) {
+            $results[] = $row;
+        }
+        odbc_close($conDB);
+        return json_encode($results);
+
     }
     
 }

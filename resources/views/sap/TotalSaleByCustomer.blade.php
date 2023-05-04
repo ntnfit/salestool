@@ -1,170 +1,302 @@
 @extends('adminlte::page')
 
-@section('title', 'Saletotal')
-    
+@section('title', 'Sale by cust Group /Customer/Product')
+@section('plugins.Datatables', true)
 
-    <!-- Bootstrap CSS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/js/bootstrap-select.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.13.1/xlsx.full.min.js"></script> 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/css/bootstrap-select.min.css">
-  
-    @section('content')
-    <div id="spinner-div" class="pt-5">
-    <div class="spinner-border text-primary" role="status">
+@section('plugins.Sweetalert2', true)
+@section('plugins.DateRangePicker', true)
+@section('plugins.TempusDominusBs4', true)
+@section('plugins.select2', true)
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+    integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+    integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+<script src="https://unpkg.com/jquery/dist/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+    integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+@section('content')
+    @php
+        $config = ['format' => 'yyyy/MM/DD'];
+    @endphp
+    <h3> Sale by cust Group /Customer/Product</h3>
+   
+    <div class="content">
+        <form>
+            <div class="row">
+                <!-- header input -->
+                <x-adminlte-input-date name="fromdate" id="fromdate" label="From Date" :config="$config"
+                    label-class="text-lightblue" igroup-size="sm" fgroup-class="col-md-3" placeholder="Choose a date...">
+                    <x-slot name="appendSlot">
+                        <div class="input-group-text bg-gradient-danger">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                    </x-slot>
+                </x-adminlte-input-date>
+                <x-adminlte-input-date name="todate" id="todate" label="To Date" :config="$config"
+                    label-class="text-lightblue" igroup-size="sm" fgroup-class="col-md-3" placeholder="Choose a date...">
+                    <x-slot name="appendSlot">
+                        <div class="input-group-text bg-gradient-danger">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                    </x-slot>
+                </x-adminlte-input-date>
+                <x-adminlte-select label="channel" igroup-size="sm"
+                    label-class="text-lightblue truckcode" name="channel" id="channel" igroup-size="sm"
+                    fgroup-class="col-md-3"  enable-old-support>
+                    <option value="All" selected>All</option>
+                    <option value="MT">MT</option>
+                    <option value="GT">GT</option>
+                </x-adminlte-select>
+                <x-adminlte-button class="btn" id="search"
+                    style="float: right;margin-top: 30px;font-size: small;height: 31px;" type="button" label="Search"
+                    theme="success" />
+
+
+            </div>
+
+
     </div>
-  </div>
-  <form>
-    <div class="container shadow min-vh-100 py-2">
-        <h5>Total sale by Customer/Group</h5>
-        <div class="row justify-content-center">
-            <div class="col-lg-3 col-sm-6">
-                <label for="startDate"><h6>From Date</6></label>
-                <input id="startDate" class="form-control" type="date" name="fromdate" />
-                <span id="startDateSelected"></span>
-            </div>
-            <div class="col-lg-3 col-sm-6">
-                <label for="endDate"><h6>To Date</6></label>
-                <input id="endDate" class="form-control" type="date" name="todate" />
-                <span id="endDateSelected"></span>
-            </div>
-            
+    <!-- form gird -->
+    <div id="MyGrid" class="ag-theme-alpine" style="height: 70%">
+    </div>
+
+
+    </form>
+    </div>
+    <div id="loadingModal" class="modal">
+        <div class="modal-content">
+            <div class="loader"></div>
+            <p>Please wait...</p>
         </div>
-        <div class="row justify-content-center">
-            <div class="col-lg-3 col-sm-6">
-            <label for="Warehouse"><h6>Warehouse</h6></label>
-            <select class="selectpicker" multiple data-live-search="true" id="whscode" name="whscode">
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
-                <option value="4">Four</option>
-            </select>  
-            </div>
-            <div class="col-lg-3 col-sm-6">
-            <label for="team"><h6>Team</6></label>
-            <select class="selectpicker" multiple data-live-search="true" id="team" name="team">
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
-                <option value="4">Four</option>
-                <option value="5">Four</option>
-                <option value="6">Four</option>
-            </select>  
-            </div>
-        </div>
-        <div class="row justify-content-center">
-        <div class="col-lg-6 col-sm-12">
-            <button type="" class="form-control btn btn-primary" id="export-excel">Export Excel</button>
-            </div>
-        </div>
-    </div> 
-</form>
-<div id="wrapper"></div>
-<div class="d-flex align-items-center invisible">
-  <strong>Loading...</strong>
-  <div class="spinner-border ms-auto" role="status" aria-hidden="true"></div>
-</div>
+    </div>
 @endsection
 @section('css')
-<style>
-  #spinner-div {
-  position: fixed;
-  display: none;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  text-align: center;
-  background-color: rgba(255, 255, 255, 0.8);
-  z-index: 2;
-}
-</style>
-@endsection
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+    <style>
+        #search {
+            float: right;
+            margin-left: 20px;
+        }
+
+        .btn-flat {
+            font-size: small;
+            padding: 8px 24px;
+            margin-top: 30px;
+            margin-bottom: 30px;
+
+        }
+
+        .dropdown-menu.show {
+            max-width: 550px;
+        }
+
+        label.text-lightblue.truckcode {
+            margin-left: 150px;
+        }
+
+        /* Popup Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: #fff;
+            border-radius: 5px;
+            width: 200px;
+            height: 100px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* Loading spinner styles */
+        .loader {
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #3498db;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 2s linear infinite;
+            margin: auto;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+@stop
 @push('js')
-<script>
-  $(document).ready(function() {
-  
-    let startDate = document.getElementById('startDate')
-    let endDate = document.getElementById('endDate')
+    < <script>
+        var __basePath = './';
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ag-grid-community@28.2.1/dist/ag-grid-community.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ag-grid-enterprise@28.2.1/dist/ag-grid-enterprise.min.js"></script>
+    <script>
+        var filterParams = {
+            comparator: (filterLocalDateAtMidnight, cellValue) => {
+                var dateAsString = cellValue;
+                if (dateAsString == null) return -1;
+                var dateParts = dateAsString.split('/');
+                var cellDate = new Date(
+                    Number(dateParts[2]),
+                    Number(dateParts[1]) - 1,
+                    Number(dateParts[0])
+                );
 
-    startDate.addEventListener('change',(e)=>{
-    let startDateVal = e.target.value
-   
-    })
+                if (filterLocalDateAtMidnight.getTime() === cellDate.getTime()) {
+                    return 0;
+                }
 
-    endDate.addEventListener('change',(e)=>{
-    let endDateVal = e.target.value
-    })  
-  });
-  function sCustomer() {
-    $("#spinner-div").show();
-    var e = document.getElementById("channel").value;
-    
-   if(e==0)
-   {
-        $.ajax({
-		// the URL for the request
-		url:"https://115.84.182.179:50000/b1s/v1/sml.svc/CUSTOMERDATA",
-        xhrFields: {
-            withCredentials: true
-        }, 
-		// whether this is a POST or GET request
-		type: "get",
-		// the type of data we expect back
-		dataType : "json",
-        headers:{
-            "Prefer": "odata.maxpagesize=all",
-        },
-		// code to run if the request succeeds;
-		// the response is passed to the function
-		success: function( response ) {
-			$("div#wrapper").Grid({
-                search: true,
-                pagination: true,
-                sort: true,
-                with:'fix-content',
-                columns: ['CardCode', 'CardName', 'ShortName','storeID','Street','TaxCode','Channel','Route','PGCode','PGName','SalSupCode',
-              'SalSupName','TeamLeaderCode','TeamLeaderName','KA_ASM_Code','KA_ASM_Name','SalManagerCode','SaLManager_Name','Group','DefaultWhs'],
-             data:response.value
-            });
+                if (cellDate < filterLocalDateAtMidnight) {
+                    return -1;
+                }
+
+                if (cellDate > filterLocalDateAtMidnight) {
+                    return 1;
+                }
+            },
+            browserDatePicker: true,
+        };
+
+        const columnDefs = [
+            {
+              
+                field: "CustGrpCode",
+            },
+            {
+               
+                field: 'CustGroup',
+            },
+            {
+                headerName: 'CardCode',
+                field: 'CardCode',
+            },
+            {
+                headerName: 'CardName',
+                field: 'CardName',
+            },
+            {
+                headerName: 'TotalQuantity',
+                field: 'TotalQuantity',
+            },
            
-            $("#spinner-div").hide();
-        filename='reports.xlsx';
-         data=response.value;
-         var ws = XLSX.utils.json_to_sheet(data);
-         var wb = XLSX.utils.book_new();
-         XLSX.utils.book_append_sheet(wb, ws, "People");
-         XLSX.writeFile(wb,filename);
-         $("#spinner-div").hide();
-		},
 
-		// code to run if the request fails; the raw request and
-		// status codes are passed to the function
-		error: function( xhr, status, errorThrown ) {
-			$('#connectedError').modal('show');
-			console.log( "Error: " + errorThrown );
-			console.log( "Status: " + status );
-			console.dir( xhr );
-			connected = false;
-		},
+            {
+                headerName: 'LineTotal',
+                field: 'LineTotal',
+            },
+            {
+                headerName: 'Gtoal',
+                field: 'Gtoal',
+            },
+            {
+                headerName: 'Channel',
+                field: 'Channel',
+            },
 
-		// code to run regardless of success or failure
-		complete: function( xhr, status ) {
-			//alert(complete);
-			// Nothing for now.
-		}
-	});
-   
-   }
-   
-}
+        ];
 
 
 
-</script>
-<!-- MDB -->
+        const gridOptions = {
+            columnDefs: columnDefs,
+            pagination: true,
+            defaultColDef: {
+                flex: 1,
+                minWidth: 150,
+                filter: true,
+                resizable: true,
+            },
+          
+            animateRows: true,
+            pagination: true
+        };
+
+        function onBtExport() {
+            gridOptions.api.exportDataAsExcel();
+        }
+
+        function loadInitialData() {
+            // Make an API call to abc.com to retrieve 100 records
+
+            // Update the grid with the retrieved data
+            gridOptions.api.setRowData([]);
+        }
+
+        function loadFilteredData() {
 
 
+            $.ajax({
+                type: 'GET',
+                url: '{{ route('report.salebycust') }}',
+                data: filterData,
+                dataType: 'json',
+                success: function(data) {
+                    gridOptions.api.setRowData(data);
+                    loadingModal.style.display = "none";
+
+                }
+            });
+
+        }
+        let filterData = {};
+        // setup the grid after the page has finished loading
+        document.addEventListener('DOMContentLoaded', function() {
+
+            var gridDiv = document.querySelector('#myGrid');
+            new agGrid.Grid(gridDiv, gridOptions);
+
+            const filterButton = document.querySelector('#search');
+            filterButton.addEventListener('click', function() {
+                console.log("okay");
+                const submitBtn = document.getElementById("search");
+                const loadingModal = document.getElementById("loadingModal");
+                const channel = document.getElementById('channel').value;
+                // Get the filter values from the input fields
+                const filterInput1 = document.querySelector('#fromDate');
+                const filterInput2 = document.querySelector('#toDate');
+                filterData.fromDate = filterInput1.value.replace(/\//g, '');
+                filterData.toDate = filterInput2.value.replace(/\//g, '');
+                filterData.channel=channel;
+                if (filterInput1.value == "") {
+                    alert("Please choose From date!");
+                } else if (filterInput2.value == "") {
+                    alert("Please choose To Date!");
+                } else {
+                    loadingModal.style.display = "block";
+                    submitBtn.disabled = true;
+                    // Load the filtered data from the API
+                    loadFilteredData();
+                    submitBtn.disabled = false;
+                }
+
+            });
+
+            loadInitialData();
+
+            });
+
+    </script>
 @endpush

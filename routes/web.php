@@ -105,6 +105,9 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/fill-lot-inv',[InvController::class,'loaddata'])->name('fill-inv');
     Route::get('/getpromotion',[SalesController::class,'getpromotion'])->name('clickgetpromotion');
     Route::get('/saletotal',[GetItemController::class,'getsaletotal'])->name('report.saletotal');
+    Route::get('/rpt-salesdetail',[GetItemController::class,'getsaledetail'])->name('report.saledetail');
+    Route::get('/rpt-salebycust',[GetItemController::class,'salebycust'])->name('report.salebycust');
+    Route::get('/rpt-salebycust-product',[GetItemController::class,'salebycustpro'])->name('report.salebycust.product');
     Route::get('/checkPOID',[GetItemController::class,'ValiatePOID'])->name('checkPOID');
     Route::get('/get-truck-infor',[DeliveryController::class,'TruckInfor'])->name('truck.get'); 
     Route::get('/get-support-no',[GetItemController::class,'GetSupportOrder'])->name('GetSupportOrder');
