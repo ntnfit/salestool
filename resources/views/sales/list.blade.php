@@ -52,6 +52,9 @@
             <x-adminlte-button class="btn" id="filterButton"
                 style="float: right;margin-top: 34px;font-size: small;height: 31px;" type="button" label="Load Item"
                 theme="success" icon="fas fa-filter" />
+            <x-adminlte-button class="btn" id="getall"
+                style="float: right;margin-top: 34px; margin-left:15px;font-size: small;height: 31px;" type="button"
+                label="Load all order" theme="success" icon="fas fa-filter" />
 
         </div>
         <div id="myGrid" class="ag-theme-alpine" style="height: 70%">
@@ -77,8 +80,9 @@
             padding: 8px 24px;
             margin-top: 30px;
         }
+
         .row-green {
-            background-color:#b6f599 !important;
+            background-color: #b6f599 !important;
         }
 
         .row-red {
@@ -129,8 +133,6 @@
                 transform: rotate(360deg);
             }
         }
-
-        
     </style>
 @stop
 
@@ -295,12 +297,12 @@
             columnDefs: columnDefs,
             pagination: true,
             rowClassRules: {
-            // row style function
-            'row-green': (params) => {
-                return params.data.StatusSAP == 1;
+                // row style function
+                'row-green': (params) => {
+                    return params.data.StatusSAP == 1;
                 },
-            'row-red': (params) => {
-                return params.data.Canceled === 'C';
+                'row-red': (params) => {
+                    return params.data.Canceled === 'C';
                 }
             },
             defaultColDef: {
@@ -317,7 +319,7 @@
             },
             rowSelection: 'multiple'
         };
-       
+
 
         function onBtExport() {
             gridOptions.api.exportDataAsExcel();
@@ -331,6 +333,11 @@
         }
 
         function loadFilteredData() {
+            const loadingModal = document.getElementById("loadingModal");
+            const filter = document.getElementById("filterButton");
+
+            filter.disabled = true;
+            loadingModal.style.display = "block";
             $.ajax({
                 type: 'GET',
                 url: '{{ route('sales.list') }}',
@@ -338,10 +345,43 @@
                 dataType: 'json',
                 success: function(data) {
                     gridOptions.api.setRowData(data);
+                    loadingModal.style.display = "none";
+                    filter.disabled = false;
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error loading data:', error);
+                    loadingModal.style.display = "none";
+                    filter.disabled = false;
                 }
             });
 
         }
+
+        function loadallData() {
+            const loadingModal = document.getElementById("loadingModal");
+            const getallBtn = document.getElementById("getall");
+
+            getallBtn.disabled = true;
+            loadingModal.style.display = "block";
+
+            $.ajax({
+                type: 'GET',
+                url: '{{ route('sales.all') }}',
+                dataType: 'json',
+                success: function(data) {
+                    gridOptions.api.setRowData(data);
+                    loadingModal.style.display = "none";
+                    getallBtn.disabled = false;
+
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error loading data:', error);
+                    loadingModal.style.display = "none";
+                    getallBtn.disabled = false;
+                }
+            });
+        }
+
         let filterData = {};
         // setup the grid after the page has finished loading
         document.addEventListener('DOMContentLoaded', function() {
@@ -356,15 +396,38 @@
                 const filterInput2 = document.querySelector('#toDate');
                 filterData.fromdate = filterInput1.value;
                 filterData.todate = filterInput2.value;
+                if (filterInput1.value == "") {
+                    alert("Please choose from date");
+                } else if (filterInput2.value == "") {
+                    alert("Please choose to date");
+                } else {
+                    const filter = document.getElementById("filterButton");
+                    loadingModal.style.display = "block";
+                    // Disable the submit button
+                    filter.disabled = true;
+                    // Load the filtered data from the API
+                    loadFilteredData();
+                }
 
-                // Load the filtered data from the API
-                loadFilteredData();
+            });
+
+
+            document.querySelector("#getall").addEventListener("click", function() {
+                // Get the filter values from the input fields
+
+                const getallBtn = document.getElementById("getall");
+                loadingModal.style.display = "block";
+
+                // Disable the submit button
+                getallBtn.disabled = true;
+                loadallData();
             });
             loadInitialData();
         });
 
         document.querySelector("#getSelectedRowsBtn").addEventListener("click", function() {
-            const selectedRows = gridOptions.api.getSelectedRows().filter(row => row.StatusSAP == 0 && row.Canceled !="C");
+            const selectedRows = gridOptions.api.getSelectedRows().filter(row => row.StatusSAP == 0 && row
+                .Canceled != "C");
             const selectedProIds = selectedRows.map((row) => row.StockNo);
             console.log(selectedProIds);
             if (selectedProIds.length === 0) {
@@ -402,7 +465,8 @@
         });
         //cancel document
         document.querySelector("#cancelSQ").addEventListener("click", function() {
-            const selectedRows = gridOptions.api.getSelectedRows().filter(row => row.StatusSAP == 0 &&  row.Canceled !="C");
+            const selectedRows = gridOptions.api.getSelectedRows().filter(row => row.StatusSAP == 0 && row
+                .Canceled != "C");
             const selectedProIds = selectedRows.map((row) => row.StockNo);
             console.log(selectedProIds);
             if (selectedProIds.length === 0) {

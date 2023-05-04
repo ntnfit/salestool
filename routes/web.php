@@ -63,9 +63,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/pro-terminate',[PromotionController::class,'terminated'])->name('pro.terminated');
 // sale stock- request
     Route::get('/stock-request-list',[SalesController::class,'listSaleStock'])->name('sales.list');
-
+    Route::get('/stock-request-all',[SalesController::class,'loadall'])->name('sales.all');
     Route::get('/stock-request',[SalesController::class,'addView'])->name('sales.add');
-    
     Route::get('/stock-request-edit/{stockSO}',[SalesController::class,'edit'])->name('sales.edit');
     Route::post('/stock-request',[SalesController::class,'store'])->name('sales.store');
     Route::get('/promotion-click',[SalesController::class,'getpromotion'])->name('promotion.click');
