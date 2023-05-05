@@ -261,6 +261,11 @@
                 headerName: 'Card Name',
                 field: 'CardName',
             },
+            {
+                headerName: 'Delivery_Addr',
+                field: 'Delivery_Addr',
+                
+            },
 
             {
                 headerName: 'Warehouse',
