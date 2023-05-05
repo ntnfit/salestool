@@ -33,7 +33,7 @@ class InvController extends Controller
            }
 
            // Prepare the SQL statement
-           $sql = 'call USP_BS_STOCKOUTREQUEST_WEB(?,?,?,?)';
+           $sql = 'call USP_BS_STOCKOUTREQUEST(?,?,?,?)';
            $stmt = odbc_prepare($conDB, $sql);
            if (!$stmt) {
                // Handle SQL error
@@ -72,7 +72,7 @@ class InvController extends Controller
            }
 
            // Prepare the SQL statement
-           $sql = 'CALL USP_BS_STOCKOUTREQUEST_WEB(?,?,?,?)';
+           $sql = 'CALL USP_BS_STOCKOUTREQUEST(?,?,?,?)';
            $stmt = odbc_prepare($conDB, $sql);
            if (!$stmt) {
                // Handle SQL error
