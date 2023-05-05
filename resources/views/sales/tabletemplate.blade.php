@@ -87,7 +87,7 @@
                                 @if($result['QuantityIn'][$lot] > 0)
                                     <input type="number" class="Qtyout" style="text-color:orange;"
                                         name="stockOuts[{{ $result['ItemCode'] }}][{{ $lot }}][]"
-                                        value="{{ $result['QuantityOut'][$lot] }}" max="{{ $result['QuantityIn'][$lot] }}" min="0">
+                                        value="" max="{{ $result['QuantityIn'][$lot] }}" min="0">
                                 @else
                                 <input type="number" class="Qtyout" style="text-color:orange"
                                         name="stockOuts[{{ $result['ItemCode'] }}][{{ $lot }}][]"

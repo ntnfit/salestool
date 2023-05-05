@@ -131,11 +131,30 @@
                         <td hidden><input type="text" class="sotype" name="sotype[{{ $result['ItemCode'] }}][]"
                                 value=""></td>
                         @foreach ($distinctLots as $lot)
+
                             <td class="{{ $result['QuantityOut'][$lot] > 0 ? 'orange' : '' }}">
-                                @if ($result['QuantityIn'][$lot] > 0)
+                                @if ($result['QuantityOut'][$lot] > 0)
+                                 @php
+                                 $max=0;
+                                 if($result['QuantityOut'][$lot]>$result['QuantityIn'][$lot] && $result['QuantityIn'][$lot]==0)
+                                 {
+                                    $max=$result['QuantityOut'][$lot];
+                                 }
+                                 else if($result['QuantityOut'][$lot]>$result['QuantityIn'][$lot] && $result['QuantityIn'][$lot]!=0)
+                                 {
+                                    $max=$result['QuantityOut'][$lot]+$result['QuantityIn'][$lot];
+                                 }
+                                 else if($result['QuantityOut'][$lot]<$result['QuantityIn'][$lot] && $result['QuantityOut'][$lot]!=0)
+                                 {
+                                    $max=$result['QuantityOut'][$lot]+$result['QuantityIn'][$lot];
+                                 }
+                                 else {
+                                   $max=$result['QuantityOut'][$lot];
+                                 }
+                                 @endphp
                                     <input type="number" class="Qtyout" style="text-color:orange"
                                         name="stockOuts[{{ $result['ItemCode'] }}][{{ $lot }}][]"
-                                        value="{{ $result['QuantityOut'][$lot] }}" max="{{ $result['QuantityIn'][$lot] }}"
+                                        value="{{ $result['QuantityOut'][$lot] }}" max="{{$max}}"
                                         min="0">
                                 @else
                                     <input type="number" class="Qtyout" style="text-color:orange"
@@ -143,7 +162,11 @@
                                         value="" readonly="true">
                                 @endif
                             </td>
+                            @if( $result['QuantityIn'][$lot]>0)
                             <td class="inlot">{{ $result['QuantityIn'][$lot] }}</td>
+                            @else
+                            <td class="inlot"></td>
+                            @endif
                         @endforeach
 
                         <td> <input type="number" class="totalrow" value="{{ array_sum($result['QuantityOut']) }}"
