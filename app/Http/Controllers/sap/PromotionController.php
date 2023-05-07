@@ -475,7 +475,6 @@ class PromotionController extends Controller
                     $UomCode=(INT)$request->UomCode[$key];
                     $BaseQty=(float)$request->BaseQty[$key];
                     $BaseUom=(INT)$request->BaseUom[$key];
-                    $Batch=$request->Batch[$key];
                     $Itemdate=$request->Itemdate[$key];
                     $ProQtydate=$request->ProQtydate[$key];
                     $ProBatchdate=$request->ProBatchdate[$key];
@@ -489,6 +488,7 @@ class PromotionController extends Controller
                         }
                         else
                         {
+                            $Batch=$request->Batch[$key];
                             $querySQL='insert into "BS_DatePromotion_Item" 
                             ("ProId", "ItemCode","InputQty","InputUoMCode",
                             "Quantity","UoMCode","BatchNo","ProItemCode","ProQuantity","ProDate")
