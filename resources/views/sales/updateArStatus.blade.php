@@ -63,7 +63,9 @@
 
 
     </form>
-    <button id="collectButton">Collect Received Values</button>
+    <x-adminlte-button class="btn" id="collectButton"
+     type="button"
+    label="Save" theme="success" />
     </div>
     <div id="loadingModal" class="modal">
         <div class="modal-content">
@@ -471,6 +473,10 @@
                         updatedRows.push(data);
                     }
                 });
+                if (updatedRows.length === 0) {
+                    alert('No data has been changed.');
+                    return;
+                }
                 //console.log(updatedRows);
                 const csrfToken = $('meta[name="csrf-token"]').attr('content');
                 $.ajax({
@@ -486,7 +492,7 @@
                     },
                     error: function(xhr, status, error) {
                         console.log("save failed");
-                        alert("save data suceess!");
+                        alert("save data fail!");
                     }
                 });
             });
