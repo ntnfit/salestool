@@ -372,6 +372,10 @@ return [
                 [
                     'text' => 'Add Sales Stock',
                     'url'  => '/stock-request',
+                ],
+                [
+                    'text' => 'Update Invoice status',
+                    'url'  => '/list-ar',
                 ]
             ],
         ],

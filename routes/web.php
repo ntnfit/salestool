@@ -71,6 +71,9 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('/stock-update/{stockSO}',[SalesController::class,'update'])->name('sales.update');
     Route::get('/applysap',[SalesController::class,'applySAP'])->name('sales.apply');
     Route::get('/cancel-so',[SalesController::class,'CancelSO'])->name('sales.cancel');
+    Route::get('/list-ar',[SalesController::class,'listarview'])->name('sales.view');
+    Route::get('/list-ar-get',[SalesController::class,'ListAR'])->name('sales.arlist');
+    Route::post('/update-ar-status',[SalesController::class,'updateAr'])->name('sales.updatear');
 
         //logistic
     Route::get('/truck-information',[DeliveryController::class,'truckview'])->name('logistic.truckinfor');

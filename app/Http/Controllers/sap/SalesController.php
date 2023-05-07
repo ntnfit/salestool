@@ -700,6 +700,49 @@ class SalesController extends Controller
         odbc_close($conDB);
         return response()->json(["success" => true]);
     }
-     
+
+    function ListAR(Request $request)
+    {
+        $conDB = (new SAPB1Controller)->connect_sap();
+        if(!empty($request->fromDate) && !empty($request->toDate) )
+       {
+        $sql='call "USP_BS_INVSTATUS_DUPLICATE" (?,?)';
+        $stmt = odbc_prepare($conDB, $sql);
+        odbc_execute($stmt,array($request->fromDate,$request->toDate));
+       }
+        else
+        {
+            $sql='call "USP_BS_INVSTATUS_DUPLICATE_all" ()';
+            $stmt = odbc_prepare($conDB, $sql);
+            odbc_execute($stmt);
+        }
+       
+        $results = array();
+        while ($row = odbc_fetch_object($stmt)) {
+            $results[] = $row;
+        };
+        odbc_close($conDB);
+        return json_encode($results);
+        
+    }
+     function listarview()
+     {
+        return view ('sales.updateArStatus');
+     }
+    function updateAr(Request $request)
+    {
+       
+
+            $conDB = (new SAPB1Controller)->connect_sap();
+            foreach($request->dataNo as $data){
+                $sql='update BS_IVNSTATUS set "Received"=?,"DateReceived"=?,"sendInvoice"=?,"DateSend"=? where "DocEntry"=?';
+                $stmt = odbc_prepare($conDB, $sql);
+                
+                odbc_execute($stmt,array($data['Received'],$data['DateReceived'],$data['sendInvoice'],$data['DateSend'],$data['DocEntry']));
+            }
+            odbc_close($conDB);
+            return response()->json(["success" => true]);
+        
+    } 
 }
    
