@@ -157,14 +157,24 @@ class DeliveryController extends Controller
     }
 
     function TruckApply(Request $request){
+       
         $conDB = (new SAPB1Controller)->connect_sap();
         if (!empty($request->No))
         {
             foreach($request->No as $no)
             {
-                $sql='update ORDR set "U_TruckInfo"=? Where "DocNum"=?';       
+               
+               
+                if( $no['DocType']=='IT')
+                {
+                    $sql='update OWTQ set "U_TruckInfo"=? Where "DocNum"=?';  
+                }
+                else {
+                    $sql='update ORDR set "U_TruckInfo"=? Where "DocNum"=?';  
+                }
+                    
                 $stmt = odbc_prepare($conDB, $sql);
-                odbc_execute($stmt,array($request->TruckCode,$no));
+                odbc_execute($stmt,array($request->TruckCode,$no['DocNum']));
 
             }
             odbc_close($conDB);

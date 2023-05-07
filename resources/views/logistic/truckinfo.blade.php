@@ -477,7 +477,7 @@
 
             document.querySelector("#apply").addEventListener("click", function() {
                 const selectedRows = gridOptions.api.getSelectedRows().filter(row => row.DocNum);
-                const selectedProIds = selectedRows.map((row) => row.DocNum);
+                const selectedProIds = selectedRows.map((row) =>  ({ DocNum: row.DocNum, DocType: row.TypeName }));
                 const TruckCode = document.getElementById('truckcode').value;
                 const loadingModal = document.getElementById("loadingModal");
                 const submitBtn = document.getElementById("apply");
