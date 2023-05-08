@@ -7,7 +7,7 @@
 @section('plugins.DateRangePicker', true)
 @section('plugins.TempusDominusBs4', true)
 @section('plugins.select2', true)
-<link rel="shortcut icon" href="{{ asset('favicons/favicon.ico') }}"/>
+<link rel="shortcut icon" href="{{ asset('favicons/favicon.ico') }}" />
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
     integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
@@ -83,7 +83,8 @@
                 name="cuscode" id="cuscode" fgroup-class="col-md-2" enable-old-support>
                 <option value=""></option>
                 @foreach ($customers as $customer)
-                    <option value="{{ $customer->CardCode }}">{{ $customer->CardCode . '--' . $customer->CardName.'--StoreId: ' . $customer->U_SID }}
+                    <option value="{{ $customer->CardCode }}">
+                        {{ $customer->CardCode . '--' . $customer->CardName . '--StoreId: ' . $customer->U_SID }}
                     </option>
                 @endforeach
             </x-adminlte-select-bs>
@@ -94,8 +95,8 @@
                     <option value="{{ $whsCode->WhsCode }}">{{ $whsCode->WhsCode . '--' . $whsCode->WhsName }}</option>
                 @endforeach
             </x-adminlte-select-bs>
-            <x-adminlte-select-bs label="Team" label-class="text-lightblue" :config="$configss" igroup-size="sm" name="bincode" id="bincode"
-                fgroup-class="col-md-2" enable-old-support>
+            <x-adminlte-select-bs label="Team" label-class="text-lightblue" :config="$configss" igroup-size="sm"
+                name="bincode" id="bincode" fgroup-class="col-md-2" enable-old-support>
                 <option value=""></option>
             </x-adminlte-select-bs>
 
@@ -155,81 +156,85 @@
             padding: 8px 24px;
             margin-top: 70px;
         }
+
         #note {
-        width: 400px; 
-        height: 80px;
-        padding: 12px 20px;
-        margin: 8px 0;
-        box-sizing: border-box;
-        border: 1px solid lightgrey;
-        border-radius: 4px;
+            width: 400px;
+            height: 80px;
+            padding: 12px 20px;
+            margin: 8px 0;
+            box-sizing: border-box;
+            border: 1px solid lightgrey;
+            border-radius: 4px;
         }
-        table {
-  border-collapse: collapse;
-  max-width: 75%;
-  
-}
 
-thead {
-  position: sticky;
-  top: 0;
-  z-index: 1;
-  background-color: #ddd;
-}
+        table#tableadd {
+            border-collapse: collapse;
+            max-width: 75%;
 
-th,
-td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  text-align: center;
-}
-th {
-  position: sticky;
-  top: 0;
-  z-index: 1;
-  background-color: #ddd;
-}
+        }
 
-tr:nth-child(even) {
-  background-color: #f2f2f2;
-  max-width: 35%;
-}
+        thead {
+            position: sticky;
+            top: 0;
+            z-index: 1;
+            background-color: #ddd;
+        }
 
-td:first-child,
-th:first-child {
-  text-align: left;
-}
-td:first-child,
+        table#tableadd th,
+        table#tableadd td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
 
-td:nth-child(2),
+        table#tableadd th {
+            position: sticky;
+            top: 0;
+            z-index: 1;
+            background-color: #ddd;
+        }
 
-td:nth-child(3) {
-  position: sticky;
-  left: 0;
- 
-  background-color: #ddd; /* ensure that the fixed columns have the same background color as the table */
-}
+        table#tableadd tr:nth-child(even) {
+            background-color: #f2f2f2;
+            max-width: 35%;
+        }
 
-td:first-child {
-    /* text-align: left; */
-    width: 50px;
-    min-width: 50px;
-    max-width: 50px;
-    left: 0px !important;
-}
-td:nth-child(2) {
-    width: 100px;
-    min-width: 100px;
-    max-width: 100px;
-    left: 50px;
-}
-td:nth-child(3) {
-    width: 150px;
-    min-width: 150px;
-    max-width: 150px;
-    left: 150px;
-}
+        table#tableadd td:first-child,
+        table#tableadd th:first-child {
+            text-align: left;
+        }
 
+        table#tableadd td:first-child,
+        table#tableadd td:nth-child(2),
+        table#tableadd td:nth-child(3) {
+            position: sticky;
+            left: 0;
+
+            background-color: #ddd;
+            /* ensure that the fixed columns have the same background color as the table */
+        }
+
+        table#tableadd td:first-child {
+            /* text-align: left; */
+            width: 50px;
+            min-width: 50px;
+            max-width: 50px;
+            left: 0px !important;
+        }
+
+        table#tableadd td:nth-child(2) {
+            width: 100px;
+            min-width: 100px;
+            max-width: 100px;
+            left: 50px;
+        }
+
+        table#tableadd td:nth-child(3) {
+            width: 150px;
+            min-width: 150px;
+            max-width: 150px;
+            left: 150px;
+        }
 
         .orange {
             color: orange;
@@ -244,8 +249,6 @@ td:nth-child(3) {
         }
 
         ,
-
-
         /* Popup Modal styles */
         .modal {
             display: none;
@@ -291,27 +294,25 @@ td:nth-child(3) {
                 transform: rotate(360deg);
             }
         }
+
         #searchInput {
-  margin-bottom: 10px;
-  padding: 5px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-}
+            margin-bottom: 10px;
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
 
+        input.Qtyout {
+            max-width: 60px;
+        }
 
-input.Qtyout {
-    max-width: 60px;
-}
-tbody tr.matched {
-  background-color: #f0f0f0;
-}
-
-
-
+        table#tableadd tbody tr.matched {
+            background-color: #f0f0f0;
+        }
     </style>
 @stop
 @push('js')
-<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
 
     <script>
         $(document).ready(function() {
@@ -325,20 +326,19 @@ tbody tr.matched {
                         WhsCode: selectedWhsCode
                     },
                     success: function(data) {
-
                         var select = $('#bincode');
                         select.empty();
                         console.log(data);
                         $.each(data, function(index, option) {
                             select.append($('<option>', {
-                            value: option.AbsEntry,
-                            text: option.BinCode
+                                value: option.AbsEntry,
+                                text: option.BinCode
                             }));
                         });
                         // // Re-initialize the selectpicker
-                         select.selectpicker('refresh');
-                                        
-                        
+                        select.selectpicker('refresh');
+
+
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
                         // Handle any errors here
@@ -350,7 +350,6 @@ tbody tr.matched {
 
     <script>
         $('#search').click(function() {
-
             var ordertype = document.getElementById("ordertype").value;
             var custcode = document.getElementById("cuscode").value;
             var whscode = document.getElementById("WhsCode").value;
@@ -382,7 +381,7 @@ tbody tr.matched {
                         team: team,
                         sodate: sodate,
                         Podate: Podate,
-                        sporderno:support
+                        sporderno: support
                     },
                     success: function(data) {
                         // Remove spinner icon
@@ -390,18 +389,14 @@ tbody tr.matched {
                         // Re-enable button
                         $('#search').prop('disabled', false);
                         document.getElementById("tabledata").innerHTML = data;
-                        if(ordertype==="001")
-                        {
+                        if (ordertype === "001") {
                             $('#promotion').prop('disabled', false);
-                        }
-                        else
-                        {
+                        } else {
                             $('#promotion').prop('disabled', true);
                         }
-                        
+
                         // Listen for changes to input fields in the rendered table
                         $('#tabledata input.Qtyout').on('input', function() {
-
                             var sum = 0;
                             var $row = $(this).closest('tr');
                             $row.find('input.Qtyout').each(function() {
@@ -411,12 +406,10 @@ tbody tr.matched {
                                 }
                             });
                             var prototal = $row.find('.totalrow').val(sum);
-
-
                             var sumcol = 0;
                             var columnIndex = $(this).parent().index();
                             $('#tabledata tr:not(:first):not(:last)').each(function() {
-                              
+
                                 var cellValue = parseInt($(this).find('td:eq(' +
                                     columnIndex + ') input.Qtyout').val());
                                 if (!isNaN(cellValue)) {
@@ -424,7 +417,7 @@ tbody tr.matched {
                                 }
                             });
                             $('tfoot tr th').eq(columnIndex - 2).text(sumcol || 0);
-                            
+
                             var sumpro = 0;
                             var $row = $(this).closest('tr');
                             $row.find('input.qtypro').each(function() {
@@ -440,18 +433,15 @@ tbody tr.matched {
                                 alert('Quantity exceeds promotion quantity');
                                 $row.find('input.qtypro').val('');
                             }
-
                             // total stock out total
                             let total = 0;
-                                const totalRowElements = document.querySelectorAll('input.totalrow');
-
-                                totalRowElements.forEach((element) => {
+                            const totalRowElements = document.querySelectorAll(
+                            'input.totalrow');
+                            totalRowElements.forEach((element) => {
                                 total += parseFloat(element.value);
-                                });
-                                document.querySelector('th.totalstockout').textContent = total;
-
+                            });
+                            document.querySelector('th.totalstockout').textContent = total;
                         });
-
                         $('#tableadd th').click(function() {
                             var table = $(this).parents('table').eq(0)
                             var tbody = table.find('tbody').eq(0)
@@ -479,26 +469,25 @@ tbody tr.matched {
                             return $(row).children('td').eq(index).text()
                         };
                         const searchInput = document.getElementById('searchInput');
-                            const rows = document.querySelectorAll('tbody tr');
-
-                            searchInput.addEventListener('keyup', function(event) {
+                        const rows = document.querySelectorAll('tbody tr');
+                        searchInput.addEventListener('keyup', function(event) {
                             const query = event.target.value.toLowerCase();
-
                             rows.forEach(function(row) {
-                                const name = row.querySelector('td:nth-child(1)').textContent.toLowerCase();
-                                const age = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
-                                const city = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
-                                const match = name.indexOf(query) > -1 || age.indexOf(query) > -1 || city.indexOf(query) > -1;
-
+                                const name = row.querySelector('td:nth-child(1)')
+                                    .textContent.toLowerCase();
+                                const age = row.querySelector('td:nth-child(2)')
+                                    .textContent.toLowerCase();
+                                const city = row.querySelector('td:nth-child(3)')
+                                    .textContent.toLowerCase();
+                                const match = name.indexOf(query) > -1 || age.indexOf(
+                                    query) > -1 || city.indexOf(query) > -1;
                                 if (match) {
-                                row.style.display = '';
+                                    row.style.display = '';
                                 } else {
-                                row.style.display = 'none';
+                                    row.style.display = 'none';
                                 }
                             });
-                            });
-
-
+                        });
                     }
                 })
             }
@@ -507,7 +496,6 @@ tbody tr.matched {
     <script>
         // Assume the "Load Promotion" button has an ID of "loadPromotionBtn"
         $("#promotion").on("click", function() {
-
             var stockOutsInputs = document.querySelectorAll('input[name^="stockOuts"]', 'input[name^="sotype"]');
             var stockOutsValues = [];
             for (var i = 0; i < stockOutsInputs.length; i++) {
@@ -525,7 +513,6 @@ tbody tr.matched {
                     stockOutsValues.push(result);
                 }
             }
-
             // Convert array to two separate strings
             var ItemLot = stockOutsValues.join(',');
             var ItemList = stockOutsValues.map(function(value) {
@@ -549,7 +536,7 @@ tbody tr.matched {
                     itemlists: ItemList,
                     itemlots: ItemLot
                 },
-                
+
                 datatype: "json",
                 success: function(data) {
                     console.log('data: ', data);
@@ -573,7 +560,6 @@ tbody tr.matched {
                                 newQty
                             ); // Update the "Total Qty" input field with the new quantity
                             newRow.find(".Qtyout").val("");
-
                             newRow.find(".Qtyout").removeClass('Qtyout').addClass('qtypro');
                             newRow.find(".totalrow").removeClass('totalrow').addClass(
                                 'totalpro');
@@ -586,12 +572,11 @@ tbody tr.matched {
                             // Remove the "STT" (serial number) for the cloned row
                             newRow.find("td:first-child").text("");
                         }
-
                     });
                     // Add new rows for items in the promotions list that are not in the table
                     $.each(promotions, function(itemCode, promotionQty) {
-                        var itemname=data.ItemName;
-                        var nameItem=itemname[itemCode];
+                        var itemname = data.ItemName;
+                        var nameItem = itemname[itemCode];
                         var found = false;
                         $("#tableadd tbody tr").each(function() {
                             if ($(this).find(".ItemCode").text().trim() == itemCode) {
@@ -606,7 +591,7 @@ tbody tr.matched {
                                 .prev(); // Get the second last row of the table
                             var newRow = secondLastRow.clone(true,
                                 true); // Clone the second last row
-                                newRow.css('background-color', '#DFF0D8');
+                            newRow.css('background-color', '#DFF0D8');
                             newRow.find(".ItemCode").text(itemCode);
                             newRow.find(".ItemName").text(nameItem);
                             newRow.find(".inlot").text("");
@@ -614,10 +599,8 @@ tbody tr.matched {
                             newRow.find(".Qtyout").remove();
                             newRow.find(".Qtyout").val("");
                             newRow.find(".totalrow").val(promotionQty);
-
                             newRow.find(".totalrow").removeClass('totalrow').addClass(
                                 'totalpro');
-
                             newRow.find("input[name^='stockOuts']").attr("name", function(index,
                                 name) {
                                 return name.replace(/^stockOuts/, "proout");
@@ -636,8 +619,6 @@ tbody tr.matched {
                     console.log('data: ', data);
                 }
             });
-
-
         });
     </script>
 
@@ -649,7 +630,6 @@ tbody tr.matched {
             })
             $('#WhsCode').change(function() {
                 var FromWhsName = document.getElementById("WhsCode").selectedOptions[0].text.split("--")[1];
-
                 document.getElementById("frmwhsname").value = FromWhsName;
             })
             $('#bincode').change(function() {
@@ -657,20 +637,17 @@ tbody tr.matched {
                 document.getElementById("teams").value = BinCode;
             })
         })
-
         const form = document.getElementById("addorder");
         const submitBtn = document.getElementById("save");
         const loadingModal = document.getElementById("loadingModal");
-
         form.addEventListener("submit", function(event) {
             // Prevent the form from submitting normally
             event.preventDefault();
-
             // Check if the "promotion" button is disabled
             const promotionBtn = document.getElementById("promotion");
             if (promotionBtn.disabled) {
                 // If the button is disabled, simply validate and submit the form
-                
+
                 if (!ValidatePOID()) {
                     alert("The POID has already in system, Please check again!")
                     return false; // Cancel the form submission if validation fails
@@ -684,16 +661,15 @@ tbody tr.matched {
                 }, 1000);
                 return;
             }
-
             // If the button is not disabled, prompt the user to confirm
             const confirmMsg = "Do you want to continue without the promotion?";
             if (confirm(confirmMsg)) {
                 // If the user confirms, validate and submit the form
-              
+
                 if (!ValidatePOID()) {
                     alert("The POID has already in system, Please check again!")
                     return false; // Cancel the form submission if validation fails
-                  
+
                 }
                 // Show the loading modal
                 loadingModal.style.display = "block";
@@ -704,18 +680,15 @@ tbody tr.matched {
                 }, 1000);
             } else {
                 // If the user cancels, show an alert and enable the submit button
-              
+
                 submitBtn.disabled = false;
             }
         });
 
-
         function ValidatePOID() {
             const nameInput = document.getElementById("pono");
-
             if (nameInput.value.trim() !== "") {
                 let isValid = true;
-
                 $.ajax({
                     type: 'GET',
                     url: '{{ route('checkPOID') }}',
@@ -735,136 +708,135 @@ tbody tr.matched {
                         return false; // Cancel submission
                     }
                 });
-
                 return isValid;
             } else {
                 return true;
             }
         }
     </script>
-<script>
- $(document).ready(function() {
-  $(function() {
-    $('#ordertype').change(function() {
-      if ($(this).val() === '001') {
-        $('#sporderno').empty();
-        $('#search').prop('disabled', false);
-      
-        
-      } else {
-        $('#search').prop('disabled', true);
-      
-        const ordertype = $('#ordertype').val();
-        const custcode = $('#cuscode').val();
-        if (custcode) {
-          let type="";
-          if(ordertype=="002")
-          {
-              type="01";//support
-          }
-          else if (ordertype=="003")
-          {
-              type="02";//Sampling
-          }
-          else
-          {
-              type="03"; //DA
-          }
-          console.log("loadata");
-          $.ajax({
-            url: '{{route('GetSupportOrder')}}',
-            datatype:'json',
-            method: 'get',
-            async:false,
-            data: { type: type, custcode: custcode },
-            success: function(response) {
-              console.log(response);
-              const select = $('#sporderno');
-              select.empty();
-              select.append(`<option value=""></option>`);
-              for (const option of response) {
-                select.append(`<option value="${option.AbsID}">${option.AbsID}</option>`);
-              }
-              select.off('change').on('change', function() {
-                if ($(this).val()) {
-                  $('#search').prop('disabled', false);
-                } else {
-                  $('#search').prop('disabled', true);
-                }
-              });
-              $('#search').prop('disabled', true);
-            },
-            error: function(error) {
-              // Handle error here
-            }
-          });
-        }
-      }
-    });
-  });
-  
-  $(function() {
-    $('#cuscode').change(function() {
-      const ordertype = $('#ordertype').val();
-      const custcode = $('#cuscode').val();
-      if (ordertype && ordertype !== '001') {
-        if (custcode) {
-          let type="";
-          if(ordertype=="002")
-          {
-              type="01";//support
-          }
-          else if (ordertype=="003")
-          {
-              type="02";//Sampling
-          }
-          else
-          {
-              type="03"; //DA
-          }
-          // Make AJAX call here
-          $.ajax({
-            url: '{{route('GetSupportOrder')}}',
-            datatype:'json',
-            method: 'get',
-            async:false,
-            data: { type: type, custcode: custcode },
-            success: function(response) {
-              console.log(response);
-              const select = $('#sporderno');
-              select.empty();
-              select.append(`<option value=""></option>`);
-              for (const option of response) {
-                select.append(`<option value="${option.AbsID}">${option.AbsID}</option>`);
-              }
-              select.off('change').on('change', function() {
-                if ($(this).val()) {
-                  $('#search').prop('disabled', false);
-                } else {
-                  $('#search').prop('disabled', true);
-                }
-              });
-              $('#search').prop('disabled', true);
-            },
-            error: function(error) {
-              // Handle error here
-            }
-          });
-        } else {
-          alert('Please choose a customer code');
-        }
-      }
-    });
-  });
-});
-
-</script>
-<script>
-  $(document).ready(function() {
-    $('#sodate').val(moment().format('YYYY/MM/DD')); // set the value of the input element to the current date
-    $('#sodate').datetimepicker(); // initialize the datetimepicker
-  });
-</script>
+    <script>
+        $(document).ready(function() {
+            $(function() {
+                $('#ordertype').change(function() {
+                    if ($(this).val() === '001') {
+                        $('#sporderno').empty();
+                        $('#search').prop('disabled', false);
 
 
+                    } else {
+                        $('#search').prop('disabled', true);
+
+                        const ordertype = $('#ordertype').val();
+                        const custcode = $('#cuscode').val();
+                        if (custcode) {
+                            let type = "";
+                            if (ordertype == "002") {
+                                type = "01"; //support
+                            } else if (ordertype == "003") {
+                                type = "02"; //Sampling
+                            } else {
+                                type = "03"; //DA
+                            }
+                            console.log("loadata");
+                            $.ajax({
+                                url: '{{ route('GetSupportOrder') }}',
+                                datatype: 'json',
+                                method: 'get',
+                                async: false,
+                                data: {
+                                    type: type,
+                                    custcode: custcode
+                                },
+                                success: function(response) {
+                                    console.log(response);
+                                    const select = $('#sporderno');
+                                    select.empty();
+                                    select.append(`<option value=""></option>`);
+                                    for (const option of response) {
+                                        select.append(
+                                            `<option value="${option.AbsID}">${option.AbsID}</option>`
+                                            );
+                                    }
+                                    select.off('change').on('change', function() {
+                                        if ($(this).val()) {
+                                            $('#search').prop('disabled',
+                                            false);
+                                        } else {
+                                            $('#search').prop('disabled', true);
+                                        }
+                                    });
+                                    $('#search').prop('disabled', true);
+                                },
+                                error: function(error) {
+                                    // Handle error here
+                                }
+                            });
+                        }
+                    }
+                });
+            });
+
+            $(function() {
+                $('#cuscode').change(function() {
+                    const ordertype = $('#ordertype').val();
+                    const custcode = $('#cuscode').val();
+                    if (ordertype && ordertype !== '001') {
+                        if (custcode) {
+                            let type = "";
+                            if (ordertype == "002") {
+                                type = "01"; //support
+                            } else if (ordertype == "003") {
+                                type = "02"; //Sampling
+                            } else {
+                                type = "03"; //DA
+                            }
+                            // Make AJAX call here
+                            $.ajax({
+                                url: '{{ route('GetSupportOrder') }}',
+                                datatype: 'json',
+                                method: 'get',
+                                async: false,
+                                data: {
+                                    type: type,
+                                    custcode: custcode
+                                },
+                                success: function(response) {
+                                    console.log(response);
+                                    const select = $('#sporderno');
+                                    select.empty();
+                                    select.append(`<option value=""></option>`);
+                                    for (const option of response) {
+                                        select.append(
+                                            `<option value="${option.AbsID}">${option.AbsID}</option>`
+                                            );
+                                    }
+                                    select.off('change').on('change', function() {
+                                        if ($(this).val()) {
+                                            $('#search').prop('disabled',
+                                            false);
+                                        } else {
+                                            $('#search').prop('disabled', true);
+                                        }
+                                    });
+                                    $('#search').prop('disabled', true);
+                                },
+                                error: function(error) {
+                                    // Handle error here
+                                }
+                            });
+                        } else {
+                            alert('Please choose a customer code');
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#sodate').val(moment().format(
+            'YYYY/MM/DD')); // set the value of the input element to the current date
+            $('#sodate').datetimepicker(); // initialize the datetimepicker
+        });
+    </script>
 @endpush
