@@ -85,6 +85,8 @@
 
 
     </form>
+    <x-adminlte-button class="btn-flat" id="rmdo" style="float: right;  margin-right: 20px;" type="button"
+    label="remove DO" theme="danger" />
     <x-adminlte-button class="btn-flat" id="print" style="float: right;  margin-right: 20px;" type="button"
         label="Print" theme="success" />
     <x-adminlte-button class="btn-flat" id="stockout" style="float: right;  margin-right: 20px;" type="button"
@@ -240,6 +242,7 @@
             {
                 headerName: 'Del No',
                 field: 'U_DelNo',
+                editable: true
             },
             {
                 headerName: 'Doc Entry',
@@ -349,7 +352,7 @@
         ];
 
 
-
+        let updatedData = [];
         const gridOptions = {
             columnDefs: columnDefs,
             pagination: true,
@@ -359,6 +362,7 @@
                 filter: true,
                 resizable: true,
             },
+            groupDefaultExpanded: 1,
             rowGroupPanelShow: 'always',
             animateRows: true,
             pagination: true,
@@ -390,6 +394,14 @@
                 suppressCount: true,
                 selectAllOnMiniFilter: true,
             },
+            onCellEditingStopped: function (event) {
+                // Store updated data in the array
+                const rowNode = event.node;
+                const data = rowNode.data;
+                if (updatedData.indexOf(data) === -1) {
+                updatedData.push(data);
+                }
+            },
         };
 
         function onBtExport() {
@@ -405,7 +417,6 @@
 
         function loadFilteredData() {
 
-
             $.ajax({
                 type: 'GET',
                 url: '{{ route('truck.get') }}',
@@ -413,6 +424,7 @@
                 dataType: 'json',
                 success: function(data) {
                     gridOptions.api.setRowData(data);
+                    updatedData = [];
                     loadingModal.style.display = "none";
 
                 }
@@ -428,6 +440,8 @@
 
             const filterButton = document.querySelector('#search');
             filterButton.addEventListener('click', function() {
+               
+              
                 console.log("okay");
                 const submitBtn = document.getElementById("search");
                 const loadingModal = document.getElementById("loadingModal");
@@ -449,6 +463,37 @@
                 }
 
             });
+
+       
+            const collectButton = document.querySelector('#rmdo');
+            collectButton.addEventListener('click', () => {
+                if (updatedData.length === 0) {
+                    alert("No rows have been updated.");
+                    return;
+                } else {
+                    console.log(updatedData);
+                    const csrfToken = $('meta[name="csrf-token"]').attr('content');
+                $.ajax({
+                    url:  '{{ route('logistic.removeDo') }}',
+                    type: 'POST',
+                    data: { dataNo:updatedData},
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken
+                    },
+                    success: function(response) {
+                        updatedData=[];
+                        alert("save data suceess!");
+                        loadFilteredData();
+                    },
+                    error: function(xhr, status, error) {
+                        console.log("save failed");
+                        alert("save data fail!");
+                    }
+                });
+                }
+                
+            });
+
 
             loadInitialData();
 
@@ -503,7 +548,7 @@
                         dataType: 'json',
                         success: function(data) {
                             alert("đã apply thành công!")
-                            location.reload();
+                            loadFilteredData();
                         },
                         error: function() {
                             alert("đã apply thất bại!, vui lòng kiếm tra dữ liệu!");
@@ -517,7 +562,7 @@
 
             })
         });
-
+        
         document.querySelector("#print").addEventListener("click", function() {
             const selectedRows = gridOptions.api.getSelectedRows().filter(row => row.DocNum);
             const selectedProIds = selectedRows.map((row) => row.DocNum);
@@ -618,7 +663,7 @@
                 },
                 dataType: 'json',
                 success: function(data) {
-                    location.reload();
+                    loadFilteredData();
                     const url = '{{ route('print-do') }}' + '?type=stockout' + '&pra=' +
                         encodeURIComponent(selectPramaDoc);
 

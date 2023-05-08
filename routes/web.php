@@ -83,6 +83,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/print-so-no-list',[DeliveryController::class,'SoNotPrint'])->name('logistic.sonotprint');
     Route::get('/printed', [DeliveryController::class,'updatePrinted'])->name('printed.do');
     Route::get('/printe-layout', [DeliveryController::class,'PrintLayoutDO'])->name('printed.layout');
+    Route::post('/rm-do', [DeliveryController::class,'removeDo'])->name('logistic.removeDo');
     // inventory
     Route::get('/stock-inv-list',[InvController::class,'listInvStock'])->name('inv.list');
     Route::get('/inv-request',[InvController::class,'addView'])->name('inv.add');

@@ -163,6 +163,8 @@ class SalesController extends Controller
         while ($row = odbc_fetch_array($stmt)) {
             $results[] = $row;
         }
+        sort($results);
+       // dd($results);
         // get number lot
         $distinctLots = array_unique(array_column($results, 'LotNo'));
        

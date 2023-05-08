@@ -101,6 +101,7 @@ class ExportCrystalReportController extends Controller
         while ($row = odbc_fetch_object($stmt)) {
             $results[] = $row;
         };
+       
         if($request->type=="stockout")
             {
                 $data=collect($results)->groupBy('U_TruckInfo');  

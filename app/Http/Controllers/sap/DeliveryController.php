@@ -401,4 +401,27 @@ class DeliveryController extends Controller
 
           odbc_close($conDB);
     }
+    function removeDo(Request $request){
+        $conDB = (new SAPB1Controller)->connect_sap();
+        foreach($request->dataNo as $data)
+        {
+                   
+            if( $data['TypeName']=="IT")
+            {
+                $upate='update OWTQ SET "U_TruckInfo"=?,"U_DelNo"=? where "DocNum"=? ';
+                $stmt = odbc_prepare($conDB, $upate);
+                odbc_execute($stmt,array(null,$data['U_DelNo'],$data['DocNum']));
+            }
+            else
+            {
+                $upate='update ORDR SET "U_TruckInfo"=?,"U_DelNo"=? where "DocNum"=? ';
+                $stmt = odbc_prepare($conDB, $upate);
+                odbc_execute($stmt,array(null,$data['U_DelNo'],$data['DocNum']));
+            }
+            
+        }
+        odbc_close($conDB);
+        return response()->json(["success" => true,"data"=>"okay"]);
+
+    }
 }
