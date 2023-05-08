@@ -549,6 +549,7 @@
                         success: function(data) {
                             alert("đã apply thành công!")
                             loadFilteredData();
+                            submitBtn.disabled = false;
                         },
                         error: function() {
                             alert("đã apply thất bại!, vui lòng kiếm tra dữ liệu!");
