@@ -116,6 +116,7 @@
         <div class="page-break">
             <header class="header">
                 <h1>PHIẾU GIAO HÀNG</h1>
+                <h5>NGÀY GIAO: {{date("d/m/Y", strtotime($documents->last()->DocDate))  }}</h5>
             </header>
             <main>
                 <div class="content">

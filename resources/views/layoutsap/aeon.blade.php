@@ -219,9 +219,9 @@
                     <tbody>
                         <tr>
                             <td></td>
-                            <td>{{date("Y")}}</td>
-                            <td>{{date("m")}}</td>
                             <td>{{date("d")}}</td>
+                            <td>{{date("m")}}</td>           
+                            <td>{{date("Y")}}</td>
                             <td>{{date('H:i')}}</td>
                         </tr>
                     </tbody>
@@ -246,12 +246,12 @@
                         <td>{{ $documents->last()->WhsName }}</td>
                         <td>{{ $documents->last()->LineCode }}</td>
                         <td>2027</td>
-                        <td>{{date('Y', strtotime($documents->last()->OrderDate))  }}</td>
-                        <td>{{date('m', strtotime($documents->last()->OrderDate))   }}</td>
                         <td>{{date('d', strtotime($documents->last()->OrderDate))   }}</td>
-                        <td>{{date('Y', strtotime($documents->last()->DeliveryDate))  }}</td>
-                        <td>{{date('m', strtotime($documents->last()->DeliveryDate))  }}</td>
+                        <td>{{date('m', strtotime($documents->last()->OrderDate))   }}</td>
+                        <td>{{date('Y', strtotime($documents->last()->OrderDate))  }}</td>    
                         <td>{{date('d', strtotime($documents->last()->DeliveryDate))  }}</td>
+                        <td>{{date('m', strtotime($documents->last()->DeliveryDate))  }}</td>
+                        <td>{{date('Y', strtotime($documents->last()->DeliveryDate))  }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -297,13 +297,13 @@
                             <td>{{ $document->Size }}</td>
                             <td>{{ $document->Color }}</td>
                             <td>{{ $document->MaHang }}</td>
-                            <td>{{ $document->MaHang }}</td>
-                            <td>{{ number_format($document->OrderQtybyThung,2) }}</td>
-                            <td>{{  number_format($document->OrderQtybyThung,2) }}</td>
-                            <td>{{  number_format($document->Discount,2) }}</td>
+                            <td>{{ $document->Mavach }}</td>
+                            <td>{{ number_format($document->OrderQtybyThung) }}</td>
+                            <td>{{  number_format($document->OrderQtybyThung) }}</td>
+                            <td>{{  number_format($document->Discount) }}</td>
                             <td></td>
-                            <td>{{  number_format($document->DGiaMua,2) }}</td>
-                            <td>{{ number_format($document->TTMua,2) }}</td>
+                            <td>{{  number_format($document->DGiaMua) }}</td>
+                            <td>{{ number_format($document->TTMua) }}</td>
                             <td></td>
                             <td></td>
                         </tr>
