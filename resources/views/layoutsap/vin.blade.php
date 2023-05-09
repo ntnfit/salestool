@@ -127,11 +127,11 @@
             <main>
                 <div class="content">
                     <div class="left-content">
-                        <p>Nhà cung cấp: 110013/2003471</p>
-                        <p>Khách hàng: Cong TY TNHH BETAGEN VIET NAM</p>
+                        <p>Mã nhà cung cấp: 110013/2003471</p>
+                        <p>Nhà cung cấp: Cong TY TNHH BETAGEN VIET NAM</p>
                         <br><br>
                         <p>Khách hàng: {{ $documents->last()->CardName }}</p>
-                        <p>Khách hàng: {{ $documents->last()->Buyer }}</p>
+                        <p>Kho nhận: {{ $documents->last()->Buyer }}</p>
                     </div>
                     <div class="right-content">
                         <p style="text-align: end;">{{date("d/m/Y", strtotime($documents->last()->DocDate))  }}</p>
@@ -160,7 +160,7 @@
                                 <td class="text-center">{{ $document->Mavach }}</td>
                                 <td>{{ $document->TenHang }}</td>
                                 <td class="text-center">{{ $document->unitMsr }}</td>
-                                <td class="text-center">{{ number_format($document->Quantity,2) }}</td>
+                                <td class="text-center">{{ number_format($document->Quantity) }}</td>
                                 <td class="text-center"></td>
                             </tr>
                         @endforeach
