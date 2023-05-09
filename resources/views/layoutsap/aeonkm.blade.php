@@ -146,7 +146,7 @@
                    
                     <td>{{ $document->MaHang }}</td>
                     <td>{{ $document->TenHang }}</td>
-                    <td>{{ number_format($document->Quantity,2) }}</td>
+                    <td>{{ number_format($document->Quantity) }}</td>
                     <td>{{$document->GhiChu }}</td>
                 </tr>
               

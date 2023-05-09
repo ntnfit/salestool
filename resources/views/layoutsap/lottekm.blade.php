@@ -153,13 +153,18 @@
                                 <td class="text-center">{{ $document->CustQC }}</td>
                                 <td class="text-center">{{ $document->CustUomQuyDoi }}</td>
                                 <td class="text-center">{{ number_format($document->DelQtybyThung,2) }}</td>
+                                @if(number_format($document->LineTotal) >0)
                                 <td class="text-center">{{ number_format($document->DGThung,2) }}</td>
                                 <td class="text-center">{{ number_format($document->LineTotal,2) }}</td>
+                                @else
+                                <td class="text-center">-</td>
+                                <td class="text-center">-</td>
+                                @endif
                             </tr>
                         @endforeach
                     </tbody>
                     <tfoot>
-                        <th class="col7"></th>
+                        <th colspan="7"> </th>
                        
                     </tfoot>
                 </table>
