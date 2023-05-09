@@ -300,7 +300,11 @@
                             <td>{{ $document->Mavach }}</td>
                             <td>{{ number_format($document->OrderQtybyThung) }}</td>
                             <td>{{  number_format($document->OrderQtybyThung) }}</td>
+                            @if($document->Discoun>0)
                             <td>{{  number_format($document->Discount) }}</td>
+                            @else
+                            <td>-</td>
+                            @endif
                             <td></td>
                             <td>{{  number_format($document->DGiaMua) }}</td>
                             <td>{{ number_format($document->TTMua) }}</td>
@@ -313,24 +317,24 @@
                 <tfoot>
                     <tr>
                         <th colspan="10" style="font-weight: bold;text-align: right;">TỔNG TIỀN</th>
-                        <td colspan="4">{{number_format($sumtotal,2) }}</td>
+                        <td colspan="4">{{number_format($sumtotal) }}</td>
                         
                     </tr>
                     <tr>
                         <th colspan="10" style="font-weight: bold;text-align: right;">TỔNG CHIẾT KHẤU</th>
-                        <td colspan="4">{{number_format($documents->last()->DiscountSum,2) }}</td>
+                        <td colspan="4">{{number_format($documents->last()->DiscountSum) }}</td>
                     </tr>
                     <tr>
                         <th colspan="10" style="font-weight: bold;text-align: right;">NET TOTAL</th>
-                        <td colspan="4">{{number_format($documents->last()->DiscountSum+$sumtotal,2) }}</td>
+                        <td colspan="4">{{number_format($documents->last()->DiscountSum+$sumtotal) }}</td>
                     </tr>
                     <tr>
                         <th colspan="10" style="font-weight: bold;text-align: right;">VAT 10%</th>
-                        <td colspan="4">{{number_format($documents->last()->VAT,2) }}</td>
+                        <td colspan="4">{{number_format($documents->last()->VAT) }}</td>
                     </tr>
                     <tr>
                         <th colspan="10" style="font-weight: bold;text-align: right;">TỔNG TIỀN THANH TOÁN</th>
-                        <td colspan="4">{{number_format($documents->last()->DocTotal,2)}}</td>
+                        <td colspan="4">{{number_format($documents->last()->DocTotal)}}</td>
 
                     </tr>
                 </tfoot>
