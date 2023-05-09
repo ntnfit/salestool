@@ -300,7 +300,7 @@
                             <td>{{ $document->Mavach }}</td>
                             <td>{{ number_format($document->OrderQtybyThung) }}</td>
                             <td>{{  number_format($document->OrderQtybyThung) }}</td>
-                            @if($document->Discoun>0)
+                            @if(number_format($document->Discoun)>0)
                             <td>{{  number_format($document->Discount) }}</td>
                             @else
                             <td>-</td>
