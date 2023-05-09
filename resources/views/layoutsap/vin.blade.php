@@ -109,7 +109,7 @@
             background-color: #dddd;
         }
         .conteft{
-            margin-top: 20px;
+            margin-top: 100px;
             position: absolute;  right: 0px;
         }
         p.inline{
