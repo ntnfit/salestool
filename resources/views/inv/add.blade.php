@@ -132,7 +132,7 @@
             margin-top: 70px;
         }
        
-        table {
+        table#tableadd {
   border-collapse: collapse;
   max-width: 75%;
   
@@ -145,53 +145,53 @@ thead {
   background-color: #ddd;
 }
 
-th,
-td {
+table#tableadd th,
+table#tableadd td {
   border: 1px solid #ddd;
   padding: 8px;
   text-align: center;
 }
-th {
+table#tableadd th {
   position: sticky;
   top: 0;
   z-index: 1;
   background-color: #ddd;
 }
 
-tr:nth-child(even) {
+table#tableadd tr:nth-child(even) {
   background-color: #f2f2f2;
   max-width: 35%;
 }
 
-td:first-child,
-th:first-child {
+table#tableadd td:first-child,
+table#tableadd th:first-child {
   text-align: left;
 }
-td:first-child,
+table#tableadd td:first-child,
 
-td:nth-child(2),
+table#tableadd td:nth-child(2),
 
-td:nth-child(3) {
+table#tableadd td:nth-child(3) {
   position: sticky;
   left: 0;
  
   background-color: #ddd; /* ensure that the fixed columns have the same background color as the table */
 }
 
-td:first-child {
+table#tableadd td:first-child {
     /* text-align: left; */
     width: 50px;
     min-width: 50px;
     max-width: 50px;
     left: 0px !important;
 }
-td:nth-child(2) {
+table#tableadd td:nth-child(2) {
     width: 100px;
     min-width: 100px;
     max-width: 100px;
     left: 50px;
 }
-td:nth-child(3) {
+table#tableadd td:nth-child(3) {
     width: 150px;
     min-width: 150px;
     max-width: 150px;
