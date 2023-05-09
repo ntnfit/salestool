@@ -294,6 +294,21 @@
             new agGrid.Grid(gridDiv, gridOptions);
             gridOptions.api.setRowData({!! $results !!});
         }
+        function loadData_after_print()
+        {
+            $.ajax({
+                type: 'GET',
+                url: '{{ route('truck.get') }}',
+                data: filterData,
+                dataType: 'json',
+                success: function(data) {
+                    gridOptions.api.setRowData(data);
+                    updatedData = [];
+                    loadingModal.style.display = "none";
+
+                }
+            });
+        }
         loadInitialData();
 
         $(document).ready(function() {
@@ -325,31 +340,34 @@
                     var selectedOption = document.querySelector('input[name="options"]:checked').value;
                     console.log(selectedOption);
                     console.log(selectedProIds);
-                    // Make an Ajax request here...
-                    $.ajax({
-                    type: 'GET',
-                    url: '{{ route('printed.do') }}',
-                    data: {
-                      layout:selectedOption, 
-                      No:selectedProIds,
-                      groupcode:groupData
-                    },
-                    dataType: 'json',
-                    success: function(data) {
-                        location.reload();
-                        const url = '{{ route('printed.layout') }}'+'?so='+selectedProIds+'&layout='+selectedOption+ '&group=' + encodeURIComponent(groupData);
+                    const url = '{{ route('printed.layout') }}'+'?so='+selectedProIds+'&layout='+selectedOption+ '&group=' + encodeURIComponent(groupData);
                           // redirect to the new URL
                           window.open(url, '_blank');
+                //     // Make an Ajax request here...
+                //     $.ajax({
+                //     type: 'GET',
+                //     url: '{{ route('printed.do') }}',
+                //     data: {
+                //       layout:selectedOption, 
+                //       No:selectedProIds,
+                //       groupcode:groupData
+                //     },
+                //     dataType: 'json',
+                //     success: function(data) {
+                //         location.reload();
+                //         const url = '{{ route('printed.layout') }}'+'?so='+selectedProIds+'&layout='+selectedOption+ '&group=' + encodeURIComponent(groupData);
+                //           // redirect to the new URL
+                //           window.open(url, '_blank');
 
-                    },
-                    error: function() {
-                        alert("sorry, It happen error please contact administrator!");
-                        loadingModal.style.display = "none";
+                //     },
+                //     error: function() {
+                //         alert("sorry, It happen error please contact administrator!");
+                //         loadingModal.style.display = "none";
 
-                        // Enable the submit button
-                        submitBtn.disabled = false;
-                    }
-                })
+                //         // Enable the submit button
+                //         submitBtn.disabled = false;
+                //     }
+                // })
 
                     // Close the modal
                     $('#myModal').modal('hide');

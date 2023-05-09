@@ -152,9 +152,9 @@
                                 <td>{{ $document->TenHang }}</td>
                                 <td class="text-center">{{ $document->CustQC }}</td>
                                 <td class="text-center">{{ $document->CustUomQuyDoi }}</td>
-                                <td class="text-center">{{ $document->DelQtybyThung }}</td>
-                                <td class="text-center">{{ $document->DGThung }}</td>
-                                <td class="text-center">{{ $document->LineTotal }}</td>
+                                <td class="text-center">{{ number_format($document->DelQtybyThung,2) }}</td>
+                                <td class="text-center">{{ number_format($document->DGThung,2) }}</td>
+                                <td class="text-center">{{ number_format($document->LineTotal,2) }}</td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -166,7 +166,7 @@
             </main>
             <footer class="footer">
                 <div class="left">
-                    <p>$documents->last()->CardName</p>
+                    <p>{{$documents->last()->CardName}}</p>
                     <p>Người nhận</p>
                 </div>
                 <div class="right">
@@ -178,7 +178,7 @@
         </div>
 		
     @endforeach
-	<div class="page-number"></div>
+	
 
 </body>
 <script>
