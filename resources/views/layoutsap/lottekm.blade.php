@@ -164,8 +164,8 @@
                         @endforeach
                     </tbody>
                     <tfoot>
-                        <th colspan="7"> </th>
-                       
+                        <th colspan="8"> Tổng </th>
+                        <th> - </th>
                     </tfoot>
                 </table>
             </main>
