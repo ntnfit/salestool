@@ -125,7 +125,7 @@
                         <p>Địa chỉ: {{ $documents->last()->Address }}</p>
                     </div>
                     <div class="right-content">
-                        <p style="text-align: end;">{{ date("Y/m/d", strtotime($documents->last()->DocDate))}}</p>
+                        <p style="text-align: end;">{{ date("d/m/Y", strtotime($documents->last()->DocDate))}}</p>
                         <p>Số đơn hàng: {{ $documents->last()->OrderNo }}</p>
                         <p>Số Hóa đơn: {{ $documents->last()->InvNo }}</p>
                     </div>
@@ -150,7 +150,7 @@
                                 <td class="text-center">{{ $document->MaHang }}</td>
                                 <td class="text-center">{{ $document->Mavach }}</td>
                                 <td>{{ $document->TenHang }}</td>
-                                <td class="text-center">{{ $document->CustUomQuyDoi }}</td>
+                                <td class="text-center">{{ $document->CustQC }}</td>
                                 <td class="text-center">{{ $document->unitMsr }}</td>
                                 <td class="text-center">{{ number_format($document->Quantity,2) }}</td>
                             </tr>

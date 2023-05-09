@@ -134,7 +134,7 @@
 
                     </div>
                     <div class="right-content">
-                        <p style="text-align: end;">{{ date('Y/m/d', strtotime($documents->last()->DocDate)) }}</p>
+                        <p style="text-align: end;">{{ date('d/m/Y', strtotime($documents->last()->DocDate)) }}</p>
                         <p>Số đơn hàng: {{ $documents->last()->OrderNo }}</p>
                         <p>Số Hóa đơn: {{ $documents->last()->InvNo }}</p>
                     </div>
