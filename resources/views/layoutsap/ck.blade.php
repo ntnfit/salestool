@@ -120,7 +120,7 @@
             <main>
                 <div class="content">
                     <div class="left-content">
-                        <p>Nhà cung cấp: {{ $documents->last()->VendorName }}</p>
+                        <p>Nhà cung cấp: CTY TNHH Betagen Việt Nam</p>
                         <p>Khách hàng: {{ $documents->last()->CardName }}</p>
                         <p>Địa chỉ: {{ $documents->last()->Address }}</p>
                     </div>
@@ -150,7 +150,7 @@
                                 <td class="text-center">{{ $document->MaHang }}</td>
                                 <td class="text-center">{{ $document->Mavach }}</td>
                                 <td>{{ $document->TenHang }}</td>
-                                <td class="text-center">{{ $document->QuiCach }}</td>
+                                <td class="text-center">{{ $document->CustUomQuyDoi }}</td>
                                 <td class="text-center">{{ $document->unitMsr }}</td>
                                 <td class="text-center">{{ number_format($document->Quantity,2) }}</td>
                             </tr>
@@ -172,7 +172,7 @@
         </div>
 		
     @endforeach
-	<div class="page-number"></div>
+
 
 </body>
 <script>

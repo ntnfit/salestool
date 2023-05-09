@@ -123,7 +123,7 @@
             </tr>
             <tr> 
                 <th style="width: 120px;">Tên nhà cung cấp: <br>Supplier Name</th>
-                <td>{{ $documents->last()->VendorName }}</td>
+                <td>CTY TNHH Betagen Việt Nam</td>
             </tr>
         </table>
     </div>

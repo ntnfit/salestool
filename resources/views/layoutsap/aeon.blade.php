@@ -186,7 +186,7 @@
                     <tbody>
                         <tr>
                             <td>374</td>
-                            <td> {{ $documents->last()->VendorName }}</td>
+                            <td> CTY TNHH Betagen Việt Nam</td>
                             <td>GA00686</td>
                         </tr>
                     </tbody>

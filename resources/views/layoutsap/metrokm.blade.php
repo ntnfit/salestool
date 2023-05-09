@@ -121,7 +121,7 @@
                 <div class="content">
                     <div class="left-content">
                         <p>Mã nhà cung cấp: {{ $documents->last()->VendorCode }}</p>
-                        <p>Nhà cung cấp: {{ $documents->last()->VendorName }}</p>
+                        <p>Nhà cung cấp: CONG TY TNHH BETAGEN VIET NAM</p>
                         <p>Khách hàng: {{ $documents->last()->CardName }}</p>
                        
                     </div>
