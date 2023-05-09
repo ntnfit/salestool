@@ -44,7 +44,7 @@
         </div>
     </div>
     <x-adminlte-select label="UserSAP" name="UserID"  fgroup-class="col-md-6" enable-old-support required>
-        <option value="" selected></option>
+        <option value=""></option>
         @foreach($usersap as $sapid)  
             @if($sapid->USERID==$user->UserID)
             <option value="{{$sapid->USERID}}" selected>{{$sapid->USER_CODE}}</option>
