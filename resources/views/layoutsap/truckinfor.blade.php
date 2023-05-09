@@ -199,7 +199,9 @@
                                 <td>{{ $item->U_AdmissionDate }}</td>
                             </tr>
                         @endforeach
-                          @php($index=1)  
+                        @php
+                        $index=1;
+                        @endphp   
                         <tr>
                             <td colspan="2"></td>
                             <td colspan="2"></td>
