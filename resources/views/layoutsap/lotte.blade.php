@@ -7,7 +7,7 @@
     <link rel="shortcut icon" href="{{ asset('favicons/favicon.ico') }}"/>
     <style>
         @page {
-            size: A4 portrait;
+            size: auto;
             margin: 1cm;
         }
 
@@ -187,20 +187,8 @@
         </div>
 		
     @endforeach
-	<div class="page-number"></div>
+	
 
 </body>
-<script>
-	window.addEventListener("load", function () {
-    var A4HeightInPx = 1123; // Approximate A4 height in pixels at 96 DPI
-    var totalPages = Math.ceil(document.body.scrollHeight / A4HeightInPx);
-    var pageNumberElements = document.querySelectorAll(".page-number");
 
-    pageNumberElements.forEach(function (element, index) {
-        element.textContent = "Page " + (index + 1) + " of " + totalPages;
-    });
-});
-
-
-</script>
 </html>

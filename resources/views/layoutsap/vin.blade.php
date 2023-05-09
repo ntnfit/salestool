@@ -7,7 +7,7 @@
     <link rel="shortcut icon" href="{{ asset('favicons/favicon.ico') }}"/>
     <style>
         @page {
-            size: A4 portrait;
+            size: auto;
             margin: 1cm;
         }
 
@@ -182,7 +182,7 @@
 		<div class="conteft" >
             <p class="inline">Bảo vệ</p>
             <p class="inline">Nhân viên nhận hàng</p>
-            <p class="inline">Nghành hàng</p>
+            <p class="inline">Ngành hàng</p>
         </div>
        
     @endforeach

@@ -14,7 +14,7 @@
             font-size: 14px;
             margin: 0;
             padding: 0;
-            size: A4;
+            size: auto;
             height: 297mm;
             width: 210mm;
         }

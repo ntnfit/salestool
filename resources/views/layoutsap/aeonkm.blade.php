@@ -11,7 +11,7 @@
     <style>
     <style>
         @page {
-            size: A4 portrait;
+            size: auto;
             margin: 1cm;
         }
 

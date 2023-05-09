@@ -6,7 +6,7 @@
     <link rel="shortcut icon" href="{{ asset('favicons/favicon.ico') }}"/>
     <style>
         @page {
-            size: A4 portrait;
+            size:auto;;
             margin: 1cm;
         }
 
