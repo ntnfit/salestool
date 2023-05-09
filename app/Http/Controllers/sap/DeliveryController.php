@@ -294,6 +294,7 @@ class DeliveryController extends Controller
             while ($row = odbc_fetch_object($stmt)) {
                 $results[] = $row;
             };
+            sort($results);
         $groupedDocuments=collect($results)->groupBy('DocEntry');
         return view ('layoutsap.vin',compact('groupedDocuments'));
            
@@ -306,6 +307,7 @@ class DeliveryController extends Controller
             while ($row = odbc_fetch_object($stmt)) {
                 $results[] = $row;
             };
+            sort($results);
             $groupedDocuments=collect($results)->groupBy('DocEntry');
             return view ('layoutsap.ck',compact('groupedDocuments'));
         }
@@ -317,6 +319,7 @@ class DeliveryController extends Controller
             while ($row = odbc_fetch_object($stmt)) {
                 $results[] = $row;
             };
+            sort($results);
             $groupedDocuments=collect($results)->groupBy('DocEntry');
             return view ('layoutsap.aeon',compact('groupedDocuments'));
         }
@@ -328,6 +331,7 @@ class DeliveryController extends Controller
             while ($row = odbc_fetch_object($stmt)) {
                 $results[] = $row;
             };
+            sort($results);
             $groupedDocuments=collect($results)->groupBy('DocEntry');
             return view ('layoutsap.aeonkm',compact('groupedDocuments'));
         }
@@ -339,6 +343,7 @@ class DeliveryController extends Controller
             while ($row = odbc_fetch_object($stmt)) {
                 $results[] = $row;
             };
+            sort($results);
             $groupedDocuments=collect($results)->groupBy('DocEntry');
             return view ('layoutsap.lotte',compact('groupedDocuments'));
         }
@@ -350,6 +355,7 @@ class DeliveryController extends Controller
             while ($row = odbc_fetch_object($stmt)) {
                 $results[] = $row;
             };
+            sort($results);
             $groupedDocuments=collect($results)->groupBy('DocEntry');
             return view ('layoutsap.lottekm',compact('groupedDocuments'));
 
@@ -362,6 +368,7 @@ class DeliveryController extends Controller
             while ($row = odbc_fetch_object($stmt)) {
                 $results[] = $row;
             };
+            sort($results);
             $groupedDocuments=collect($results)->groupBy('DocEntry');
             return view ('layoutsap.metro',compact('groupedDocuments'));
         }
@@ -373,6 +380,7 @@ class DeliveryController extends Controller
             while ($row = odbc_fetch_object($stmt)) {
                 $results[] = $row;
             };
+            sort($results);
             $groupedDocuments=collect($results)->groupBy('DocEntry');
             return view ('layoutsap.metrokm',compact('groupedDocuments'));
 
@@ -385,7 +393,7 @@ class DeliveryController extends Controller
             while ($row = odbc_fetch_object($stmt)) {
                 $results[] = $row;
             };
-           
+            sort($results);
         }
         else {
             //layout Betagen
@@ -395,6 +403,7 @@ class DeliveryController extends Controller
             while ($row = odbc_fetch_object($stmt)) {
                 $results[] = $row;
             };
+            sort($results);
             $groupedDocuments=collect($results)->groupBy('DocEntry');
             return view ('layoutsap.betagen',compact('groupedDocuments'));
           }
