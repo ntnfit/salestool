@@ -144,7 +144,9 @@
                     </thead>
                     <tbody>
                         @php($index = 0)
+                        @php($totalline = 0)
                         @foreach ($documents as $document)
+                        @php($totalline += $document->LineTotal)
                             <tr>
                                 <td class="text-center">{{ ++$index }}</td>
                                 <td class="text-center">{{ $document->ItemCust }}</td>
@@ -165,7 +167,11 @@
                     </tbody>
                     <tfoot>
                         <th colspan="8"> Tổng </th>
+                        @if(number_format($totalline) >0)
+                        <th>{{number_format($document->LineTotal,2)}}</th>
+                        @else
                         <th> - </th>
+                        @endif
                     </tfoot>
                 </table>
             </main>
