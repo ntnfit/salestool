@@ -115,6 +115,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/checkPOID',[GetItemController::class,'ValiatePOID'])->name('checkPOID');
     Route::get('/get-truck-infor',[DeliveryController::class,'TruckInfor'])->name('truck.get'); 
     Route::get('/get-support-no',[GetItemController::class,'GetSupportOrder'])->name('GetSupportOrder');
+    Route::get('/get-whs-df',[GetItemController::class,'loadDfWhsCode'])->name('getwhsdf');
     Route::get('/applyDo', [ExportCrystalReportController::class,'applyDo'])->name('applyDo');
     Route::get('/export-truckinfor', [ExportCrystalReportController::class,'print_do'])->name('print-do');
     

@@ -436,7 +436,7 @@
                             // total stock out total
                             let total = 0;
                             const totalRowElements = document.querySelectorAll(
-                            'input.totalrow');
+                                'input.totalrow');
                             totalRowElements.forEach((element) => {
                                 total += parseFloat(element.value);
                             });
@@ -626,7 +626,32 @@
         $(document).ready(function() {
             $('#cuscode').change(function() {
                 var CustName = document.getElementById("cuscode").selectedOptions[0].text.split("--")[1];
+                var cuscode = document.getElementById("cuscode").selectedOptions[0].value;
+                console.log();
                 document.getElementById("custname").value = CustName;
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ route('getwhsdf') }}',
+                    data: {
+                        customer: cuscode
+                    },
+                    dataType: "json",
+                    async: false,
+                    success: function(data) {
+                        var defaultWhs = data.DefaultWhs;
+                        console.log(defaultWhs);
+                        if (defaultWhs) {
+                            // set the selected option of the select element
+                            $('#WhsCode').selectpicker('val', defaultWhs);
+                            getBinCodeOptions(defaultWhs)
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.log("Error: " + error);
+                    }
+                });
+
+
             })
             $('#WhsCode').change(function() {
                 var FromWhsName = document.getElementById("WhsCode").selectedOptions[0].text.split("--")[1];
@@ -637,6 +662,35 @@
                 document.getElementById("teams").value = BinCode;
             })
         })
+
+        function getBinCodeOptions(whscode) {
+            $.ajax({
+                url: '{{ route('bincode') }}', // Replace this with the actual route for the bincode API
+                type: 'GET',
+                dataType: "json",
+                data: {
+                    WhsCode: whscode
+                },
+                success: function(data) {
+                    var select = $('#bincode');
+                    select.empty();
+                    console.log(data);
+                    $.each(data, function(index, option) {
+                        select.append($('<option>', {
+                            value: option.AbsEntry,
+                            text: option.BinCode
+                        }));
+                    });
+                    // // Re-initialize the selectpicker
+                    select.selectpicker('refresh');
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    // Handle any errors here
+                }
+            });
+        }
+
+
         const form = document.getElementById("addorder");
         const submitBtn = document.getElementById("save");
         const loadingModal = document.getElementById("loadingModal");
@@ -755,12 +809,12 @@
                                     for (const option of response) {
                                         select.append(
                                             `<option value="${option.AbsID}">${option.AbsID}</option>`
-                                            );
+                                        );
                                     }
                                     select.off('change').on('change', function() {
                                         if ($(this).val()) {
                                             $('#search').prop('disabled',
-                                            false);
+                                                false);
                                         } else {
                                             $('#search').prop('disabled', true);
                                         }
@@ -808,12 +862,12 @@
                                     for (const option of response) {
                                         select.append(
                                             `<option value="${option.AbsID}">${option.AbsID}</option>`
-                                            );
+                                        );
                                     }
                                     select.off('change').on('change', function() {
                                         if ($(this).val()) {
                                             $('#search').prop('disabled',
-                                            false);
+                                                false);
                                         } else {
                                             $('#search').prop('disabled', true);
                                         }
@@ -835,8 +889,10 @@
     <script>
         $(document).ready(function() {
             $('#sodate').val(moment().format(
-            'DD/MM/YYYY')); // set the value of the input element to the current date
+                'DD/MM/YYYY')); // set the value of the input element to the current date
             $('#sodate').datetimepicker(); // initialize the datetimepicker
+
+
         });
     </script>
 @endpush
