@@ -24,7 +24,7 @@
         </div>
     @endif
     @php
-        $config = ['format' => 'L'];
+        $config = ['format' => 'DD/MM/yyy'];
     @endphp
 
     <p style="float:right"><a href="{{ route('inv.add') }}">

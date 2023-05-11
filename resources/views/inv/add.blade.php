@@ -34,7 +34,7 @@
     </script>
     @endif
     @php
-      $configsodate = ['autoclose' => true, 'format' => 'yyyy/MM/DD', 'immediateUpdates' => true, 'todayBtn' => true, 'todayHighlight' => true, 'setDate' => 0];
+      $configsodate = ['autoclose' => true, 'format' => 'DD/MM/yyy', 'immediateUpdates' => true, 'todayBtn' => true, 'todayHighlight' => true, 'setDate' => 0];
    
      $configss = [
          'title' => 'Select data',
@@ -530,7 +530,7 @@ tbody tr.matched {
  
 <script>
   $(document).ready(function() {
-    $('#sodate').val(moment().format('YYYY/MM/DD')); // set the value of the input element to the current date
+    $('#sodate').val(moment().format('DD/MM/YYYY')); // set the value of the input element to the current date
     $('#sodate').datetimepicker(); // initialize the datetimepicker
   });
 </script>

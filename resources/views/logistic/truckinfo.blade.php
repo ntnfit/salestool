@@ -22,7 +22,7 @@
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 @section('content')
     @php
-        $config = ['format' => 'yyyy/MM/DD'];
+        $config = ['format' => 'DD/MM/yyy'];
     @endphp
     <h3> Truck Information</h3>
     @php
@@ -448,8 +448,8 @@
                 // Get the filter values from the input fields
                 const filterInput1 = document.querySelector('#fromDate');
                 const filterInput2 = document.querySelector('#toDate');
-                filterData.fromDate = filterInput1.value.replace(/\//g, '');
-                filterData.toDate = filterInput2.value.replace(/\//g, '');
+                filterData.fromDate = filterInput1.value.split('/').reverse().join('');
+                filterData.toDate = filterInput2.value.split('/').reverse().join('');
                 if (filterInput1.value == "") {
                     alert("Please choose From date!");
                 } else if (filterInput2.value == "") {
@@ -587,10 +587,6 @@
 
             if (selectedProIds.length === 0) {
                 alert("Please choose DocNum!");
-                return;
-            }
-            if (uDelNoArray.length === 0) {
-                alert("Please Stock-out before print! !");
                 return;
             }
             if (uDelNoArray.length > 1) {

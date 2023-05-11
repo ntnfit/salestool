@@ -61,8 +61,9 @@ class SalesController extends Controller
         }
         else
         {
-           $fromDate = Carbon::createFromFormat('m/d/Y', $request->fromdate)->format('Ymd');
-           $toDate =Carbon::createFromFormat('m/d/Y', $request->todate)->format('Ymd');
+           $fromDate = Carbon::createFromFormat('d/m/Y', $request->fromdate)->format('Ymd');
+           $toDate =Carbon::createFromFormat('d/m/Y', $request->todate)->format('Ymd');
+           
            $conDB = (new SAPB1Controller)->connect_sap();
            if (!$conDB) {
                // Handle connection error
@@ -198,7 +199,8 @@ class SalesController extends Controller
       $conDB =(new SAPB1Controller)->connect_sap();
       //dd($Itempost);
         // post to header
-        $date=(string)date("Ymd", strtotime($request->date));
+        $date=Carbon::createFromFormat('d/m/Y', $request->date)->format('Ymd');
+        
         $ordertype=$request->ordertype;
         $sqlStockNo = "SELECT 
         CASE 
@@ -219,7 +221,7 @@ class SalesController extends Controller
                         
                 ) T0";
                // AND \"OrderType\" = '".$ordertype."'
-        $SOID = $prefix.date("ym", strtotime($request->date)).odbc_result(odbc_exec($conDB, $sqlStockNo),1);
+        $SOID = $prefix.date("ym", strtotime( $date)).odbc_result(odbc_exec($conDB, $sqlStockNo),1);
       
         $Stocktype=2;
         $custcode=$request->cuscode;
@@ -231,7 +233,7 @@ class SalesController extends Controller
         $PODate="";
         if($request->podate)
         {
-            $PODate=date("Ymd", strtotime($request->podate));
+            $PODate=Carbon::createFromFormat('d/m/Y', $request->podate)->format('Ymd');
         }
         $AbsEntry=$request->bincode;
         $AbsId=$request->sporderno;
@@ -240,7 +242,7 @@ class SalesController extends Controller
         $statusSAP=0;
         $userId = Auth::user()->UserID;
         $applysap=0;
-        $datecreate=date("Ymd", strtotime(date("Y/m/d")));
+        $datecreate=date("Ymd", strtotime(date("d/m/Y")));
         $insertHeader='insert into "BS_STOCKOUTREQUEST" 
         ("StockNo","StockDate","StockType",
         "CustCode","CustName","FromWhsCode","FromWhsName",
@@ -249,6 +251,8 @@ class SalesController extends Controller
         "UserID","ApplyStatus")
         values
         (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
+        dd(array($SOID,$date,$Stocktype,$custcode,$custname,$FromWhsCode,$FromWhsName,
+        $OrderType, $POCardCode, $PODate,$AbsId,$AbsEntry,$team,$note,$statusSAP,$datecreate,$userId,$applysap));
          $stmtsheader = odbc_prepare($conDB, $insertHeader);
         $result = odbc_execute($stmtsheader, array($SOID,$date,$Stocktype,$custcode,$custname,$FromWhsCode,$FromWhsName,
         $OrderType, $POCardCode, $PODate,$AbsId,$AbsEntry,$team,$note,$statusSAP,$datecreate,$userId,$applysap));
@@ -358,7 +362,7 @@ class SalesController extends Controller
      
       //dd($Itempost);
         // post to header
-        $date=(string)date("Ymd", strtotime($request->date));
+        $date=Carbon::createFromFormat('d/m/Y', $request->date)->format('Ymd');
         $ordertype=$request->ordertype; 
         $SOID =$request->sono;
         $Stocktype=2;
@@ -368,7 +372,7 @@ class SalesController extends Controller
         $FromWhsName=$request->frmwhsname;
         $OrderType=$request->ordertype;
         $POCardCode=$request->pono;
-        $PODate=date("Ymd", strtotime($request->podate));
+        $PODate=Carbon::createFromFormat('d/m/Y', $request->podate)->format('Ymd');
         $AbsEntry=$request->bincode;
         $AbsId=null;//Sale blanket id
         $team=$request->teams;
@@ -662,10 +666,9 @@ class SalesController extends Controller
             // Handle SQL error
             die("Error preparing SQL statement: " . odbc_errormsg());
         }
-        
         // Execute the stored procedure with the input parameters
         //if (!odbc_execute($stmt, array('102522','HO03','2018-4-5','201-25152',''))) {
-        if (!odbc_execute($stmt, array($request->custcodes,$request->whscodes,$request->dates,$request->itemlists,$itemlot))) {
+        if (!odbc_execute($stmt, array($request->custcodes,$request->whscodes,date('Ymd', strtotime($request->dates)),$request->itemlists,$itemlot))) {
             // Handle execution error
             die("Error executing SQL statement: " . odbc_errormsg());
         }
@@ -746,5 +749,7 @@ class SalesController extends Controller
             return response()->json(["success" => true]);
         
     } 
+
+    
 }
    

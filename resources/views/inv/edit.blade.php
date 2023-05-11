@@ -52,12 +52,12 @@
     <div class="row">
        
     @php
-$config = ['format' => 'L', 'format' => 'yyyy/MM/DD'];
-$configsodate = ['autoclose' => true, 'format' => 'yyyy/MM/DD', 'immediateUpdates' => true, 'todayBtn' => true, 'todayHighlight' => true, 'setDate' => 0];
+$config = ['format' => 'L', 'format' => 'DD/MM/yyy'];
+$configsodate = ['autoclose' => true, 'format' => 'DD/MM/yyy', 'immediateUpdates' => true, 'todayBtn' => true, 'todayHighlight' => true, 'setDate' => 0];
 
 @endphp
         <x-adminlte-input-date name="date" id="sodate" label="Date" :config="$configsodate" label-class="text-lightblue"
-            igroup-size="sm" fgroup-class="col-md-3" placeholder="Choose a date..." value="{{ $so->StockDate }}" readonly="true">
+            igroup-size="sm" fgroup-class="col-md-3" placeholder="Choose a date..." value="{{\Carbon\Carbon::parse($so->StockDate)->format('d/m/Y') }}" readonly="true">
             <x-slot name="appendSlot">
                 <div class="input-group-text bg-gradient-danger">
                     <i class="fas fa-calendar-alt"></i>
@@ -343,6 +343,6 @@ rows.forEach(function(row) {
     }
 });
 });
-
+// Select the date picker input field
 </script>
 @endpush

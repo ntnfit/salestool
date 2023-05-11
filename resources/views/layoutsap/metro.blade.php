@@ -147,7 +147,7 @@
                         @foreach ($documents as $document)
                             <tr>
                                 <td class="text-center">{{ ++$index }}</td>
-                                <td class="text-center">{{ $document->CustBarCode }}</td>
+                                <td class="text-center">{{ $document->CustBarCode}}</td>
                                 <td>{{ $document->TenHang }}</td>
                                 <td class="text-center">{{ $document->CustUomQuyDoi }}</td>
                                 <td class="text-center">{{  number_format($document->Quantity,2) }}</td>

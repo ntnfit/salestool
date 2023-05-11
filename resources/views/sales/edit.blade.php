@@ -24,8 +24,8 @@
         </script>
     @endif
     @php
-        $config = ['format' => 'L', 'format' => 'yyyy/MM/DD'];
-        $configsodate = ['autoclose' => true, 'format' => 'yyyy/MM/DD', 'immediateUpdates' => true, 'todayBtn' => true, 'todayHighlight' => true, 'setDate' => 0];
+        $config = ['format' => 'L', 'format' => 'DD/MM/yyy'];
+        $configsodate = ['autoclose' => true, 'format' => 'DD/MM/yyy', 'immediateUpdates' => true, 'todayBtn' => true, 'todayHighlight' => true, 'setDate' => 0];
         
     @endphp
     <form action="{{ route('sales.update', $so->StockNo) }}" method="post">
@@ -42,7 +42,7 @@
             </x-adminlte-input>
             <x-adminlte-input-date name="podate" id="podate" label="PoDate" :config="$config"
                 label-class="text-lightblue" igroup-size="sm" fgroup-class="col-md-3" placeholder="Choose a date..."
-                value="{{ $so->PODate }}" readonly="true">
+                value="{{\Carbon\Carbon::parse( $so->PODate)->format('d/m/Y')  }}" readonly="true">
                 <x-slot name="appendSlot">
                     <div class="input-group-text bg-gradient-danger">
                         <i class="fas fa-calendar-alt"></i>
@@ -75,7 +75,7 @@
 
             <x-adminlte-input-date name="date" id="sodate" label="Date" :config="$configsodate"
                 label-class="text-lightblue" igroup-size="sm" fgroup-class="col-md-3" placeholder="Choose a date..."
-                value="{{ $so->StockDate }}" readonly="true">
+                value="{{ Carbon\Carbon::parse( $so->StockDate)->format('d/m/Y') }}" readonly="true">
                 <x-slot name="appendSlot">
                     <div class="input-group-text bg-gradient-danger">
                         <i class="fas fa-calendar-alt"></i>

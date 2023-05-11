@@ -25,8 +25,8 @@
         </script>
     @endif
     @php
-        $config = ['format' => 'L', 'format' => 'yyyy/MM/DD'];
-        $configsodate = ['autoclose' => true, 'format' => 'yyyy/MM/DD', 'immediateUpdates' => true, 'todayBtn' => true, 'todayHighlight' => true, 'setDate' => 0];
+        $config = ['format' => 'L', 'format' => 'DD/MM/yyy'];
+        $configsodate = ['autoclose' => true, 'format' => 'DD/MM/yyy', 'immediateUpdates' => true, 'todayBtn' => true, 'todayHighlight' => true, 'setDate' => 0];
         
     @endphp
     <div class="row">
@@ -835,7 +835,7 @@
     <script>
         $(document).ready(function() {
             $('#sodate').val(moment().format(
-            'YYYY/MM/DD')); // set the value of the input element to the current date
+            'DD/MM/YYYY')); // set the value of the input element to the current date
             $('#sodate').datetimepicker(); // initialize the datetimepicker
         });
     </script>

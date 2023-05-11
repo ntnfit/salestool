@@ -164,5 +164,20 @@ class GetItemController extends Controller
         return json_encode($results);
 
     }
+    function loadDfWhsCode(Request $request)
+    {
+        $conDB = (new SAPB1Controller)->connect_sap();
+        $sql='usp_BS_Customer_getDefaultWhs (?)';
+        
+        $stmt = odbc_prepare($conDB, $sql);
+       
+        odbc_execute($stmt,array($request->customer));
+        $results = array();
+        while ($row = odbc_fetch_object($stmt)) {
+            $results[] = $row;
+        }
+
+        dd($results);
+    }
     
 }

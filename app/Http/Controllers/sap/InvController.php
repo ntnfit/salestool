@@ -63,8 +63,9 @@ class InvController extends Controller
         }
         else
         {
-           $fromDate = Carbon::createFromFormat('m/d/Y', $request->fromdate)->format('Ymd');
-           $toDate =Carbon::createFromFormat('m/d/Y', $request->todate)->format('Ymd');
+           $fromDate = Carbon::createFromFormat('d/m/Y', $request->fromdate)->format('Ymd');
+           $toDate =Carbon::createFromFormat('d/m/Y', $request->todate)->format('Ymd');
+          
            $conDB = (new SAPB1Controller)->connect_sap();
            if (!$conDB) {
                // Handle connection error
@@ -174,7 +175,7 @@ class InvController extends Controller
         // next pass
           // OPEN connect ODBC
         $conDB =(new SAPB1Controller)->connect_sap();
-        $date=(string)date("Ymd", strtotime($request->date));
+        $date=Carbon::createFromFormat('d/m/Y', $request->date)->format('Ymd');
         $sqlStockNo = "SELECT 
         CASE 
             WHEN 9 >= NO THEN '0000'||CAST(NO AS NVARCHAR(20)) 
@@ -200,7 +201,8 @@ class InvController extends Controller
             $prefix="BO";
         }  
        
-        $SOID = $prefix.date("ym", strtotime($request->date)).odbc_result(odbc_exec($conDB, $sqlStockNo),1);
+        $SOID = $prefix.date("ym", strtotime($date)).odbc_result(odbc_exec($conDB, $sqlStockNo),1);
+       
         $Stocktype=1;
         
         $FromWhsCode=$request->WhsCode;
@@ -421,7 +423,7 @@ class InvController extends Controller
      
       //dd($Itempost);
         // post to header
-        $date=(string)date("Ymd", strtotime($request->date));
+        $date=Carbon::createFromFormat('d/m/Y', $request->date)->format('Ymd');
         $SOID =$request->sono;
         $Stocktype=1;
         
