@@ -179,5 +179,34 @@ class GetItemController extends Controller
 
         return json_encode($results[0]);
     }
-    
+    function loadprintkeyorder(Request $request)
+    {
+        $conDB = (new SAPB1Controller)->connect_sap();
+        $sql = 'CALL "usp_load_preview_stock_key_order"(?)';
+
+        $stmt = odbc_prepare($conDB, $sql);
+          
+        if (!$stmt) {
+            // Handle SQL error
+            die("Error preparing SQL statement: " . odbc_errormsg());
+        }
+        // Execute the stored procedure with the input parameters
+        if (!odbc_execute($stmt, array($request->so))) {
+            // Handle execution error
+            die("Error executing SQL statement: " . odbc_errormsg());
+        }
+        // Retrieve the result set from the stored procedure
+        $results = array();
+        while ($row = odbc_fetch_array($stmt)) {
+            $results[] = $row;
+        }
+        sort($results);
+        // get number lot
+        $distinctLots = array_unique(array_column($results, 'LotNo'));
+        odbc_close($conDB);
+        // pass data to the view and render the Blade template
+        return  view('sales.print_preview', compact('distinctLots', 'results'));
+        ;
+         
+    }
 }

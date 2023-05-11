@@ -65,7 +65,7 @@
                     <option value=""></option>
                     @foreach ($results as $result)
                         <option value="{{ $result->Code }}">
-                            {{ 'Code:' . $result->Code . '--Driver: ' . $result->U_TruckDriver . '--Type: ' . $result->U_Type . '--Capacity: ' . $result->U_Capacity . '--Tel: ' . $result->U_Tel }}
+                            {{ 'Code:' . $result->Code . '--Driver: ' . $result->U_TruckDriver }}
                         </option>
                     @endforeach
                     <option value="">null</option>
@@ -247,10 +247,12 @@
             {
                 headerName: 'Doc Entry',
                 field: 'DocEntry',
+                hide: true,
             },
             {
                 headerName: 'Doc No',
                 field: 'DocNum',
+                hide: true,
             },
             {
                 headerName: 'Due Date',
@@ -277,6 +279,7 @@
             {
                 headerName: 'Tax Date',
                 field: 'TaxDate',
+                hide: true,
             },
             {
                 headerName: 'So Phieu',
@@ -285,6 +288,7 @@
             {
                 headerName: 'Route',
                 field: 'U_Route',
+                hide: true,
             },
             {
                 headerName: 'Route Name',
@@ -302,10 +306,12 @@
             {
                 headerName: 'Truck Type',
                 field: 'TruckType',
+                hide: true,
             },
             {
                 headerName: 'Capacity',
                 field: 'Capacity',
+                hide: true,
             },
             {
                 headerName: 'Truck Driver',
@@ -334,10 +340,12 @@
             {
                 headerName: 'Delivery Status',
                 field: 'U_DeliveryStatus',
+                hide: true,
             },
             {
                 headerName: 'Status',
                 field: 'StatusIDName',
+                hide: true,
             },
 
             {

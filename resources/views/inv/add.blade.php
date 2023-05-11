@@ -138,6 +138,12 @@
   
 }
 
+table#tableadd {
+            border-collapse: collapse;
+            max-width: 75%;
+            zoom: 81%
+
+        }
 thead {
   position: sticky;
   top: 0;
@@ -435,6 +441,7 @@ tbody tr.matched {
                                 totalRowElements.forEach((element) => {
                                 total += parseFloat(element.value);
                                 });
+                                
                                 document.querySelector('th.totalstockout').textContent = total;
 
                         });

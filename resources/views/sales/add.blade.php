@@ -151,6 +151,7 @@
 @section('css')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
     <style>
+      
         .btn-flat {
             font-size: small;
             padding: 8px 24px;
@@ -170,6 +171,7 @@
         table#tableadd {
             border-collapse: collapse;
             max-width: 75%;
+            zoom: 81%
 
         }
 

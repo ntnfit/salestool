@@ -6,7 +6,7 @@
 @section('content_header')
     <h5>List Stock Out Request - Sales Order</h5>
 @stop
-<link rel="shortcut icon" href="{{ asset('favicons/favicon.ico') }}"/>
+<link rel="shortcut icon" href="{{ asset('favicons/favicon.ico') }}" />
 <script src="https://unpkg.com/jquery/dist/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
@@ -24,7 +24,7 @@
         </div>
     @endif
     @php
-        $config = ['format' => 'L','format' => 'DD/MM/yyy'];
+        $config = ['format' => 'L', 'format' => 'DD/MM/yyy'];
     @endphp
 
     <p style="float:right"><a href="{{ route('sales.add') }}">
@@ -61,6 +61,8 @@
         </div>
         <x-adminlte-button class="btn-flat" id="getSelectedRowsBtn" style="float: right;margin-right: 20px;" type="button"
             label="Apply SAP" theme="success" />
+        <x-adminlte-button class="btn-flat" id="printpr" style="float: right;margin-right: 20px;" type="button"
+            label="print_preview" theme="success" />
         <x-adminlte-button class="btn-flat" id="cancelSQ" style="float: right;margin-right: 20px;" type="button"
             label="Cancel Order" theme="danger" />
     </form>
@@ -504,5 +506,13 @@
                 })
             }
         })
+        document.querySelector("#printpr").addEventListener("click", function() {
+            const selectedRows = gridOptions.api.getSelectedRows()
+            const selectedProIds = selectedRows.map((row) => row.StockNo);
+            console.log(selectedProIds.join(','));
+            const url = '{{ route('print-preview') }}'+'?so='+selectedProIds;
+                          // redirect to the new URL
+                          window.open(url, '_blank');
+        });
     </script>
 @stop

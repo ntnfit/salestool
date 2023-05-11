@@ -118,6 +118,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/get-whs-df',[GetItemController::class,'loadDfWhsCode'])->name('getwhsdf');
     Route::get('/applyDo', [ExportCrystalReportController::class,'applyDo'])->name('applyDo');
     Route::get('/export-truckinfor', [ExportCrystalReportController::class,'print_do'])->name('print-do');
+    route::get('/print-preview',[GetItemController::class,'loadprintkeyorder'])->name('print-preview');
     
 
 

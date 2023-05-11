@@ -213,6 +213,7 @@
             {
                 headerName: 'InvoiceNo',
                 field: 'NumAtCard',
+                sort: 'desc'
             },
             {
                 headerName: 'Total',
@@ -270,6 +271,7 @@
                 minWidth: 150,
                 filter: true,
                 resizable: true,
+                sortable: true,
             },
             animateRows: true,
             pagination: true,
@@ -280,6 +282,7 @@
                 suppressCount: true,
                 selectAllOnMiniFilter: true,
             },
+            
         };
 
         function onBtExport() {
