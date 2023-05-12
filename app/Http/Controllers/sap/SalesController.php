@@ -175,6 +175,7 @@ class SalesController extends Controller
     }
     function addView()
     {
+        
         $orderTypes=DB::table('SAL_ORDER_TYPE')->get();
         $customers=DB::table('Customerlist')->orderby('CardCode','ASC')->get();
         $whsCodes=DB::table('SAL_OWHS')->get();
@@ -251,8 +252,6 @@ class SalesController extends Controller
         "UserID","ApplyStatus")
         values
         (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
-        dd(array($SOID,$date,$Stocktype,$custcode,$custname,$FromWhsCode,$FromWhsName,
-        $OrderType, $POCardCode, $PODate,$AbsId,$AbsEntry,$team,$note,$statusSAP,$datecreate,$userId,$applysap));
          $stmtsheader = odbc_prepare($conDB, $insertHeader);
         $result = odbc_execute($stmtsheader, array($SOID,$date,$Stocktype,$custcode,$custname,$FromWhsCode,$FromWhsName,
         $OrderType, $POCardCode, $PODate,$AbsId,$AbsEntry,$team,$note,$statusSAP,$datecreate,$userId,$applysap));
