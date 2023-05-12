@@ -410,6 +410,9 @@
                 updatedData.push(data);
                 }
             },
+            enableRangeSelection: true,
+            allowContextMenuWithControlKey: true,
+            getContextMenuItems: getContextMenuItems,
         };
 
         function onBtExport() {
@@ -439,6 +442,41 @@
             });
 
         }
+        function getContextMenuItems(params) {
+            var result = [
+                // Other menu items...
+                {
+                name: 'Choose All DO',
+                action: function () {
+                    selectSameU_DelNo(params);
+                },
+                },
+                'export',
+            ];
+
+            return result;
+            }
+            function selectSameU_DelNo(params) {
+                const selectedRows = gridOptions.api.getSelectedRows();
+
+// If there is only one row selected, check for other rows with the same DelNo and select them
+if (selectedRows.length === 1) {
+    const selectedDelNo = selectedRows[0].U_DelNo;
+    const selectedTruckInfo = selectedRows[0].U_TruckInfo;
+
+    gridOptions.api.forEachNode(function(node) {
+        if (node.group || !node.data.U_DelNo) {
+            return;
+        }
+      //  if (node.data.U_TruckInfo === selectedTruckInfo && node.data.U_DelNo ===
+        if (node.data.U_DelNo ==selectedDelNo && !node.isSelected()) {
+            node.setSelected(true);
+        }
+    });
+}
+            }
+
+
         let filterData = {};
         // setup the grid after the page has finished loading
         document.addEventListener('DOMContentLoaded', function() {
@@ -505,28 +543,9 @@
 
             loadInitialData();
 
-            gridOptions.api.addEventListener('selectionChanged', function() {
-                // Get the selected rows
-                const selectedRows = gridOptions.api.getSelectedRows();
 
-                // If there is only one row selected, check for other rows with the same DelNo and select them
-                if (selectedRows.length === 1) {
-                    const selectedDelNo = selectedRows[0].U_DelNo;
-                    const selectedTruckInfo = selectedRows[0].U_TruckInfo;
-
-                    gridOptions.api.forEachNode(function(node) {
-                        if (node.group || !node.data.U_DelNo) {
-                            return;
-                        }
-                      //  if (node.data.U_TruckInfo === selectedTruckInfo && node.data.U_DelNo ===
-                        if (node.data.U_DelNo ==selectedDelNo && !node.isSelected()) {
-                            node.setSelected(true);
-                        }
-                    });
-                }
-
-            });
-
+            
+            
 
             document.querySelector("#apply").addEventListener("click", function() {
                 const selectedRows = gridOptions.api.getSelectedRows().filter(row => row.DocNum);
