@@ -65,7 +65,7 @@
                     <option value=""></option>
                     @foreach ($results as $result)
                         <option value="{{ $result->Code }}">
-                            {{ 'Code:' . $result->Code . '--Driver: ' . $result->U_TruckDriver }}
+                            {{ 'Code:' . $result->Code}}
                         </option>
                     @endforeach
                     <option value="">null</option>
