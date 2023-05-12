@@ -16,6 +16,7 @@ use App\Http\Controllers\sap\ListEmployeeController;
 use App\Http\Controllers\sap\SalesController;
 use App\Http\Controllers\sap\InvController;
 use App\Http\Controllers\ExportCrystalReportController;
+use App\Http\Controllers\sap\SalesBAController;
         Auth::routes();
 
         Route::get('sapb1',[SAPB1Controller::class,'connect']);
@@ -120,6 +121,9 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/export-truckinfor', [ExportCrystalReportController::class,'print_do'])->name('print-do');
     route::get('/print-preview',[GetItemController::class,'loadprintkeyorder'])->name('print-preview');
     
-
+    //upload file 
+    route::get('/upload-file',[SalesBAController::class,'view'])->name('import.upload');
+    route::post('/upload-excel',[SalesBAController::class,'upload'])->name('import.handle');
+    route::get('/import-log/{log}',[SalesBAController::class,'listlog'])->name('import.log');
 
 });

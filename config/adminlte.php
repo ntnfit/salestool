@@ -355,6 +355,10 @@ return [
                     'text' => 'Add Promotions',
                     'url'  => 'promotions-add',
                 ],
+                [
+                    'text' => 'Import BA',
+                    'url'  => 'upload-file',
+                ],
                 
             ],
         ],

@@ -56,6 +56,8 @@
         </div>
         <div id="myGrid" class="ag-theme-alpine" style="height: 70%">
         </div>
+        <x-adminlte-button class="btn-flat" id="printpr" style="float: right;margin-right: 20px;" type="button"
+            label="print_preview" theme="success" />
         <x-adminlte-button class="btn-flat" id="getSelectedRowsBtn" style="float: right;margin-right: 20px;" type="button"
             label="Apply SAP" theme="success" />
             <x-adminlte-button class="btn-flat" id="confirm" style="float: right;margin-right: 20px;" type="button"
@@ -449,6 +451,14 @@
                 })
             }
 
+        });
+        document.querySelector("#printpr").addEventListener("click", function() {
+            const selectedRows = gridOptions.api.getSelectedRows()
+            const selectedProIds = selectedRows.map((row) => row.StockNo);
+            console.log(selectedProIds.join(','));
+            const url = '{{ route('print-preview') }}'+'?so='+selectedProIds;
+                          // redirect to the new URL
+                          window.open(url, '_blank');
         });
     </script>
 @stop

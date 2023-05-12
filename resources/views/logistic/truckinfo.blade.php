@@ -24,7 +24,7 @@
     @php
         $config = ['format' => 'DD/MM/yyy'];
     @endphp
-    <h3> Truck Information</h3>
+    <h5> Truck Information</h5>
     @php
         $configss = [
             'title' => 'Select data',

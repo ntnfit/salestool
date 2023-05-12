@@ -102,7 +102,7 @@
                     @endif
                 @endforeach
 
-                <td> <input type="number" class="totalrow" value="{{ array_sum($result['QuantityOut']) }}"
+                <td> <input type="number" class="totalrow" 
                         readonly="true"></td>
             </tr>
         @endforeach
