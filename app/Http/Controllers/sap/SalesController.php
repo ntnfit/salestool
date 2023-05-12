@@ -645,6 +645,8 @@ class SalesController extends Controller
     }
     function getpromotion(Request $request)
     {
+     
+        
         
        
         $conDB = (new SAPB1Controller)->connect_sap();
@@ -668,7 +670,7 @@ class SalesController extends Controller
         }
         // Execute the stored procedure with the input parameters
         //if (!odbc_execute($stmt, array('102522','HO03','2018-4-5','201-25152',''))) {
-        if (!odbc_execute($stmt, array($request->custcodes,$request->whscodes,Carbon::createFromFormat('d/m/Y', $request->dates)->format('Ymd'),$request->itemlists,$itemlot))) {
+        if (!odbc_execute($stmt, array($request->custcodes,$request->whscodes,Carbon::createFromFormat('dmY', $request->dates)->format('Ymd'),$request->itemlists,$itemlot))) {
             // Handle execution error
             die("Error executing SQL statement: " . odbc_errormsg());
         }
