@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\sap\SAPB1Controller;
 use DB;
 use Response;
+
 class PromotionController extends Controller
 {
     // get list promotion
@@ -134,7 +135,7 @@ class PromotionController extends Controller
         $Customers=DB::table('Customerlist')->get();
         $Uoms=DB::table('UOMSAP')->get();
        
-        
+       
         return view('promotion.editdate',compact('PromTypes','Custgroups',
         'channels','Routes','Locations',
         'ItemCodes','Customers','Uoms','listItems','customerdt','header'
@@ -208,7 +209,7 @@ class PromotionController extends Controller
         $date_parts = explode('-', $period);
         $fromdate = trim($date_parts[0]);
         $todate = trim($date_parts[1]);
-       
+      
         // Bind the values to the statement
         $PromotionType = $request->protype;
         $PromotionName = $request->promotionname;
@@ -395,9 +396,9 @@ class PromotionController extends Controller
         $period = $request->period;
         $dates = explode(" - ", $period);
         // Convert each date to the "YYYYMMDD" format
-        $from_date = date("Ymd", strtotime($dates[0]));
-        $to_date = date("Ymd", strtotime($dates[1]));
-            
+        
+        $from_date = \Carbon\Carbon::createFromFormat('d/m/Y',$dates[0])->format('Ymd');
+        $to_date =\Carbon\Carbon::createFromFormat('d/m/Y',$dates[1])->format('Ymd');
         // Bind the values to the statement
         $PromotionType = $request->protype;
         $PromotionName = $request->promotionname;

@@ -164,6 +164,10 @@ class SalesController extends Controller
         while ($row = odbc_fetch_array($stmt)) {
             $results[] = $row;
         }
+        $blanket=0;
+       if($so->AbsID){
+        $blanket=$so->AbsID;
+       }
         sort($results);
        // dd($results);
         // get number lot
@@ -171,7 +175,7 @@ class SalesController extends Controller
        
         odbc_close($conDB);
         
-        return view('sales.edit',compact('results','distinctLots','orderTypes','so'));
+        return view('sales.edit',compact('results','distinctLots','orderTypes','so','blanket'));
     }
     function addView()
     {
@@ -253,7 +257,7 @@ class SalesController extends Controller
         values
         (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
          $stmtsheader = odbc_prepare($conDB, $insertHeader);
-        $result = odbc_execute($stmtsheader, array($SOID,$date,$Stocktype,$custcode,$custname,$FromWhsCode,$FromWhsName,
+       $result = odbc_execute($stmtsheader, array($SOID,$date,$Stocktype,$custcode,$custname,$FromWhsCode,$FromWhsName,
         $OrderType, $POCardCode, $PODate,$AbsId,$AbsEntry,$team,$note,$statusSAP,$datecreate,$userId,$applysap));
         
         //handler data to detail
@@ -314,6 +318,7 @@ class SalesController extends Controller
         }
         }
         }
+
        
         //insert data item to table line
         $sqlinsertline='insert into BS_STOCKOUTREQUEST_Detail 

@@ -14,9 +14,9 @@
     @php
 $config = [
     "timePicker" => true,
-    "startDate" => $header[0]['FromDate'],
-    "endDate" => $header[0]['ToDate'],
-    "locale" => ["format" => "YYYY-MM-DD"],
+    "startDate" =>date('d/m/Y', strtotime($header[0]['FromDate'])) ,
+    "endDate" => date('d/m/Y', strtotime($header[0]['ToDate'])),
+    "locale" => ["format" => "DD/MM/yyyy"],
 ];
 @endphp
 @section('content')

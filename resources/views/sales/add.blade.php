@@ -151,7 +151,6 @@
 @section('css')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
     <style>
-      
         .btn-flat {
             font-size: small;
             padding: 8px 24px;
@@ -172,7 +171,6 @@
             border-collapse: collapse;
             max-width: 75%;
             zoom: 81%
-
         }
 
         thead {
@@ -311,6 +309,10 @@
         table#tableadd tbody tr.matched {
             background-color: #f0f0f0;
         }
+
+        input[type="number"] {
+            width: 60.4px;
+        }
     </style>
 @stop
 @push('js')
@@ -398,7 +400,21 @@
                         }
 
                         // Listen for changes to input fields in the rendered table
-                        $('#tabledata input.Qtyout').on('input', function() {
+                        $('#tabledata').on('input', 'input.Qtyout', function() {
+                            //clear promotion
+                            var trs = document.querySelectorAll('tr');
+                            trs.forEach(function(tr) {
+                                var bgColor = tr.style.backgroundColor;
+                                if (bgColor === 'rgb(223, 240, 216)') {
+                                    tr.parentNode.removeChild(tr);
+                                }
+                            });
+                            $('#promotion').prop('disabled', false);
+                            $("#tableadd tbody tr").each(function(index) {
+                                $(this).find("td:first-child").text(index +
+                                    1); // Update the "STT" (serial number)
+                            });
+                            //next process
                             var sum = 0;
                             var $row = $(this).closest('tr');
                             $row.find('input.Qtyout').each(function() {
@@ -414,12 +430,29 @@
 
                                 var cellValue = parseInt($(this).find('td:eq(' +
                                     columnIndex + ') input.Qtyout').val());
-                                if (!isNaN(cellValue)) {
-                                    sumcol += cellValue;
+                                if (isNaN(cellValue)) {
+                                    cellValue = 0; // Set value to 0 if NaN
                                 }
+                                sumcol += cellValue;
                             });
                             $('tfoot tr th').eq(columnIndex - 2).text(sumcol || 0);
 
+
+                            let total = 0;
+                            const totalRowElements = document.querySelectorAll(
+                                'input.totalrow');
+                            totalRowElements.forEach((element) => {
+                                const value = parseFloat(element.value);
+                                if (isNaN(value)) {
+                                    total += 0; // Set value to 0 if NaN
+                                } else {
+                                    total += value;
+                                }
+                            });
+
+                            document.querySelector('th.totalstockout').textContent = total;
+                        });
+                        $('#tabledata').on('input', 'input.qtypro', function() {
                             var sumpro = 0;
                             var $row = $(this).closest('tr');
                             $row.find('input.qtypro').each(function() {
@@ -435,14 +468,6 @@
                                 alert('Quantity exceeds promotion quantity');
                                 $row.find('input.qtypro').val('');
                             }
-                            // total stock out total
-                            let total = 0;
-                            const totalRowElements = document.querySelectorAll(
-                                'input.totalrow');
-                            totalRowElements.forEach((element) => {
-                                total += parseFloat(element.value);
-                            });
-                            document.querySelector('th.totalstockout').textContent = total;
                         });
                         $('#tableadd th').click(function() {
                             var table = $(this).parents('table').eq(0)
@@ -498,6 +523,19 @@
     <script>
         // Assume the "Load Promotion" button has an ID of "loadPromotionBtn"
         $("#promotion").on("click", function() {
+            $(this).prepend(
+                '<span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>');
+            // Disable button
+            $(this).prop('disabled', true);
+            var trs = document.querySelectorAll('tr');
+
+            trs.forEach(function(tr) {
+                var bgColor = tr.style.backgroundColor;
+                if (bgColor === 'rgb(223, 240, 216)') {
+                    tr.parentNode.removeChild(tr);
+                }
+            });
+
             var stockOutsInputs = document.querySelectorAll('input[name^="stockOuts"]', 'input[name^="sotype"]');
             var stockOutsValues = [];
             for (var i = 0; i < stockOutsInputs.length; i++) {
@@ -541,6 +579,9 @@
 
                 datatype: "json",
                 success: function(data) {
+                    $('#promotion .spinner-grow').remove();
+                    // Re-enable button
+                    $('#promotion').prop('disabled', false);
                     console.log('data: ', data);
                     promotions = data.promotiodt;
                     // Loop through each row in the table with ID "tableadd"
@@ -551,7 +592,7 @@
                         if (promotions.hasOwnProperty(itemCode)) {
                             var promotionQty = promotions[
                                 itemCode
-                            ]; // Get the promotion quantity for the current item code
+                                ]; // Get the promotion quantity for the current item code
                             var newQty =
                                 promotionQty; // Calculate the new quantity by adding the promotion quantity
                             // Clone the current row, update the "Total Qty" input field with the new quantity, and append it to the table
@@ -564,7 +605,7 @@
                             newRow.find(".Qtyout").val("");
                             newRow.find(".Qtyout").removeClass('Qtyout').addClass('qtypro');
                             newRow.find(".totalrow").removeClass('totalrow').addClass(
-                                'totalpro');
+                                'totalpro').attr('name', 'totalprorow[]');
                             newRow.find("input[name^='stockOuts']").attr("name", function(index,
                                 name) {
                                 return name.replace(/^stockOuts/, "proout");
@@ -602,7 +643,7 @@
                             newRow.find(".Qtyout").val("");
                             newRow.find(".totalrow").val(promotionQty);
                             newRow.find(".totalrow").removeClass('totalrow').addClass(
-                                'totalpro');
+                                'totalpro').attr('name', 'totalprorow[]');
                             newRow.find("input[name^='stockOuts']").attr("name", function(index,
                                 name) {
                                 return name.replace(/^stockOuts/, "proout");
@@ -618,6 +659,9 @@
                     $('#promotion').attr('disabled', 'disabled');
                 },
                 error: function(data) {
+                    $('#promotion .spinner-grow').remove();
+                    // Re-enable button
+                    $('#promotion').prop('disabled', false);
                     console.log('data: ', data);
                 }
             });
@@ -692,8 +736,84 @@
             });
         }
 
+        function getproiteminput() {
+            // get stockagain
+            var stockOutsInputs = document.querySelectorAll('input[name^="proout"]');
+            if (stockOutsInputs.length > 0) {
+                var total = 0;
+                for (var i = 0; i < stockOutsInputs.length; i++) {
+                    var stockOutsInput = stockOutsInputs[i];
+                    var stockOutsValue = stockOutsInput.value;
+                    // If the value is null, set it to 0
+                    if (stockOutsValue === null || stockOutsValue === '') {
+                        stockOutsValue = 0;
+                    }
+                    // Sum the values
+                    total += parseFloat(stockOutsValue);
+                }
+                return total;
+            } else {
+                return true
+            }
+
+        }
+        function getprototal() {
+            // get stockagain
+            var stockOutsInputs = document.querySelectorAll('input[name^="totalprorow"]');
+            if (stockOutsInputs.length > 0) {
+                var total = 0;
+                for (var i = 0; i < stockOutsInputs.length; i++) {
+                    var stockOutsInput = stockOutsInputs[i];
+                    var stockOutsValue = stockOutsInput.value;
+                    // If the value is null, set it to 0
+                    if (stockOutsValue === null || stockOutsValue === '') {
+                        stockOutsValue = 0;
+                    }
+                    // Sum the values
+                    total += parseFloat(stockOutsValue);
+                }
+                return total;
+            } else {
+                return true
+            }
+
+        }
+
+        function getItemInput() {
+            // get stockagain
+            var stockOutsInputs = document.querySelectorAll('input[name^="stockOuts"]');
+            if (stockOutsInputs.length > 0) {
+                var stockOutsValues = [];
+                for (var i = 0; i < stockOutsInputs.length; i++) {
+                    var stockOutsInput = stockOutsInputs[i];
+                    var stockOutsName = stockOutsInput.getAttribute('name');
+                    var stockOutsValue = stockOutsInput.value;
+                    // Include only non-null and greater than zero values
+                    if (stockOutsValue !== null && parseFloat(stockOutsValue) > 0) {
+                        // Extract dynamic parts from name attribute
+                        var dynamicParts = stockOutsName.match(/\[(.*?)\]/g).map(function(part) {
+                            return part.replace(/\[|\]/g, '');
+                        });
+                        // Rearrange dynamic parts and concatenate with value
+                        var result = dynamicParts[0] + '-' + stockOutsValue + '-' + dynamicParts[1];
+                        stockOutsValues.push(result);
+                    }
+                }
+                // Convert array to two separate strings
+                var ItemLot = stockOutsValues.join(',');
+                if (ItemLot.length > 0) {
+                    return true;
+                } else {
+                    return false
+                }
+            } else {
+                return false
+            }
+
+        }
 
         const form = document.getElementById("addorder");
+
         const submitBtn = document.getElementById("save");
         const loadingModal = document.getElementById("loadingModal");
         form.addEventListener("submit", function(event) {
@@ -701,12 +821,55 @@
             event.preventDefault();
             // Check if the "promotion" button is disabled
             const promotionBtn = document.getElementById("promotion");
+            const ordertype = document.getElementById("ordertype").value;
+            const itempro = getproiteminput();
+            const totalpro = getprototal();
+            const itemdata = getItemInput();
+            const confirmMsg_promotion = "Would you like to proceed when the quantity promotion is not entered or the quantity promotion is less than the total quantity promotion?";
             if (promotionBtn.disabled) {
                 // If the button is disabled, simply validate and submit the form
 
                 if (!ValidatePOID()) {
                     alert("The POID has already in system, Please check again!")
                     return false; // Cancel the form submission if validation fails
+                }
+                if (itemdata == false) {
+                    alert("You not input data item")
+                    return false; // Cancel the form submission if validation fails
+                } else {
+
+                    if ((itempro === true && totalpro===true )|| totalpro==itempro ) {
+                        // alert("You pass")
+                        // console.log(itemdata);
+                        // console.log(ordertype);
+                                       // Show the loading modal
+                        loadingModal.style.display = "block";
+                        submitBtn.disabled = true;
+                        // Submit the form after a brief delay to allow the modal to show
+                        setTimeout(function() {
+                            form.submit();
+                        }, 1000);
+                    }
+                     else {
+                        if (confirm(confirmMsg_promotion)) {
+                                            // Show the loading modal
+                        loadingModal.style.display = "block";
+                        submitBtn.disabled = true;
+                        // Submit the form after a brief delay to allow the modal to show
+                        setTimeout(function() {
+                            form.submit();
+                        }, 1000);
+                            
+                        }
+                        else
+                        {
+                            submitBtn.disabled = false;
+                            return false;
+                        }
+                        // Cancel the form submission if validation fails
+                    }
+
+
                 }
                 // Show the loading modal
                 loadingModal.style.display = "block";
@@ -721,7 +884,10 @@
             const confirmMsg = "Do you want to continue without the promotion?";
             if (confirm(confirmMsg)) {
                 // If the user confirms, validate and submit the form
-
+                if (itemdata == false) {
+                    alert("You not input data item")
+                    return false; // Cancel the form submission if validation fails
+                }
                 if (!ValidatePOID()) {
                     alert("The POID has already in system, Please check again!")
                     return false; // Cancel the form submission if validation fails

@@ -49,7 +49,13 @@
                 </div>
             </div>
             <div class="row">
-                <x-adminlte-date-range name="period"    label="Period" label-class="text-lightblue" fgroup-class="col-md-3" />
+                @php
+                  $config = [
+                    'format' => 'DD/MM/yyy',
+                    "locale" => ["format" => "DD/MM/yyyy"],
+                  ] ; 
+                @endphp
+                <x-adminlte-date-range name="period" :config="$config"   label="Period" label-class="text-lightblue" fgroup-class="col-md-3" />
                 <x-adminlte-input label="Quantity" label-class="text-lightblue" name="Quantity" type="number"
                     fgroup-class="col-md-3" enable-old-support>
                 </x-adminlte-input>
