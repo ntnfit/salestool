@@ -566,8 +566,6 @@ class SalesController extends Controller
                 "DocumentLines"=>$ldt
                 
             ];
-      dd( $body)     ;
-      
              // Make a request to the service layer
         $response = $client->request("POST", "/b1s/v1/Quotations",['verify' => false, 'body' =>  json_encode($body)]);
 
