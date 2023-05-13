@@ -878,20 +878,16 @@
                     return false; // Cancel the form submission if validation fails
                 } else {
 
-                    if ((itempro === true && totalpro===true )|| totalpro==itempro ) {
-                        // alert("You pass")
-                        // console.log(itemdata);
-                        // console.log(ordertype);
-                        return true; //
+                    if ((itempro === true && totalpro===true )|| totalpro===itempro ) {
+                        loadingModal.style.display = "block";
+                        submitBtn.disabled = true;
+                        // Submit the form after a brief delay to allow the modal to show
+                        setTimeout(function() {
+                            form.submit();
+                        }, 1000);
                     } else {
-                        if (confirm(confirmMsg_promotion)) {
-                            return true
-                        }
-                        else
-                        {
-                            submitBtn.disabled = false;
-                            return false;
-                        }
+                        alert("Promotion not match or promotion not input!")
+                        return false; // Ca
                         // Cancel the form submission if validation fails
                     }
 

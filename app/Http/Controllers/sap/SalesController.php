@@ -529,7 +529,8 @@ class SalesController extends Controller
             while ($row = odbc_fetch_object($stmt)) {
                 $line[] = $row;
             }
-            
+            sort( $line);
+            $price=null;
             $ldt=[];
             foreach ($line as $dt)
             {
@@ -537,6 +538,7 @@ class SalesController extends Controller
                 if($dt->TypePrd=="002")
                 {
                     $km="1";
+                    $price=0;
                 }
                 else
                 {
@@ -546,6 +548,7 @@ class SalesController extends Controller
                     "ItemCode"=> $dt->ItemCode,
                     "Quantity"=> $dt->Quantity,
                     "TaxCode" => "SVN10",
+                    "UnitPrice"=>$price,
                     "WarehouseCode" => $results[0]['FromWhsCode'],
                     "U_LoaiKM" => $km,
                     "U_BatchNo" => $dt->LotNo,
@@ -563,7 +566,7 @@ class SalesController extends Controller
                 "DocumentLines"=>$ldt
                 
             ];
-           
+      dd( $body)     ;
       
              // Make a request to the service layer
         $response = $client->request("POST", "/b1s/v1/Quotations",['verify' => false, 'body' =>  json_encode($body)]);
