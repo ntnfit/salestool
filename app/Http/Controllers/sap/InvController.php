@@ -5,6 +5,7 @@ namespace App\Http\Controllers\sap;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Controllers\sap\SAPB1Controller;
+use Spatie\Permission\Models\Role;
 use Illuminate\Validation\Rule;
 use DB;
 use Response;
@@ -12,6 +13,11 @@ use Carbon\Carbon;
 use Auth;
 class InvController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('permission:sales-module');
+         
+    }
     function addview()
     {
         $whsCodes=DB::table('SAL_OWHS')->get();

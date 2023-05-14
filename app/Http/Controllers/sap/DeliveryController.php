@@ -6,16 +6,19 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Controllers\sap\SAPB1Controller;
 use Illuminate\Support\Facades\Storage;
+use Spatie\Permission\Models\Role;
 use League\Flysystem\Visibility;
 class DeliveryController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('permission:logistic-module');
+         
+    }
     public function index()
     {
         return view('delivery.index');
     }
-    
-    
- 
     public function store(Request $request)
     { 
         $files = $request->file('file');

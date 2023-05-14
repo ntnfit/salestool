@@ -4,12 +4,18 @@ namespace App\Http\Controllers\sap;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 use App\Http\Controllers\sap\SAPB1Controller;
 use DB;
 use Response;
 
 class PromotionController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('permission:marketing-module');
+         
+    }
     // get list promotion
     function listPromotion(Request $request)
     {

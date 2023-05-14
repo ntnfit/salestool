@@ -5,12 +5,18 @@ namespace App\Http\Controllers\sap;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Controllers\sap\SAPB1Controller;
+use Spatie\Permission\Models\Role;
 use DB;
 use Response;
 use Carbon\Carbon;
 use Auth;
 class SalesController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('permission:sales-module');
+         
+    }
     function listSaleStock(Request $request)
     {
 
@@ -186,8 +192,6 @@ class SalesController extends Controller
         
         return view('sales.add',compact('orderTypes','customers','whsCodes'));
     }
-
-    
     function store(Request $request)
     {
      

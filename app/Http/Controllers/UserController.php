@@ -10,8 +10,18 @@ use DB;
 use Hash;
 use Illuminate\Support\Arr;
     
+
 class UserController extends Controller
 {
+
+    function __construct()
+    {
+         $this->middleware('permission:users-list|users-create|users-edit|users-delete', ['only' => ['index','show']]);
+         $this->middleware('permission:users-create', ['only' => ['create','store']]);
+         $this->middleware('permission:users-edit', ['only' => ['edit','update']]);
+         $this->middleware('permission:users-delete', ['only' => ['destroy']]);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -95,10 +105,10 @@ class UserController extends Controller
         $roles = Role::pluck('name','name')->all();
         $userRole = $user->roles->pluck('name','name')->all();
         $usersap = DB::table('OUSR')
-        ->whereNotIn('USERID', function($query) {
-            $query->select(DB::raw('isnull(USERID, 0)'))
-                  ->from('users');
-        })
+        // ->whereNotIn('USERID', function($query) {
+        //     $query->select(DB::raw('isnull(USERID, 0)'))
+        //           ->from('users');
+        // })
         ->get();
        
         return view('users.edit',compact('user','roles','userRole','usersap'));

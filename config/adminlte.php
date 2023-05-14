@@ -130,11 +130,11 @@ return [
     */
 
     'usermenu_enabled' => true,
-    'usermenu_header' => false,
+    'usermenu_header' => true,
     'usermenu_header_class' => 'bg-primary',
-    'usermenu_image' => false,
+    'usermenu_image' => true,
     'usermenu_desc' => false,
-    'usermenu_profile_url' => false,
+    'usermenu_profile_url' => true,
 
     /*
     |--------------------------------------------------------------------------
@@ -303,12 +303,12 @@ return [
 
         // Sidebar items:
         
-        ['header' => 'account_settings'],
-        [
-            'text' => 'profile',
-            'url'  => '/profiles',
-            'icon' => 'fas fa-fw fa-user',
-        ],
+       
+        // [
+        //     'text' => 'profile',
+        //     'url'  => '/profiles',
+        //     'icon' => 'fas fa-fw fa-user',
+        // ],
         [
             'text'    => 'Reports',
             'icon'    => 'fas fa-fw fa-share',
@@ -341,7 +341,8 @@ return [
         ],
         [
             'text'    => 'Marketing',
-            'icon'    => '',
+            'icon'    => 'fas fa-bullhorn',
+            'can' => 'marketing-module',
             'submenu' => [
                 [
                     'text' => 'Promotions',
@@ -364,7 +365,7 @@ return [
         ],
         [
             'text'    => 'Sales - AR',
-            'icon'    => 'fa-solid fa-list-radio',
+            'icon'    => 'fas fa-cart-plus',
             'can' => 'sales-module',
             'submenu' => [
                 
@@ -385,8 +386,8 @@ return [
         ],
         [
             'text'    => 'Logistics',
-            'icon'    => 'fa-solid fa-list-radio',
-            'can' => 'sales-module',
+            'icon'    => 'fas fa-truck',
+            'can' => 'logistic-module',
             'submenu' => [
                 [
                     'text' => 'Truck information',
@@ -404,8 +405,8 @@ return [
         ],
         [
             'text'    => 'Inventory',
-            'icon'    => 'fa-solid fa-list-radio',
-            'can' => 'sales-module',
+            'icon'    => 'fas fa-warehouse',
+            'can' => ['inventory-module','sales-module'],
             'submenu' => [
                 
                 
@@ -421,11 +422,13 @@ return [
         ],
         [
             'text'    => 'Users & Roles management',
-            'icon'    => 'fa-solid fa-list-radio',
+            'icon'    => 'fas fa-user-shield',
+             'can'    => ['users-list','roles-list'],
             'submenu' => [
                 [
                     'text' => 'Users management',
                     'url'  => '/users',
+                    'can'    => ['users-list','users-list'],
                     'icon'=>  'fas fa-fw fa-users'
                 ],
                 [
@@ -438,6 +441,7 @@ return [
         [
             'text' => ' Connect settings',
             'url'  => 'connect-setup',
+            'can'    => ['users-list','roles-list'],
             'icon'=>'fas fa-cogs'
         ],
 

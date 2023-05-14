@@ -9,11 +9,17 @@ use Maatwebsite\Excel\Facades\Excel;
 use Carbon\Carbon;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Http;
+use Spatie\Permission\Models\Role;
 use App\Models\LogData;
 use App\Models\LogImport;
 use Auth;
 class SalesBAController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('permission:marketing-module');
+         
+    }
     function view()
     {
         return view('importBA.upload');
