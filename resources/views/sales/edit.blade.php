@@ -575,6 +575,7 @@
                             newQty); // Update the "Total Qty" input field with the new quantity
                             newRow.find(".Qtyout").val("");
                             newRow.find(".Qtyout").removeClass('Qtyout').addClass('qtypro');
+                            newRow.find(".totalrow").val(promotionQty);
                             newRow.find(".totalrow").removeClass('totalrow').addClass(
                                 'totalpro').attr('name', 'totalprorow[]');
                             newRow.find("input[name^='stockOuts']").attr("name", function(index,
