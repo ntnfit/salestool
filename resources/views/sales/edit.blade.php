@@ -222,7 +222,7 @@
                                     <input type="number" name="totalprorow[]" class="totalpro"
                                         value="{{ array_sum($result['QuantityOut']) }}" readonly="true">
                                 @else
-                                    <input type="number" class="totalpro" value="" readonly="true">
+                                    <input type="number" class="totalrow" value="" readonly="true">
                                 @endif
                             </td>
                         </tr>
@@ -575,7 +575,6 @@
                             newQty); // Update the "Total Qty" input field with the new quantity
                             newRow.find(".Qtyout").val("");
                             newRow.find(".Qtyout").removeClass('Qtyout').addClass('qtypro');
-                            newRow.find(".totalrow").val(promotionQty);
                             newRow.find(".totalrow").removeClass('totalrow').addClass(
                                 'totalpro').attr('name', 'totalprorow[]');
                             newRow.find("input[name^='stockOuts']").attr("name", function(index,
