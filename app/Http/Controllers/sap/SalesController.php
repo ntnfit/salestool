@@ -543,23 +543,33 @@ class SalesController extends Controller
                 {
                     $km="1";
                     $price=0;
+                    $ldt[]=[
+                        "ItemCode"=> $dt->ItemCode,
+                        "Quantity"=> $dt->Quantity,
+                        "TaxCode" => "SVN10",
+                        "UnitPrice"=>$price,
+                        "WarehouseCode" => $results[0]['FromWhsCode'],
+                        "U_LoaiKM" => $km,
+                        "U_BatchNo" => $dt->LotNo,
+                        "AgreementNo" =>$dt->AgrNo,
+                        "AgreementRowNumber"=>$dt->AgrLineNum
+                    ];
                 }
                 else
                 {
                     $km="0";
-                    $price=null
+                    $ldt[]=[
+                        "ItemCode"=> $dt->ItemCode,
+                        "Quantity"=> $dt->Quantity,
+                        "TaxCode" => "SVN10",
+                        "WarehouseCode" => $results[0]['FromWhsCode'],
+                        "U_LoaiKM" => $km,
+                        "U_BatchNo" => $dt->LotNo,
+                        "AgreementNo" =>$dt->AgrNo,
+                        "AgreementRowNumber"=>$dt->AgrLineNum
+                    ];
                 }
-                $ldt[]=[
-                    "ItemCode"=> $dt->ItemCode,
-                    "Quantity"=> $dt->Quantity,
-                    "TaxCode" => "SVN10",
-                    "UnitPrice"=>$price,
-                    "WarehouseCode" => $results[0]['FromWhsCode'],
-                    "U_LoaiKM" => $km,
-                    "U_BatchNo" => $dt->LotNo,
-                    "AgreementNo" =>$dt->AgrNo,
-                    "AgreementRowNumber"=>$dt->AgrLineNum
-                ];
+               
             }
             $body=[
                 "CardCode"=> $results[0]['CustCode'],
