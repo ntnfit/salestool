@@ -187,7 +187,7 @@ class PromotionController extends Controller
                     </td>
                 </tr>';
         }
-      
+      dd($results->count());
         return response()->json(['cust' => $Customers], 200);
     }
     function store(Request $request)

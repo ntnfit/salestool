@@ -130,7 +130,9 @@
                 $.ajax({
                     beforeSend: function(xhr) {
                         xhr.setRequestHeader("Authorization", "Basic " + '{{ env('BSHeader') }}');
+                        xhr.withCredentials = true;
                     },
+                    crossDomain: true,
                     url: " https://" + '{{ env('SAP_SERVER') }}' + ":" + '{{ env('SAP_PORT') }}' +
                         "/b1s/v1/Warehouses?$select=WarehouseCode,WarehouseName",
                     xhrFields: {
