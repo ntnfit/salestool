@@ -547,6 +547,7 @@ class SalesController extends Controller
                 else
                 {
                     $km="0";
+                    $price=null
                 }
                 $ldt[]=[
                     "ItemCode"=> $dt->ItemCode,
