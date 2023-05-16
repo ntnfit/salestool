@@ -8,7 +8,7 @@ use Spatie\Permission\Models\Role;
 use App\Http\Controllers\sap\SAPB1Controller;
 use DB;
 use Response;
-
+use Carbon\Carbon;
 class PromotionController extends Controller
 {
     function __construct()
@@ -187,13 +187,14 @@ class PromotionController extends Controller
                     </td>
                 </tr>';
         }
-      dd($results->count());
+     
         return response()->json(['cust' => $Customers], 200);
     }
     function store(Request $request)
     {
       
        
+        
         $conDB =(new SAPB1Controller)->connect_sap();
        
        $sql="";
@@ -213,14 +214,15 @@ class PromotionController extends Controller
         //format data
         $period = $request->period;
         $date_parts = explode('-', $period);
-        $fromdate = trim($date_parts[0]);
-        $todate = trim($date_parts[1]);
+        $fromdate = date('Ymd', strtotime(str_replace('/', '-',$date_parts[0])));
+        $todate = date('Ymd', strtotime(str_replace('/', '-',$date_parts[1])));
       
         // Bind the values to the statement
         $PromotionType = $request->protype;
         $PromotionName = $request->promotionname;
-        $Fromdate=date("Ymd", strtotime($fromdate));
-        $ToDate=date("Ymd", strtotime($todate));
+        $Fromdate=$fromdate;
+        $ToDate=$todate;
+       
         $Quantity=$request->Quantity;
         $TotalAmount=$request->Amount;
         $DiscountAmt=0;
@@ -247,7 +249,7 @@ class PromotionController extends Controller
         $fixcus=0;
        }
        
-        
+       
         $stmt = odbc_prepare($conDB, $sql);
         if (!$stmt) {
             // Handle SQL error

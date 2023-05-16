@@ -37,6 +37,7 @@ Route::group(['middleware' => ['auth']], function() {
         return view('welcome');
     });
     Route::get('/customer-data', [GetItemController::class,'getCustDate'])->name('customer.data');
+    Route::get('/test', [GetItemController::class,'test'])->name('test.data');
 
     Route::get('/stock-detail', function () {
         return view('sap.SaleDetail');

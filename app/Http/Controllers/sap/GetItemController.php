@@ -45,6 +45,13 @@ class GetItemController extends Controller
     
         return view('sap.CustomerData',compact('custdata'));
     }
+    function test(Request $request)
+    {
+        
+        $custdata = DB::table('GT_CUSTOMER_DATA')->get();
+    
+        return view('sap.test',compact('custdata'));
+    }
     function getsaletotal(Request $request)
     {
         $conDB = (new SAPB1Controller)->connect_sap();
