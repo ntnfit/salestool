@@ -41,10 +41,10 @@ class PromotionController extends Controller
         $Routes=DB::table('Routes')->get();
         $ItemCodes=DB::table('ItemSAP')->get();
         $Locations=DB::table('Locations')->get();
-        $Customers=DB::table('Customerlist')->get();
+       // $Customers=DB::table('Customerlist')->get();
         $Uoms=DB::table('UOMSAP')->get();
        
-        return view('promotion.add',compact('PromTypes','Custgroups','channels','Routes','Locations','ItemCodes','Customers','Uoms'));
+        return view('promotion.add',compact('PromTypes','Custgroups','channels','Routes','Locations','ItemCodes','Uoms'));
 
     }
 
@@ -64,9 +64,10 @@ class PromotionController extends Controller
         $Datas=odbc_exec($conDB,$sql);
         $customerdt=[];
          // Retrieve the result set from the stored procedure
-         while ($row = odbc_fetch_array($Datas)) {
+        while ($row = odbc_fetch_object($Datas)) {
             $customerdt[] = $row;
         }
+
         $sql='select * from "BS_PROMOTION_ITEM" where "ProId"=('.$id.') and ifnull("ProItemCode",'.'\'\''.') <>'.'\'\'';
         $stmt = odbc_prepare($conDB, $sql);
         $Datas=odbc_exec($conDB,$sql);
@@ -92,13 +93,13 @@ class PromotionController extends Controller
         $Routes=DB::table('Routes')->get();
         $ItemCodes=DB::table('ItemSAP')->get();
         $Locations=DB::table('Locations')->get();
-        $Customers=DB::table('Customerlist')->get();
         $Uoms=DB::table('UOMSAP')->get();
        
-        
+        $customerdt=json_encode( $customerdt);
+       
         return view('promotion.edit',compact('PromTypes','Custgroups',
         'channels','Routes','Locations',
-        'ItemCodes','Customers','Uoms','listItems','customerdt','header','proitems'
+        'ItemCodes','Uoms','listItems','customerdt','header','proitems'
         ));
 
     }
@@ -118,7 +119,7 @@ class PromotionController extends Controller
         $Datas=odbc_exec($conDB,$sql);
         $customerdt=[];
          // Retrieve the result set from the stored procedure
-         while ($row = odbc_fetch_array($Datas)) {
+         while ($row = odbc_fetch_object($Datas)) {
             $customerdt[] = $row;
         }
         $sql='select * from "BS_DatePromotion_Item" where "ProId"=('.$id.')';
@@ -131,20 +132,19 @@ class PromotionController extends Controller
         }
         odbc_close($conDB);
 
-       
+        $customerdt=json_encode( $customerdt);
         $PromTypes = DB::table('PromotionType')->get();
         $Custgroups =DB::table('CUSTGroupDis')->get();
         $channels=DB::table('Channel')->get();
         $Routes=DB::table('Routes')->get();
         $ItemCodes=DB::table('ItemSAP')->get();
         $Locations=DB::table('Locations')->get();
-        $Customers=DB::table('Customerlist')->get();
         $Uoms=DB::table('UOMSAP')->get();
        
        
         return view('promotion.editdate',compact('PromTypes','Custgroups',
         'channels','Routes','Locations',
-        'ItemCodes','Customers','Uoms','listItems','customerdt','header'
+        'ItemCodes','Uoms','listItems','customerdt','header'
         ));
 
     }
@@ -172,28 +172,14 @@ class PromotionController extends Controller
     
         $results = $query->get();
 
-        $Customers = '';
-        foreach ($results as $result) {
-            $Customers .= '<tr class="tr_clone">
-                    <td>
-                        <select class="items" name="cus[]" data-placeholder="Select an customer">
-                            <option value="'.$result->CardCode.'" selected>'.$result->CardCode.'--'.$result->CardName.'--'.$result->GroupName.'--'.$result->ChannelName.'--'.$result->RouteName.'--'.$result->LocationName.'--'.'betagen'.'</option> 
-                        </select>
-                    </td>
-                    <td>
-                        <button type="button" class="btn btn-outline-danger" onclick="removeRow(this, \'#tablecustomer\')">
-                            <i class="fa fa-trash" aria-hidden="true"></i> 
-                        </button>
-                    </td>
-                </tr>';
-        }
+        return json_encode($results);
      
-        return response()->json(['cust' => $Customers], 200);
+       // return response()->json(['cust' => $Customers], 200);
     }
     function store(Request $request)
     {
       
-       
+     
         
         $conDB =(new SAPB1Controller)->connect_sap();
        
@@ -303,14 +289,16 @@ class PromotionController extends Controller
                 }    
 
             }
+            $cusdata=json_decode($request->customerdata[0]);
              //Customer row
-            if (!empty($request->cus)) {
+            if (!empty( $cusdata)) {
                 
                 
-                foreach ($request->cus as $key => $cusCode) {    
+                foreach ($cusdata as $key => $cusCode) {    
                     if($cusCode !== null)
                     {
-                        $customercode=$request->cus[$key];
+                        $customercode= $cusCode->CardCode;
+                     
                         if($request->protype!="5")
                         {
                             $insertCusQuery='insert into BS_PRO_CUSTOMER  ("ProId","ProCustCode","ProCustName","GroupCode","ChannelCode","RouteCode","LocationCode")';  
@@ -367,6 +355,7 @@ class PromotionController extends Controller
 
     function update(Request $request, $id)
     {
+       
        
         $conDB =(new SAPB1Controller)->connect_sap();
         
@@ -511,17 +500,20 @@ class PromotionController extends Controller
 
             }
              //Customer row
-            if (!empty($request->cus)) {
+             $cusdata=json_decode($request->customerdata[0]);
+            if (!empty($cusdata)) {
             
-                foreach ($request->cus as $key => $cusCode) {       
-                    $customercode=$request->cus[$key];
+                foreach ( $cusdata as $key => $cusCode) {       
+                  
                     if($request->protype!="5")
-                    {
+                    { 
+                        $customercode=$cusCode->ProCustCode;
                         $insertCusQuery='insert into BS_PRO_CUSTOMER ("ProId","ProCustCode","ProCustName","GroupCode","ChannelCode","RouteCode","LocationCode")';
                        
                     }
                     else
                     {
+                        $customercode=$cusCode->CustCode;
                         $insertCusQuery='insert into "BS_DatePromotion_Cust" ("ProId","CustCode","CustName","GroupCode","ChannelCode","RouteCode","LocationCode")';
                     }
                 $cusQuery='SELECT '.$id.',"CardCode","CardName","GroupCode","ChannelCode","RouteCode","LocationCode" FROM ST_CUSTOMER_DROPDOWN where "CardCode"='."'".$customercode."'";

@@ -48,7 +48,7 @@ class GetItemController extends Controller
     function test(Request $request)
     {
         
-        $custdata = DB::table('GT_CUSTOMER_DATA')->get();
+        $custdata = DB::table('GT_CUSTOMER_DATA')->get()->take(10);
     
         return view('sap.test',compact('custdata'));
     }

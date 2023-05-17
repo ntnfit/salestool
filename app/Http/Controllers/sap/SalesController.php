@@ -759,13 +759,30 @@ class SalesController extends Controller
     function updateAr(Request $request)
     {
        
-
+            dd($request->all());
             $conDB = (new SAPB1Controller)->connect_sap();
             foreach($request->dataNo as $data){
                 $sql='update BS_IVNSTATUS set "Received"=?,"DateReceived"=?,"sendInvoice"=?,"DateSend"=? where "DocEntry"=?';
                 $stmt = odbc_prepare($conDB, $sql);
                 
                 odbc_execute($stmt,array($data['Received'],$data['DateReceived'],$data['sendInvoice'],$data['DateSend'],$data['DocEntry']));
+                
+                if($data['DateReceived']==1)
+                {
+                    $sqlso='update ORDR set "U_InvStatus"=? where "DocEntry"=?';
+                    $stmt = odbc_prepare($conDB, $sqlso);
+                    
+                    odbc_execute($stmt,array('03',$data['DocEntry']));
+                }
+                else
+                {$sqlso='update ORDR set "U_InvStatus"=? where "DocEntry"=?';
+                    $stmt = odbc_prepare($conDB, $sqlso);
+                    
+                    odbc_execute($stmt,array('01',$data['DocEntry']));
+
+                }
+               
+            
             }
             odbc_close($conDB);
             return response()->json(["success" => true]);

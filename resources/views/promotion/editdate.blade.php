@@ -6,6 +6,8 @@
 @section('plugins.Sweetalert2', true)
 @section('plugins.DateRangePicker', true)
 @section('plugins.select2', true)
+<script src="https://cdn.jsdelivr.net/npm/ag-grid-community@28.2.1/dist/ag-grid-community.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/ag-grid-enterprise@28.2.1/dist/ag-grid-enterprise.min.js"></script>
 <link rel="shortcut icon" href="{{ asset('favicons/favicon.ico') }}"/>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
@@ -269,60 +271,15 @@ $config = [
                         label="search" theme="success" icon="fas fa-lg fa-save" />
                 </div>
                 <div class="tableFixHead">
-                    <!-- các trường nhập liệu của tab customer -->
-                    <table id="tablecustomer" class="table-bordered">
-                        <thead>
-                            <tr>
-                                <th class="header-label">Customer data</th>
-                                <th class="header-label">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($customerdt as $dt)
-                            <tr class="tr_clone">
-                                <td>
-                                    <select class="items" name="cus[]" data-placeholder="Select an customer">
-                                       
-                                            <option value="{{ $dt['CustCode']}}" selected>
-                                                {{ $dt['CustCode'] . '--' . $dt['CustName'] . '--' .
-                                                $dt['ChannelCode'].'--'.$dt['RouteCode'].'--'.$dt['LocationCode']
-                                                }}
-                                                </option>
-                                        
-                                    </select>
-                                </td>
-
-                                <td><button type="button" class="btn btn-outline-danger"
-                                        onclick="removeRow(this, '#tablecustomer')"><i class="fa fa-trash"
-                                            aria-hidden="true"></i> </button></td>
-                            </tr>
-                            @endforeach
-                            <tr class="tr_clone">
-                                <td>
-                                    <select class="items" name="cus[]" data-placeholder="Select an customer">
-                                        <option></option>
-                                        @foreach ($Customers as $Customer)
-                                            <option value="{{ $Customer->CardCode }}">
-                                                {{ $Customer->CardCode . '--' . $Customer->CardName . '--' .
-                                                $Customer->GroupName.'--'.$Customer->ChannelName.'--'.$Customer->RouteName
-                                                .'--'.$Customer->LocationName
-                                                }}</option>
-                                        @endforeach
-                                    </select>
-                                </td>
-
-                                <td><button type="button" class="btn btn-outline-danger"
-                                        onclick="removeRow(this, '#tablecustomer')"><i class="fa fa-trash"
-                                            aria-hidden="true"></i> </button></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div id="myGrid" class="ag-theme-alpine" style="height: 30%">
+                    </div>
 
                 </div>
             </div>
            
     </div>
     </div>
+    <input type="text" name="customerdata[]" value="{{$customerdt}}" hidden>
     <x-adminlte-button class="btn-flat" style="float: right; margin-top:10px" id="submit" type="submit"
         label="Save" theme="success" icon="fas fa-lg fa-save" />
     </form>
@@ -419,9 +376,27 @@ $config = [
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
     <link rel="stylesheet" href="{{ asset('../css/tabformpromotion.css') }}">
     <link rel="stylesheet" href="{{ asset('../css/table.css') }}">
+    <style>
+          .delete-button {
+            background-color: #ff4c4c;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .delete-button:hover {
+            background-color: #e60000;
+        }
+    </style>
 @stop
 
 @push('js')
+<script>
+    var __basePath = './';
+</script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
     <script src="{{ asset('../js/handlePromotion.js') }}"></script>
     <!-- handle tab -->
@@ -537,6 +512,101 @@ $config = [
     });
 </script>
 
-    
+<script>
+    function BtnCellRenderer() {}
+
+BtnCellRenderer.prototype.init = function(params) {
+this.params = params;
+
+this.eGui = document.createElement('button');
+this.eGui.innerHTML = 'Delete';
+this.eGui.classList.add('delete-button'); // Add CSS class
+
+this.btnClickedHandler = this.btnClickedHandler.bind(this);
+this.eGui.addEventListener('click', this.btnClickedHandler);
+};
+
+BtnCellRenderer.prototype.getGui = function() {
+return this.eGui;
+};
+
+BtnCellRenderer.prototype.btnClickedHandler = function(event) {
+const selectedRow = this.params.node;
+const gridApi = this.params.api;
+gridApi.applyTransaction({
+    remove: [selectedRow.data]
+  
+});
+const remainingData = collectRemainingData();
+const customerDataInput = document.querySelector("input[name='customerdata[]']");
+customerDataInput.value = JSON.stringify(remainingData);
+};
+
+BtnCellRenderer.prototype.destroy = function() {
+this.eGui.removeEventListener('click', this.btnClickedHandler);
+};
+
+const columnDefs = [{
+    header: 'CardCode',
+    field:'CustCode'
+},
+{
+    header: 'CardName',
+    field: 'CustName'
+},
+{
+    header: 'GroupCode',
+    field: 'GroupCode'
+},
+{
+    header: 'ChannelCode',
+    field: 'ChannelCode'
+},
+{
+    header: 'RouteCode',
+    field: 'RouteCode'
+},
+{
+    header: 'LocationCode',
+    field: 'LocationCode'
+},
+{
+    headerName: 'PGCode',
+    maxWidth: 100,
+    cellRenderer: BtnCellRenderer
+}
+];
+
+const gridOptions = {
+columnDefs: columnDefs,
+pagination: true,
+defaultColDef: {
+    flex: 1,
+    minWidth: 150,
+    filter: true,
+    resizable: true,
+}
+};
+
+function loadInitialData() {
+// Make an API call to abc.com to retrieve 100 records
+// Update the grid with the retrieved data
+gridOptions.api.setRowData({!!$customerdt!!});
+collectRemainingData();
+}
+document.addEventListener('DOMContentLoaded', function() {
+var gridDiv = document.querySelector('#myGrid');
+new agGrid.Grid(gridDiv, gridOptions);
+loadInitialData();
+});
+function collectRemainingData() {
+const remainingData = [];
+gridOptions.api.forEachNodeAfterFilter(node => {
+    remainingData.push(node.data);
+});
+return remainingData;
+}
+</script>
+   
   
 @endpush

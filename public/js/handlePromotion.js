@@ -64,8 +64,10 @@ function getPageData(cusgrp, channel, route, location) {
       type: 'GET',
       data: data
     }).done(function(data){
-      $('#tablecustomer tbody').prepend(data.cust);
-      
-      $(".items").select2();
+      gridOptions.api.setRowData(data);
+        // Set the remaining data to the input field
+      const remainingData = collectRemainingData();
+      const customerDataInput = document.querySelector("input[name='customerdata[]']");
+      customerDataInput.value = JSON.stringify(remainingData);
     });    
 }

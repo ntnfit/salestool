@@ -24,12 +24,12 @@
       <button type="button" class="form-control btn btn-primary" id="search" onclick="sCustomer()">Search</button>
     </div>
     <div class="form-group col-md-2">
-      <button type="button" id="addRow" class="form-control btn btn-primary">Add Row</button>
+      
       <button type="button" class="form-control btn btn-primary" id="export-excel" onclick="onBtExport()">Excel</button>
     </div>
     </div>
 </form>
-		<div id="myGrid" class="ag-theme-alpine" style="height: 100%">
+		<div id="myGrid" class="ag-theme-alpine" style="height: 30%">
 		</div>
 
 
@@ -54,6 +54,7 @@
                 padding: 1rem;
                 overflow: auto;
             }
+            
         </style>
 
 		<script>var __basePath = './';</script>
@@ -62,76 +63,45 @@
     <script src="https://cdn.jsdelivr.net/npm/ag-grid-enterprise@28.2.1/dist/ag-grid-enterprise.min.js">
       </script>
 		<script>
-      var filterParams = {
-  comparator: (filterLocalDateAtMidnight, cellValue) => {
-    var dateAsString = cellValue;
-    if (dateAsString == null) return -1;
-    var dateParts = dateAsString.split('/');
-    var cellDate = new Date(
-      Number(dateParts[2]),
-      Number(dateParts[1]) - 1,
-      Number(dateParts[0])
-    );
+function BtnCellRenderer() {}
 
-    if (filterLocalDateAtMidnight.getTime() === cellDate.getTime()) {
-      return 0;
-    }
+BtnCellRenderer.prototype.init = function (params) {
+  this.params = params;
 
-    if (cellDate < filterLocalDateAtMidnight) {
-      return -1;
-    }
+  this.eGui = document.createElement('button');
+  this.eGui.innerHTML = 'Delete';
+  this.eGui.classList.add('delete-button'); // Add CSS class
 
-    if (cellDate > filterLocalDateAtMidnight) {
-      return 1;
-    }
-  },
-  browserDatePicker: true,
+  this.btnClickedHandler = this.btnClickedHandler.bind(this);
+  this.eGui.addEventListener('click', this.btnClickedHandler);
 };
-function addNewRow() {
-  const newRow = {
-    CardCode: '',
-    CardName: '',
-    ShortName: '',
-    storeID: '',
-    Street: '',
-    TaxCode: '',
-    Channel: ''
-  };
-  const addIndex = gridOptions.api.getDisplayedRowCount();
-  gridOptions.api.applyTransaction({
-    add: [newRow],
-    addIndex: addIndex
-  });
-}
 
-document.getElementById('addRow').addEventListener('click', addNewRow);
+BtnCellRenderer.prototype.getGui = function () {
+  return this.eGui;
+};
 
-const options = ['Option 1', 'Option 2', 'Option 3'];
+BtnCellRenderer.prototype.btnClickedHandler = function (event) {
+  const selectedRow = this.params.node;
+  const gridApi = this.params.api;
+  gridApi.applyTransaction({ remove: [selectedRow.data] });
+};
+
+BtnCellRenderer.prototype.destroy = function () {
+  this.eGui.removeEventListener('click', this.btnClickedHandler);
+};
 
 const columnDefs = [
+  { field: 'CardCode' },
+  { field: 'CardName' },
+  { field: 'GroupName' },
+  { field: 'ChannelName'},
+  { field: 'RouteName' },
+  { field: 'LocationName' },
   {
-    field: 'CardCode',
-    cellEditor: 'customRichSelectCellEditor',
-          cellEditorPopup: true,
-          cellEditorParams: {
-            values: options
-          },
-          editable: true
-  },
-  { field: 'CardName', filter: 'agNumberColumnFilter', editable: true },
-  { field: 'ShortName', filter: 'agNumberColumnFilter', editable: true },
-  { field: 'storeID', maxWidth: 100, filter: 'agNumberColumnFilter', editable: true },
-  { field: 'Street', filter: 'agDateColumnFilter', filterParams: filterParams, editable: true },
-  { field: 'TaxCode', filter: 'agNumberColumnFilter', editable: true },
-  { field: 'Channel', filter: 'agNumberColumnFilter', editable: true },
-  {
-          headerName: 'Actions',
-          cellRenderer: 'deleteButtonCellRenderer',
-          minWidth: 100,
-          maxWidth: 100,
-          sortable: false,
-          filter: false
-        }
+    headerName: 'PGCode',
+    maxWidth: 100 ,
+    cellRenderer: BtnCellRenderer
+  }
 ];
 
 const gridOptions = {
@@ -141,105 +111,16 @@ const gridOptions = {
     flex: 1,
     minWidth: 150,
     filter: true,
-    resizable: true
-  },
-  frameworkComponents: {
-          deleteButtonCellRenderer: deleteButtonCellRenderer
-        }
+    resizable: true,
+  }
 };
 
-function customRichSelectCellEditor() {
-      let eCell = document.createElement('div');
-      eCell.innerHTML = `<input type="text" class="live-search-input">`;
-
-      let values = [];
-      let selectValue = null;
-      let filteredOptions = [];
-
-      function init(params) {
-        values = params.values;
-        selectValue = params.value;
-        filteredOptions = values;
-
-        eCell.querySelector('input').value = selectValue || '';
-        eCell.querySelector('input').addEventListener('input', handleInputChange);
-        eCell.querySelector('input').addEventListener('keydown', handleKeyDown);
-
-        // Attach the event listener to show the popup when the input field is clicked
-        eCell.querySelector('input').addEventListener('click', showPopup);
-      }
-
-      function handleInputChange(event) {
-        const filterText = event.target.value.toLowerCase();
-        filteredOptions = values.filter(option =>
-          option.toLowerCase().includes(filterText)
-        );
-        showPopup();
-      }
-
-      function handleKeyDown(event) {
-        if (event.key === 'Escape') {
-          // Cancel editing
-          params.stopEditing();
-        } else if (event.key === 'Enter') {
-          // Finish editing and update cell value
-          params.stopEditing();
-          params.setValue(selectValue);
-        }
-      }
-
-      function showPopup() {
-        const eSelect = document.createElement('select');
-        eSelect.setAttribute('class', 'ag-cell-edit-input');
-        eSelect.innerHTML = filteredOptions
-          .map(option => `<option value="${option}">${option}</option>`)
-          .join('');
-
-        eSelect.value = selectValue || '';
-
-        // Attach the event listener to update the selectValue when an option is selected
-        eSelect.addEventListener('change', () => {
-          selectValue = eSelect.value;
-        });
-
-        params.api.stopEditing();
-        params.eGridCell.innerHTML = '';
-        params.eGridCell.appendChild(eSelect);
-        eSelect.focus();
-      }
-
-      function getValue() {
-        return selectValue;
-      }
-
-      function isCancelBeforeStart() {
-        return false;
-      }
-
-      function isCancelAfterEnd() {
-        return false;
-      }
-
-      return {
-        init,
-        getGui: () => eCell,
-        getValue,
-        isCancelBeforeStart,
-        isCancelAfterEnd
-      };
-    }
-
-
-function onBtExport() {
-  gridOptions.api.exportDataAsExcel();
-}
-
-// setup the grid after the page has finished loading
 document.addEventListener('DOMContentLoaded', function () {
   var gridDiv = document.querySelector('#myGrid');
   new agGrid.Grid(gridDiv, gridOptions);
   gridOptions.api.setRowData({!!$custdata!!});
 });
+
 
 
 		</script>
