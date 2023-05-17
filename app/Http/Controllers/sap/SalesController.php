@@ -759,7 +759,7 @@ class SalesController extends Controller
     function updateAr(Request $request)
     {
        
-            dd($request->all());
+          
             $conDB = (new SAPB1Controller)->connect_sap();
             foreach($request->dataNo as $data){
                 $sql='update BS_IVNSTATUS set "Received"=?,"DateReceived"=?,"sendInvoice"=?,"DateSend"=? where "DocEntry"=?';
