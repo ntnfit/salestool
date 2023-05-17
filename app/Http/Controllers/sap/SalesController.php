@@ -767,7 +767,7 @@ class SalesController extends Controller
                 
                 odbc_execute($stmt,array($data['Received'],$data['DateReceived'],$data['sendInvoice'],$data['DateSend'],$data['DocEntry']));
                 
-                if($data['DateReceived']==1)
+                if($data['Received']==1)
                 {
                     $sqlso='update ORDR set "U_InvStatus"=? where "DocEntry"=?';
                     $stmt = odbc_prepare($conDB, $sqlso);
@@ -775,7 +775,8 @@ class SalesController extends Controller
                     odbc_execute($stmt,array('03',$data['DocEntry']));
                 }
                 else
-                {$sqlso='update ORDR set "U_InvStatus"=? where "DocEntry"=?';
+                {
+                    $sqlso='update ORDR set "U_InvStatus"=? where "DocEntry"=?';
                     $stmt = odbc_prepare($conDB, $sqlso);
                     
                     odbc_execute($stmt,array('01',$data['DocEntry']));
