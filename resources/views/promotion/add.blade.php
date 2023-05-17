@@ -218,9 +218,7 @@
                     <x-adminlte-button class="btn-flat" id="search"
                         style="float: right;margin-top: 34px;font-size: small;height: 31px;" type="button"
                         label="Search" theme="success" icon="fas fa-lg fa-save" />
-                    <x-adminlte-button class="btn-flat" id="collect"
-                        style="float: right;margin-top: 34px;font-size: small;height: 31px;" type="button"
-                        label="Search" theme="success" icon="fas fa-lg fa-save" onclick="collectRemainingData()" />
+
                 </div>
                 <div class="tableFixHead">
 
