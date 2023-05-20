@@ -109,6 +109,42 @@ class InvController extends Controller
         }
           
     }
+    function loadall(){
+        $conDB = (new SAPB1Controller)->connect_sap();
+           if (!$conDB) {
+               // Handle connection error
+               die("Error connecting to SAPB1: " . odbc_errormsg());
+           }
+
+           // Prepare the SQL statement
+           $sql = 'CALL USP_BS_STOCKOUTREQUEST(?,?,?,?)';
+           $stmt = odbc_prepare($conDB, $sql);
+           if (!$stmt) {
+               // Handle SQL error
+               die("Error preparing SQL statement: " . odbc_errormsg());
+           }
+
+           // Execute the stored procedure with the input parameters
+           if (!odbc_execute($stmt, array(1,'20130101','29991201', 1))) {
+               // Handle execution error
+               die("Error executing SQL statement: " . odbc_errormsg());
+           }
+
+           $results = array();
+           // Check if there are any results
+           if (odbc_num_rows($stmt) == 0) {
+               $results = [];
+           }
+
+           // Retrieve the result set from the stored procedure
+           $results = array();
+           while ($row = odbc_fetch_array($stmt)) {
+               $results[] = $row;
+           }
+           $results=json_encode($results);
+           odbc_close($conDB);
+           return  $results;
+    }
     function loaddata(Request $request)
     {
         
@@ -322,7 +358,7 @@ class InvController extends Controller
             while ($row = odbc_fetch_object($stmt)) {
                 $line[] = $row;
             }
-            
+            sort( $line);
             $ldt=[];
             foreach ($line as $dt)
             {
@@ -405,6 +441,7 @@ class InvController extends Controller
         while ($row = odbc_fetch_array($stmt)) {
             $results[] = $row;
         }
+        sort( $results);
         // get number lot
         $distinctLots = array_unique(array_column($results, 'LotNo'));
        

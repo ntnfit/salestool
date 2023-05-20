@@ -1,4 +1,4 @@
-<input type="text" id="searchInput" placeholder="Search...">
+
 <table id="tableadd">
     <thead>
         <tr>
@@ -58,6 +58,15 @@
 
                 <td hidden><input type="text" class="sotype" name="sotype[{{ $result['ItemCode'] }}][]"
                         value="{{ $ordertype }}"></td>
+                        @php
+                        $firstNonZeroLot = null;
+                        foreach ($result['PlanQty'] as $lot => $qty) {
+                            if ($qty != 0) {
+                                $firstNonZeroLot = $lot;
+                                break;
+                            }
+                        }
+                    @endphp
                 @if ($blanket != 0)
                     <td style="text-color:orange;">
                         {{ $result['PlanQty'][$lot] }}
@@ -65,12 +74,23 @@
                     <td>
                         {{ $result['CumQty'][$lot] }}
                     </td>
-                    <td>
+                    <td class="openqtyrow">
                         {{ $result['OpenQty'][$lot] }}
                     </td>
 
                 @endif
                 @foreach ($distinctLots as $lot)
+                @if ($blanket != 0)
+                <td hidden>
+                    @if ($result['QuantityOut'][$lot] ==0 &&  $result['OpenQty'][$firstNonZeroLot]>0 && $result['QuantityIn'][$lot])
+                        <input type="number" class="maxtotal" value="{{ result['OpenQty'][$lot] }}" hidden>
+                    @elseif($result['QuantityOut'][$lot] >0 &&  $result['OpenQty'][$firstNonZeroLot]>0)
+                    <input type="number" class="maxtotal" value="{{ $result['OpenQty'][$lot] +$result['QuantityOut'][$firstNonZeroLot] }}" hidden>
+                    @elseif($result['QuantityOut'][$lot] >0 &&  $result['OpenQty'][$firstNonZeroLot]==0)
+                    <input type="number" class="maxtotal" value="{{ $result['QuantityOut'][$lot] }}" hidden>
+                    @endif
+                </td>
+                @endif
                     <td class="{{ $result['QuantityOut'][$lot] > 0 ? 'orange' : '' }}">
 
                         @if ($blanket != 0)

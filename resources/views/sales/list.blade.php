@@ -368,7 +368,7 @@
 
             $.ajax({
                 type: 'GET',
-                url: '{{ route('sales.all') }}',
+                url: '{{ route('inv.loadall') }}',
                 dataType: 'json',
                 success: function(data) {
                     gridOptions.api.setRowData(data);
@@ -452,7 +452,8 @@
                     dataType: 'json',
                     success: function(data) {
                         alert("đã apply thành công!")
-                        location.reload();
+                        loadFilteredData()
+                        submitBtn.disabled = false;
                     },
                     error: function() {
                         alert("đã apply thất bại!, vui lòng kiếm tra dữ liệu!");
@@ -460,6 +461,7 @@
 
                         // Enable the submit button
                         submitBtn.disabled = false;
+                        loadFilteredData()
                     }
                 })
             }
@@ -476,7 +478,7 @@
 
             } else {
                 const loadingModal = document.getElementById("loadingModal");
-                const submitBtn = document.getElementById("getSelectedRowsBtn");
+                const submitBtn = document.getElementById("cancelSQ");
 
                 $.ajax({
                     type: 'GET',
@@ -494,7 +496,8 @@
                     },
                     success: function(data) {
                         alert("Canceled success!")
-                        location.reload();
+                        loadFilteredData()
+                        submitBtn.disabled = false;
                     },
                     error: function() {
                         alert("Canceld failed !,Please validate data!");
@@ -502,6 +505,7 @@
 
                         // Enable the submit button
                         submitBtn.disabled = false;
+                        loadFilteredData()
                     }
                 })
             }

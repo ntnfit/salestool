@@ -548,11 +548,11 @@ this.eGui.removeEventListener('click', this.btnClickedHandler);
 
 const columnDefs = [{
     header: 'CardCode',
-    field:'CustCode'
+    field:'CardCode'
 },
 {
     header: 'CardName',
-    field: 'CustName'
+    field: 'CardName'
 },
 {
     header: 'GroupCode',

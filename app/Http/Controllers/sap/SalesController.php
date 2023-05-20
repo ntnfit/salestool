@@ -155,12 +155,22 @@ class SalesController extends Controller
      
         $sql = 'CALL USP_BS_LOT_OINM_STOCKREQUEST(?,?,?,?,?,?)';
         $stmt = odbc_prepare($conDB, $sql);
+        $AbsID=0;
+        if($so->AbsID!=null)
+        {
+            $AbsID=$so->AbsID;
+        }
+        else
+        {
+        $AbsID=0;
+        }
         if (!$stmt) {
             // Handle SQL error
             die("Error preparing SQL statement: " . odbc_errormsg());
         }
+       
         // Execute the stored procedure with the input parameters
-        if (!odbc_execute($stmt, array($so->StockDate,$so->CustCode,$so->FromWhsCode,$id,0,$so->AbsEntry))) {
+        if (!odbc_execute($stmt, array($so->StockDate,$so->CustCode,$so->FromWhsCode,$id,$AbsID,$so->AbsEntry))) {
             // Handle execution error
             die("Error executing SQL statement: " . odbc_errormsg());
         }
@@ -174,7 +184,11 @@ class SalesController extends Controller
        if($so->AbsID){
         $blanket=$so->AbsID;
        }
-        sort($results);
+       $itemCodes = array_column($results, 'ItemCode');
+       $typePrds = array_column($results, 'TypePrd');
+
+       // Sort the data based on multiple columns
+       array_multisort($typePrds, SORT_ASC, $itemCodes, SORT_ASC, $results);
        // dd($results);
         // get number lot
         $distinctLots = array_unique(array_column($results, 'LotNo'));
@@ -533,7 +547,11 @@ class SalesController extends Controller
             while ($row = odbc_fetch_object($stmt)) {
                 $line[] = $row;
             }
-            sort( $line);
+            $itemCodes = array_column($line, 'ItemCode');
+        $typePrds = array_column($line, 'TypePrd');
+
+        // Sort the data based on multiple columns
+        array_multisort($typePrds, SORT_ASC, $itemCodes, SORT_ASC, $line);
             $price=null;
             $ldt=[];
             foreach ($line as $dt)
@@ -613,9 +631,9 @@ class SalesController extends Controller
             }
            
         }
-       
+     
         $blanket=0;
-        if($request->sporderno)
+        if($request->sporderno!=null)
         {
             $blanket=$request->sporderno;
         }
@@ -638,6 +656,7 @@ class SalesController extends Controller
             // Handle SQL error
             die("Error preparing SQL statement: " . odbc_errormsg());
         }
+       
         // Execute the stored procedure with the input parameters
         if (!odbc_execute($stmt, array(date("Ymd", strtotime($request->sodate)),$request->custcode,$request->whscode,$so,$blanket,$request->team))) {
             // Handle execution error
@@ -654,7 +673,11 @@ class SalesController extends Controller
         while ($row = odbc_fetch_array($stmt)) {
             $results[] = $row;
         }
-        sort($results);
+        $itemCodes = array_column($results, 'ItemCode');
+        $typePrds = array_column($results, 'TypePrd');
+
+        // Sort the data based on multiple columns
+        array_multisort($typePrds, SORT_ASC, $itemCodes, SORT_ASC, $results);
         // get number lot
         $distinctLots = array_unique(array_column($results, 'LotNo'));
         $ordertype=$request->ordertype;

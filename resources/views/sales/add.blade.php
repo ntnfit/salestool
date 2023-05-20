@@ -44,17 +44,17 @@
         <!-- header input  -->
         <div class="row">
             <x-adminlte-select label="Order type" label-class="text-lightblue" igroup-size="sm" name="ordertype"
-                id="ordertype" fgroup-class="col-md-3" enable-old-support>
+                id="ordertype" fgroup-class="col-md-2" enable-old-support>
                 <option value=""></option>
                 @foreach ($orderTypes as $orderType)
                     <option value="{{ $orderType->Code }}">{{ $orderType->Name }}</option>
                 @endforeach
             </x-adminlte-select>
             <x-adminlte-input label="PO ID" label-class="text-lightblue" name="pono" id="pono" type="text"
-                placeholder="" igroup-size="sm" fgroup-class="col-md-3">
+                placeholder="" igroup-size="sm" fgroup-class="col-md-2">
             </x-adminlte-input>
             <x-adminlte-input-date name="podate" id="podate" label="PoDate" :config="$config"
-                label-class="text-lightblue" igroup-size="sm" fgroup-class="col-md-3" placeholder="Choose a date...">
+                label-class="text-lightblue" igroup-size="sm" fgroup-class="col-md-2" placeholder="Choose a date...">
                 <x-slot name="appendSlot">
                     <div class="input-group-text bg-gradient-danger">
                         <i class="fas fa-calendar-alt"></i>
@@ -64,30 +64,31 @@
             <x-adminlte-input label="SO ID" label-class="text-lightblue" name="sono" type="text" placeholder=""
                 igroup-size="sm" fgroup-class="col-md-1" disabled>
             </x-adminlte-input>
+            @php
+            $configss = [
+                'title' => 'Select data',
+                'liveSearch' => true,
+                'liveSearchPlaceholder' => 'Search...',
+                'showTick' => true,
+                'actionsBox' => true,
+            ];
+        @endphp
+        <x-adminlte-select-bs label="Customer Code" :config="$configss" label-class="text-lightblue" igroup-size="sm"
+            name="cuscode" id="cuscode" fgroup-class="col-md-3 cuscode" enable-old-support>
+            <option value=""></option>
+            @foreach ($customers as $customer)
+                <option value="{{ $customer->CardCode }}">
+                    {{ $customer->CardCode . '--' . $customer->CardName . '--StoreId: ' . $customer->U_SID }}
+                </option>
+            @endforeach
+        </x-adminlte-select-bs>
+           
+        </div>
+        <div class="row">
             <x-adminlte-select label="Support OrderNo" label-class="text-lightblue" igroup-size="sm" name="sporderno"
                 id="sporderno" fgroup-class="col-md-2" enable-old-support>
 
             </x-adminlte-select>
-        </div>
-        <div class="row">
-            @php
-                $configss = [
-                    'title' => 'Select data',
-                    'liveSearch' => true,
-                    'liveSearchPlaceholder' => 'Search...',
-                    'showTick' => true,
-                    'actionsBox' => true,
-                ];
-            @endphp
-            <x-adminlte-select-bs label="Customer Code" :config="$configss" label-class="text-lightblue" igroup-size="sm"
-                name="cuscode" id="cuscode" fgroup-class="col-md-2" enable-old-support>
-                <option value=""></option>
-                @foreach ($customers as $customer)
-                    <option value="{{ $customer->CardCode }}">
-                        {{ $customer->CardCode . '--' . $customer->CardName . '--StoreId: ' . $customer->U_SID }}
-                    </option>
-                @endforeach
-            </x-adminlte-select-bs>
             <x-adminlte-select-bs label="Warehouse" label-class="text-lightblue" :config="$configss" igroup-size="sm"
                 name="WhsCode" id="WhsCode" fgroup-class="col-md-2" enable-old-support>
                 <option value=""></option>
@@ -113,8 +114,9 @@
                 theme="success" icon="fas fa-filter" />
 
         </div>
+        <input type="text" id="searchInput" placeholder="Search...">
         <div class="row">
-            <div style="height: 600px; overflow: auto;" id="tabledata">
+            <div style="height:auto;max-height: 600px; overflow: auto;" id="tabledata">
 
             </div>
             <div class=" table-responsive py-2">
@@ -313,6 +315,9 @@
         input[type="number"] {
             width: 60.4px;
         }
+    .dropdown-menu.show {
+        max-width: 500px;
+}
     </style>
 @stop
 @push('js')
@@ -409,7 +414,11 @@
                                     tr.parentNode.removeChild(tr);
                                 }
                             });
-                            $('#promotion').prop('disabled', false);
+                            if (ordertype === "001") {
+                                $('#promotion').prop('disabled', false);
+                            } else {
+                                $('#promotion').prop('disabled', true);
+                            }
                             $("#tableadd tbody tr").each(function(index) {
                                 $(this).find("td:first-child").text(index +
                                     1); // Update the "STT" (serial number)
@@ -451,6 +460,25 @@
                             });
 
                             document.querySelector('th.totalstockout').textContent = total;
+
+                            if (ordertype !== "001") {
+                                var sumpro = 0;
+                                var $row = $(this).closest('tr');
+                                $row.find('input.Qtyout').each(function() {
+                                    var inputValue = parseInt($(this).val());
+                                    if (!isNaN(inputValue)) {
+                                        sumpro += inputValue;
+                                    }
+                                });
+                                console.log(sumpro);
+                                var prototal = parseInt($row.find('.openqtyrow').text(), 10);
+                                console.log(sumpro);
+                                if (sumpro > prototal) {
+                                    alert('Quantity exceeds open quantity'+prototal);
+                                    $row.find('input.Qtyout').val('');
+                                }
+                            }
+
                         });
                         $('#tabledata').on('input', 'input.qtypro', function() {
                             var sumpro = 0;
@@ -465,7 +493,7 @@
                             var prototal = $row.find('.totalpro').val();
                             console.log(sumpro);
                             if (sumpro > prototal) {
-                                alert('Quantity exceeds promotion quantity');
+                                alert('Quantity exceeds promotion quantity:'+prototal);
                                 $row.find('input.qtypro').val('');
                             }
                         });
@@ -592,7 +620,7 @@
                         if (promotions.hasOwnProperty(itemCode)) {
                             var promotionQty = promotions[
                                 itemCode
-                                ]; // Get the promotion quantity for the current item code
+                            ]; // Get the promotion quantity for the current item code
                             var newQty =
                                 promotionQty; // Calculate the new quantity by adding the promotion quantity
                             // Clone the current row, update the "Total Qty" input field with the new quantity, and append it to the table
@@ -757,6 +785,7 @@
             }
 
         }
+
         function getprototal() {
             // get stockagain
             var stockOutsInputs = document.querySelectorAll('input[name^="totalprorow"]');
@@ -825,7 +854,8 @@
             const itempro = getproiteminput();
             const totalpro = getprototal();
             const itemdata = getItemInput();
-            const confirmMsg_promotion = "Would you like to proceed when the quantity promotion is not entered or the quantity promotion is less than the total quantity promotion?";
+            const confirmMsg_promotion =
+                "Would you like to proceed when the quantity promotion is not entered or the quantity promotion is less than the total quantity promotion?";
             if (promotionBtn.disabled) {
                 // If the button is disabled, simply validate and submit the form
 
@@ -838,19 +868,18 @@
                     return false; // Cancel the form submission if validation fails
                 } else {
 
-                    if ((itempro === true && totalpro===true )|| totalpro===itempro ) {
+                    if ((itempro === true && totalpro === true) || totalpro === itempro) {
                         // alert("You pass")
                         // console.log(itemdata);
                         // console.log(ordertype);
-                                       // Show the loading modal
+                        // Show the loading modal
                         loadingModal.style.display = "block";
                         submitBtn.disabled = true;
                         // Submit the form after a brief delay to allow the modal to show
                         setTimeout(function() {
                             form.submit();
                         }, 1000);
-                    }
-                     else {
+                    } else {
                         alert("Promotion not match or promotion not input!")
                         return false; // Ca
                         // Cancel the form submission if validation fails

@@ -114,7 +114,7 @@ class PromotionController extends Controller
          while ($row = odbc_fetch_array($Datas)) {
             $header[] = $row;
         }
-        $sql='select * from "BS_DatePromotion_Cust" where "ProId"=('.$id.')';
+        $sql='select "CustCode" "CardCode","CustName" "CardName",* from "BS_DatePromotion_Cust" where "ProId"=('.$id.')';
         $stmt = odbc_prepare($conDB, $sql);
         $Datas=odbc_exec($conDB,$sql);
         $customerdt=[];
@@ -513,7 +513,7 @@ class PromotionController extends Controller
                     }
                     else
                     {
-                        $customercode=$cusCode->CustCode;
+                        $customercode=$cusCode->CardCode;
                         $insertCusQuery='insert into "BS_DatePromotion_Cust" ("ProId","CustCode","CustName","GroupCode","ChannelCode","RouteCode","LocationCode")';
                     }
                 $cusQuery='SELECT '.$id.',"CardCode","CardName","GroupCode","ChannelCode","RouteCode","LocationCode" FROM ST_CUSTOMER_DROPDOWN where "CardCode"='."'".$customercode."'";

@@ -407,6 +407,7 @@ class DeliveryController extends Controller
                 $results[] = $row;
             };
             sort($results);
+            
             $groupedDocuments=collect($results)->groupBy('DocEntry');
             return view ('layoutsap.betagen',compact('groupedDocuments'));
           }

@@ -95,6 +95,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/applysap-inv',[InvController::class,'applySAP'])->name('inv.apply');
     Route::get('/cancel-inv',[InvController::class,'Cancel'])->name('inv.cancel');
     Route::get('/confirm-inv',[InvController::class,'confirm'])->name('inv.confirm');
+    Route::get('/stock-inv-all',[InvController::class,'loadall'])->name('inv.loadall');
     //SAP
     Route::get('/connect-setup',
     function () {
@@ -121,6 +122,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/applyDo', [ExportCrystalReportController::class,'applyDo'])->name('applyDo');
     Route::get('/export-truckinfor', [ExportCrystalReportController::class,'print_do'])->name('print-do');
     route::get('/print-preview',[GetItemController::class,'loadprintkeyorder'])->name('print-preview');
+    route::get('/check-qty-bap',[GetItemController::class,'ValidateBAP'])->name('check-quantityBAP');
     
     //upload file 
     route::get('/upload-file',[SalesBAController::class,'view'])->name('import.upload');

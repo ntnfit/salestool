@@ -52,6 +52,9 @@
             <x-adminlte-button class="btn" id="filterButton"
                 style="float: right;margin-top: 34px;font-size: small;height: 31px;" type="button" label="Load Item"
                 theme="success" icon="fas fa-filter" />
+                <x-adminlte-button class="btn" id="getall"
+                style="float: right;margin-top: 34px; margin-left:15px;font-size: small;height: 31px;" type="button"
+                label="Load all order" theme="success" icon="fas fa-filter" />
 
         </div>
         <div id="myGrid" class="ag-theme-alpine" style="height: 70%">
@@ -296,7 +299,30 @@
         function onBtExport() {
             gridOptions.api.exportDataAsExcel();
         }
+        function loadallData() {
+            const loadingModal = document.getElementById("loadingModal");
+            const getallBtn = document.getElementById("getall");
 
+            getallBtn.disabled = true;
+            loadingModal.style.display = "block";
+
+            $.ajax({
+                type: 'GET',
+                url: '{{ route('inv.loadall') }}',
+                dataType: 'json',
+                success: function(data) {
+                    gridOptions.api.setRowData(data);
+                    loadingModal.style.display = "none";
+                    getallBtn.disabled = false;
+
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error loading data:', error);
+                    loadingModal.style.display = "none";
+                    getallBtn.disabled = false;
+                }
+            });
+        }
         function loadInitialData() {
             // Make an API call to abc.com to retrieve 100 records
 
@@ -334,6 +360,16 @@
                 // Load the filtered data from the API
                 loadFilteredData();
             });
+            document.querySelector("#getall").addEventListener("click", function() {
+                // Get the filter values from the input fields
+
+                const getallBtn = document.getElementById("getall");
+                loadingModal.style.display = "block";
+
+                // Disable the submit button
+                getallBtn.disabled = true;
+                loadallData();
+            });
             loadInitialData();
         });
 
@@ -361,7 +397,8 @@
                     dataType: 'json',
                     success: function(data) {
                         alert("đã apply thành công!")
-                        location.reload();
+                        loadFilteredData();
+                        submitBtn.disabled = false;
                     },
                     error: function() {
                         alert("đã apply thất bại!, vui lòng kiếm tra dữ liệu!");
@@ -384,7 +421,7 @@
 
             } else {
                 const loadingModal = document.getElementById("loadingModal");
-                const submitBtn = document.getElementById("getSelectedRowsBtn");
+                const submitBtn = document.getElementById("cancelinv");
 
                 $.ajax({
                     type: 'GET',
@@ -402,7 +439,8 @@
                     },
                     success: function(data) {
                         alert("Canceled success!")
-                        location.reload();
+                        loadFilteredData()
+                        submitBtn.disabled = false;
                     },
                     error: function() {
                         alert("Canceld failed !,Please validate data!");
@@ -439,7 +477,7 @@
                     dataType: 'json',
                     success: function(data) {
                         alert("đã confirm thành công!")
-                        location.reload();
+                        loadFilteredData()
                     },
                     error: function() {
                         alert("đã confirm thất bại!, vui lòng kiếm tra dữ liệu!");

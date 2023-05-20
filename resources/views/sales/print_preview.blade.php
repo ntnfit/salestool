@@ -33,7 +33,7 @@
         @endphp
         @foreach ($results as $key => $result)
             @php
-                $consolidatedKey = $result['ItemCode'];
+                $consolidatedKey = $result['ItemCode'].'_' . $result['TypePrd'];
                 if (!isset($consolidatedData[$consolidatedKey])) {
                     $consolidatedData[$consolidatedKey] = [
                         'ItemCode' => $result['ItemCode'],

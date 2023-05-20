@@ -69,6 +69,7 @@ class GetItemController extends Controller
             $results[] = $row;
         }
         $results=json_encode($results);
+        odbc_close($conDB);
         return  $results;
     }
     function getsaledetail(Request $request)
@@ -87,6 +88,7 @@ class GetItemController extends Controller
         while ($row = odbc_fetch_array($stmt)) {
             $results[] = $row;
         }
+        odbc_close($conDB);
         $results=json_encode($results);
         return  $results;
     }
@@ -102,7 +104,7 @@ class GetItemController extends Controller
         while ($row = odbc_fetch_array($stmt)) {
             $results[] = $row;
         }
-        
+        odbc_close($conDB);
         if($results[0]['NUM']!="0")
         {
             return response()->json(["success" => true,"data"=>1]);
@@ -116,8 +118,9 @@ class GetItemController extends Controller
 
     function GetSupportOrder(Request $request)
     {
+       
         $conDB = (new SAPB1Controller)->connect_sap();
-        $query='call "USP_BS_BLANKET" (?, ?)';
+        $query='call USP_BS_BLANKET(?, ?)';
         if($request->type=="01")// đơn hàng '01' -- SUPPORT
         {
             $stmt = odbc_prepare($conDB, $query);
@@ -128,9 +131,9 @@ class GetItemController extends Controller
             $stmt = odbc_prepare($conDB, $query);
             odbc_execute($stmt,[$request->custcode,'02']);
         }
-        else //03 FA
-        {
-            $stmt = odbc_prepare($conDB, $query);
+        else //03 DA
+        { $querys='call "USP_BS_BLANKET"(?, ?)';
+            $stmt = odbc_prepare($conDB, $querys);
             odbc_execute($stmt,[$request->custcode,'03']);
         }
        
@@ -139,6 +142,7 @@ class GetItemController extends Controller
         while ($row = odbc_fetch_object($stmt)) {
             $results[] = $row;
         }
+        odbc_close($conDB);
       return $results;
         
     }
@@ -183,6 +187,7 @@ class GetItemController extends Controller
         while ($row = odbc_fetch_object($stmt)) {
             $results[] = $row;
         }
+        odbc_close($conDB);
 
         return json_encode($results[0]);
     }
@@ -207,13 +212,35 @@ class GetItemController extends Controller
         while ($row = odbc_fetch_array($stmt)) {
             $results[] = $row;
         }
-        sort($results);
+        //sort($results);
+        $itemCodes = array_column($results, 'ItemCode');
+        $typePrds = array_column($results, 'TypePrd');
+
+        // Sort the data based on multiple columns
+        array_multisort($typePrds, SORT_ASC, $itemCodes, SORT_ASC, $results);
+                
+        
         // get number lot
         $distinctLots = array_unique(array_column($results, 'LotNo'));
         odbc_close($conDB);
         // pass data to the view and render the Blade template
         return  view('sales.print_preview', compact('distinctLots', 'results'));
-        ;
+        
          
+    }
+    function ValidateBAP(Request $request)
+    {
+        $conDB = (new SAPB1Controller)->connect_sap();
+        $da='151-54,154-55';
+       $sql='call "usp_BS_StockOutRequest_Check_OOAT" (?,?)';
+        $stmt = odbc_prepare($conDB, $sql);
+        odbc_execute($stmt,array($request->AbsID, $request->ItemList));
+        $results = array();
+        while ($row = odbc_fetch_array($stmt)) {
+            $results[] = $row;
+        }
+        odbc_close($conDB);
+        $results=json_encode($results);
+        return  $results;
     }
 }
