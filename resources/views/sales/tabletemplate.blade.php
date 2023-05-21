@@ -81,12 +81,14 @@
                 @endif
                 @foreach ($distinctLots as $lot)
                 @if ($blanket != 0)
-                <td hidden>
+                <td >
+                    {{print_r($result['OpenQty'][$firstNonZeroLot])}}
+                    
                     @if ($result['QuantityOut'][$lot] ==0 &&  $result['OpenQty'][$firstNonZeroLot]>0 && $result['QuantityIn'][$lot])
-                        <input type="number" class="maxtotal" value="{{ result['OpenQty'][$lot] }}" hidden>
+                        <input type="number" class="maxtotal" value="{{ $result['OpenQty'][$lot] }}" hidden>
                     @elseif($result['QuantityOut'][$lot] >0 &&  $result['OpenQty'][$firstNonZeroLot]>0)
-                    <input type="number" class="maxtotal" value="{{ $result['OpenQty'][$lot] +$result['QuantityOut'][$firstNonZeroLot] }}" hidden>
-                    @elseif($result['QuantityOut'][$lot] >0 &&  $result['OpenQty'][$firstNonZeroLot]==0)
+                    <input type="number" class="maxtotal" value="{{ $result['OpenQty'][$lot] +$result['QuantityOut'][$firstNonZeroLot] }}" hidden> --}}
+                     @elseif($result['QuantityOut'][$lot] >0 &&  $result['OpenQty'][$firstNonZeroLot]==0)
                     <input type="number" class="maxtotal" value="{{ $result['QuantityOut'][$lot] }}" hidden>
                     @endif
                 </td>
