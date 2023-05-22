@@ -239,6 +239,10 @@
 
             },
             {
+                field: 'ApplySAPRemark'
+
+            },
+            {
                 field: 'Note'
 
             },
@@ -451,12 +455,20 @@
                     },
                     dataType: 'json',
                     success: function(data) {
-                        alert("đã apply thành công!")
+                        alert("đã apply thành công! Vui lòng kiểm tra SO apply")
                         loadFilteredData()
                         submitBtn.disabled = false;
                     },
-                    error: function() {
-                        alert("đã apply thất bại!, vui lòng kiếm tra dữ liệu!");
+                    error: function(xhr, status, error) {
+                        if (xhr.status === 500) {
+                        alert("Internal Server Error! Vui lòng liện hệ administrator!");
+                    } else {
+                        var response = JSON.parse(xhr.responseText);
+                         var responseData = response.data;
+                         alert("apply thất bại! message error:"+responseData);
+                    }
+
+                    console.log(error);
                         loadingModal.style.display = "none";
 
                         // Enable the submit button

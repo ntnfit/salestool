@@ -10,6 +10,8 @@ use DB;
 use Response;
 use Carbon\Carbon;
 use Auth;
+use Illuminate\Http\Client\ConnectionException;
+use Illuminate\Support\Facades\Http;
 class SalesController extends Controller
 {
     function __construct()
@@ -508,21 +510,11 @@ class SalesController extends Controller
     }
     function applySAP(Request $request)
     {
-
-        $serviceLayerUrl = "https://".env('SAP_SERVER').":".env('SAP_PORT');
       
-        $headers = [
-            "Content-Type" => "application/json",
-            "Accept" => "application/json",
-            "Authorization" => "Basic " . env('BSHeader'),
-        ];
+        try {
+            $serviceLayerUrl = "https://" . env('SAP_SERVER') . ":" . env('SAP_PORT');
 
-        $client = new \GuzzleHttp\Client([
-            "base_uri" => $serviceLayerUrl,
-            "headers" => $headers,
-        ]);
-        // json data
-        $attachment=[];
+            
 
         $conDB = (new SAPB1Controller)->connect_sap();
         foreach($request->SoNo as $SoNo)
@@ -599,16 +591,40 @@ class SalesController extends Controller
                 "DocumentLines"=>$ldt
                 
             ];
+            $response = Http::withOptions([
+                'verify' => false,
+            ])->withHeaders([
+                "Content-Type" => "application/json",
+                "Accept" => "application/json",
+                "Authorization" => "Basic " . env('BSHeader'),
+                ])->post($serviceLayerUrl . "/b1s/v1/Quotations", $body);
              // Make a request to the service layer
-        $response = $client->request("POST", "/b1s/v1/Quotations",['verify' => false, 'body' =>  json_encode($body)]);
-
-          $sql = 'Update  BS_STOCKOUTREQUEST set "StatusSAP"=1 where "StockNo"=?';
+        //$response = $client->request("POST", "/b1s/v1/Quotations",['verify' => false, 'body' =>  json_encode($body)]);
+        $res=$response->json();
+        if(!empty($res['error']))
+        { 
+           
+            $sql = 'Update  BS_STOCKOUTREQUEST set "ApplySAPRemark"=? where "StockNo"=?';
             $stmt = odbc_prepare($conDB, $sql);
-            odbc_execute($stmt, array($SoNo));
+            odbc_execute($stmt, array($res['error']['message']['value'],$SoNo));
+           // odbc_close($conDB); 
+            //return response()->json(["success" => false,"data"=>$res['error']['code'].$res['error']['message']['value']],401);
+            
+        }
+        else{
+
+            $sql = 'Update  BS_STOCKOUTREQUEST set "ApplySAPRemark"=?,"StatusSAP"=1 where "StockNo"=?';
+            $stmt = odbc_prepare($conDB, $sql);
+            odbc_execute($stmt, array($res['DocNum'],$SoNo));    
+        }    
         }
         odbc_close($conDB); 
-        return response()->json(["success" => true,"data"=>"okay"]);
-
+        return response()->json(["success" => true,"data"=> 'okay'],200);
+    }
+    catch (ConnectionException $e) {
+        // Handle the exception (failed connection)
+        return response()->json(["success" => false,"data"=> 'API request failed: ' . $e->getMessage()], 500);
+    }
     }
     // function filter 
     function filterdata(Request $request)
