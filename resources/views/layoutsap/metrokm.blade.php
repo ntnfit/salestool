@@ -149,7 +149,7 @@
                                 <td class="text-center">{{ ++$index }}</td>
                                 <td class="text-center">{{ $document->MaHang }}</td>
                                 <td>{{ $document->TenHang }}</td>
-                                <td class="text-center">{{ number_format($document->Quantity,2) }}</td>
+                                <td class="text-center">{{ number_format($document->DelQtybyThung,2) }}</td>
                                 <td class="text-center"></td>
                             </tr>
                         @endforeach

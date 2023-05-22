@@ -223,7 +223,7 @@
                             <td>{{ $index++ }}</td>
                             <td>{{ $item->ItemCode }}</td>
                             <td>{{ $item->Dscription }}</td>
-                            <td>{{ number_format($item->Quantity,2) }}</td>
+                            <td style="text-align: right">{{ number_format($item->Quantity,2) }}</td>
                             <td>{{ $item->UomName }}</td>
                             <td>{{ $item->U_BatchNo }}</td>
                             <td>{{ $item->Comments }}</td>
@@ -236,7 +236,7 @@
                         @else
                             <td colspan="1"></td>
                         @endif
-                        <td>{{ number_format($totalQuantity,2) }}</td>
+                        <td style="text-align: right">{{ number_format($totalQuantity,2) }}</td>
                         <td colspan="2"></td>
                         <td></td>
                     </tr>

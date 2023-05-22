@@ -297,7 +297,7 @@ class DeliveryController extends Controller
             while ($row = odbc_fetch_object($stmt)) {
                 $results[] = $row;
             };
-            sort($results);
+            rsort($results);
         $groupedDocuments=collect($results)->groupBy('DocEntry');
         return view ('layoutsap.vin',compact('groupedDocuments'));
            

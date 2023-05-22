@@ -226,6 +226,33 @@
                 sort: 'asc',
                 hide: true
             },
+           
+            {
+                headerName: 'Due Date',
+                field: 'DocDueDate',
+                valueFormatter: (params) => {
+                    if (!params.value || isNaN(Date.parse(params.value))) {
+                    return ''; // Return an empty string for empty or invalid date values
+                    }
+                var date = new Date(params.value);
+                var day = date.getDate().toString().padStart(2, '0');
+                var month = (date.getMonth() + 1).toString().padStart(2, '0');
+                var year = date.getFullYear().toString();
+                return month + '/' + day + '/' + year;
+            }
+            },
+            {
+                headerName: 'Warehouse',
+                field: 'WhsName',
+            },
+            {
+                headerName: 'Type',
+                field: 'TypeName',
+            },
+            {
+                headerName: 'Truck Info',
+                field: 'U_TruckInfo',
+            },
             {
                 headerName: 'Weight',
                 field: 'Weight',
@@ -236,27 +263,8 @@
                 }
             },
             {
-                headerName: 'Type',
-                field: 'TypeName',
-            },
-            {
-                headerName: 'Del No',
-                field: 'U_DelNo',
-                editable: true
-            },
-            {
-                headerName: 'Doc Entry',
-                field: 'DocEntry',
-                hide: true,
-            },
-            {
-                headerName: 'Doc No',
-                field: 'DocNum',
-                hide: true,
-            },
-            {
-                headerName: 'Due Date',
-                field: 'DocDueDate',
+                headerName: 'Route Name',
+                field: 'U_RouteName',
             },
             {
                 headerName: 'Card Code',
@@ -273,9 +281,21 @@
             },
 
             {
-                headerName: 'Warehouse',
-                field: 'WhsName',
+                headerName: 'Del No',
+                field: 'U_DelNo',
+                editable: true
             },
+            {
+                headerName: 'Doc Entry',
+                field: 'DocEntry',
+                hide: true,
+            },
+            {
+                headerName: 'Doc No',
+                field: 'DocNum',
+                hide: true,
+            },
+                 
             {
                 headerName: 'Tax Date',
                 field: 'TaxDate',
@@ -290,14 +310,8 @@
                 field: 'U_Route',
                 hide: true,
             },
-            {
-                headerName: 'Route Name',
-                field: 'U_RouteName',
-            },
-            {
-                headerName: 'Truck Info',
-                field: 'U_TruckInfo',
-            },
+           
+           
             {
                 headerName: 'Quantity',
                 field: 'Quantity',
@@ -413,6 +427,8 @@
             enableRangeSelection: true,
             allowContextMenuWithControlKey: true,
             getContextMenuItems: getContextMenuItems,
+            groupSelectsChildren: true,
+            suppressRowClickSelection: true,
         };
 
         function onBtExport() {
@@ -543,10 +559,6 @@ if (selectedRows.length === 1) {
 
             loadInitialData();
 
-
-            
-            
-
             document.querySelector("#apply").addEventListener("click", function() {
                 const selectedRows = gridOptions.api.getSelectedRows().filter(row => row.DocNum);
                 const selectedProIds = selectedRows.map((row) =>  ({ DocNum: row.DocNum, DocType: row.TypeName }));
@@ -589,121 +601,136 @@ if (selectedRows.length === 1) {
                 }
 
             })
-        });
+             });
         
-        document.querySelector("#print").addEventListener("click", function() {
-            const selectedRows = gridOptions.api.getSelectedRows().filter(row => row.DocNum);
-            const selectedProIds = selectedRows.map((row) => row.DocNum);
-            const selectPramaDoc = selectedRows.map((row) => row.DocNum + '-' + row.TypeName);
+            document.querySelector("#print").addEventListener("click", function() {
+                const selectedRows = gridOptions.api.getSelectedRows().filter(row => row.DocNum);
+                const selectedProIds = selectedRows.map((row) => row.DocNum);
+                const selectPramaDoc = selectedRows.map((row) => row.DocNum + '-' + row.TypeName);
 
-            // Get distinct values of TruckInfor
-            const truckInforSet = new Set(selectedRows.map((row) => row.U_TruckInfo).filter(Boolean));
-            const truckInforArray = Array.from(truckInforSet);
+                // Get distinct values of TruckInfor
+                const truckInforSet = new Set(selectedRows.map((row) => row.U_TruckInfo).filter(Boolean));
+                const truckInforArray = Array.from(truckInforSet);
 
-            // Get distinct values of U_DelNo
-            const uDelNoSet = new Set(selectedRows.map((row) => row.U_DelNo).filter(Boolean));
-            const uDelNoArray = Array.from(uDelNoSet);
+                // Get distinct values of U_DelNo
+                const uDelNoSet = new Set(selectedRows.map((row) => row.U_DelNo).filter(Boolean));
+                const uDelNoArray = Array.from(uDelNoSet);
 
-            // Check if any selected row has null or empty TruckInfor
-            const hasNullTruckInfor = selectedRows.some(row => !row.U_TruckInfo);
+                // Check if any selected row has null or empty TruckInfor
+                const hasNullTruckInfor = selectedRows.some(row => !row.U_TruckInfo);
 
-            if (hasNullTruckInfor) {
-                alert('Please apply the truck code before printing!');
-                return;
-            }
-
-            if (selectedProIds.length === 0) {
-                alert("Please choose DocNum!");
-                return;
-            }
-            if (uDelNoArray.length > 1) {
-                alert("Cannot select more than 2 Do No!");
-                return;
-            }
-            // if (truckInforArray.length > 1) {
-            //     alert("Cannot select more than 2 TruckCode!!");
-            //     return;
-            // }
-            console.log("TruckInfor:" + truckInforArray);
-            console.log("DelNo:" + uDelNoArray);
-            console.log("Prama" + selectPramaDoc);
-            const url = '{{ route('print-do') }}' + '?type=print' + '&pra=' + encodeURIComponent(selectPramaDoc);
-            // redirect to the new URL
-            window.open(url, '_blank');
-        });
-
-        document.querySelector("#stockout").addEventListener("click", function() {
-            const selectedRows = gridOptions.api.getSelectedRows().filter(row => row.DocNum);
-            const selectedProIds = selectedRows.map((row) => row.DocNum);
-            const selectPramaDoc = selectedRows.map((row) => row.DocNum + '-' + row.TypeName);
-
-            // Get distinct values of TruckInfor
-            const truckInforSet = new Set(selectedRows.map((row) => row.U_TruckInfo).filter(Boolean));
-            const truckInforArray = Array.from(truckInforSet);
-
-            // Get distinct values of U_DelNo
-            const uDelNoSet = new Set(selectedRows.map((row) => row.U_DelNo).filter(Boolean));
-            const uDelNoArray = Array.from(uDelNoSet);
-
-            // Check if any selected row has null or empty TruckInfor
-            const hasNullTruckInfor = selectedRows.some(row => !row.U_TruckInfo);
-
-            if (hasNullTruckInfor) {
-                alert('Please apply the truck code before printing!');
-                return;
-            }
-
-            // if (truckInforArray.length > 1) {
-            //     alert("Cannot select more than 2 TruckCode!!");
-            //     return;
-            // }
-            if (selectedProIds.length === 0) {
-                alert("Please choose DocNum!");
-                return;
-            }
-
-            if (uDelNoArray.length > 1) {
-                alert("Cannot select more than 2 DO No!");
-                return;
-            }
-            const loadingModal = document.getElementById("loadingModal");
-            const submitBtn = document.getElementById("apply");
-            console.log("TruckInfor:" + truckInforArray);
-            console.log("DelNo:" + uDelNoArray);
-            console.log("Prama" + selectPramaDoc);
-            loadingModal.style.display = "block";
-
-            // Disable the submit button
-            submitBtn.disabled = true;
-
-            $.ajax({
-                type: 'GET',
-                url: '{{ route('applyDo') }}',
-                data: {
-                    delno: uDelNoArray,
-                    Prama: selectPramaDoc,
-                    No: selectedProIds,
-                    type: "01"
-                },
-                dataType: 'json',
-                success: function(data) {
-                    loadFilteredData();
-                    const url = '{{ route('print-do') }}' + '?type=stockout' + '&pra=' +
-                        encodeURIComponent(selectPramaDoc);
-
-                        window.open(url, '_blank','noopener');
-                 
-
-                },
-                error: function() {
-                    alert("sorry, It happen error please contact administrator!");
-                    loadingModal.style.display = "none";
-
-                    // Enable the submit button
-                    submitBtn.disabled = false;
+                if (hasNullTruckInfor) {
+                    alert('Please apply the truck code before printing!');
+                    return;
                 }
-            })
 
-        });
+                if (selectedProIds.length === 0) {
+                    alert("Please choose DocNum!");
+                    return;
+                }
+                if (uDelNoArray.length > 1) {
+                    alert("Cannot select more than 2 Do No!");
+                    return;
+                }
+                // if (truckInforArray.length > 1) {
+                //     alert("Cannot select more than 2 TruckCode!!");
+                //     return;
+                // }
+                console.log("TruckInfor:" + truckInforArray);
+                console.log("DelNo:" + uDelNoArray);
+                console.log("Prama" + selectPramaDoc);
+                const url = '{{ route('print-do') }}' + '?type=print' + '&pra=' + encodeURIComponent(selectPramaDoc);
+                // redirect to the new URL
+                window.open(url, '_blank');
+            });
+
+            document.querySelector("#stockout").addEventListener("click", function() {
+                const selectedRows = gridOptions.api.getSelectedRows().filter(row => row.DocNum);
+                const selectedProIds = selectedRows.map((row) => row.DocNum);
+                const selectPramaDoc = selectedRows.map((row) => row.DocNum + '-' + row.TypeName);
+
+                // Get distinct values of TruckInfor
+                const truckInforSet = new Set(selectedRows.map((row) => row.U_TruckInfo).filter(Boolean));
+                const truckInforArray = Array.from(truckInforSet);
+
+                // Get distinct values of U_DelNo
+                const uDelNoSet = new Set(selectedRows.map((row) => row.U_DelNo).filter(Boolean));
+                const uDelNoArray = Array.from(uDelNoSet);
+
+                // Check if any selected row has null or empty TruckInfor
+                const hasNullTruckInfor = selectedRows.some(row => !row.U_TruckInfo);
+
+                if (hasNullTruckInfor) {
+                    alert('Please apply the truck code before printing!');
+                    return;
+                }
+
+                // if (truckInforArray.length > 1) {
+                //     alert("Cannot select more than 2 TruckCode!!");
+                //     return;
+                // }
+                if (selectedProIds.length === 0) {
+                    alert("Please choose DocNum!");
+                    return;
+                }
+
+                if (uDelNoArray.length > 1) {
+                    alert("Cannot select more than 2 DO No!");
+                    return;
+                }
+                const loadingModal = document.getElementById("loadingModal");
+                const submitBtn = document.getElementById("apply");
+                console.log("TruckInfor:" + truckInforArray);
+                console.log("DelNo:" + uDelNoArray);
+                console.log("Prama" + selectPramaDoc);
+                loadingModal.style.display = "block";
+
+                // Disable the submit button
+                submitBtn.disabled = true;
+
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ route('applyDo') }}',
+                    data: {
+                        delno: uDelNoArray,
+                        Prama: selectPramaDoc,
+                        No: selectedProIds,
+                        type: "01"
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        loadFilteredData();
+                        const url = '{{ route('print-do') }}' + '?type=stockout' + '&pra=' +
+                            encodeURIComponent(selectPramaDoc);
+
+                            window.open(url, '_blank','noopener');
+                    
+
+                    },
+                    error: function() {
+                        alert("sorry, It happen error please contact administrator!");
+                        loadingModal.style.display = "none";
+
+                        // Enable the submit button
+                        submitBtn.disabled = false;
+                    }
+                })
+
+            });
+
+            function selectGroupCallback(params) {
+                const selectedValue = params.api.getValue('selected', params.node);
+
+                // Get all the child nodes of the group node
+                const childNodes = params.api.getChildrenOfNode(params.node);
+
+                // Set the selected value for each child node
+                childNodes.forEach((childNode) => {
+                    params.api.setValue('selected', !selectedValue, childNode);
+                });
+
+                // Refresh the grid to reflect the changes
+                params.api.refreshCells();
+                }
     </script>
 @endpush

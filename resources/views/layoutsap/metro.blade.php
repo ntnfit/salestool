@@ -150,7 +150,7 @@
                                 <td class="text-center">{{ $document->CustBarCode}}</td>
                                 <td>{{ $document->TenHang }}</td>
                                 <td class="text-center">{{ $document->CustUomQuyDoi }}</td>
-                                <td class="text-center">{{  number_format($document->Quantity,2) }}</td>
+                                <td class="text-center">{{  number_format($document->DelQtybyThung,2) }}</td>
                             </tr>
                         @endforeach
                     </tbody>
