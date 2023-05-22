@@ -96,7 +96,7 @@ class SalesBAController extends Controller
                 $logData->LogId= $logId;
                 $logData->Status="succeed";
                 $logData->DocNum= $res['DocNum'];
-             
+                $logData->CardCode= $res['CardCode'];
                 $logData->save();
             }
         }

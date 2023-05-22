@@ -14,7 +14,8 @@ class LogData extends Model
         'Status',
         'Error_code',
         'Message',
-        'DocNum'
+        'DocNum',
+        'CardCode'
     ];
     public $timestamps = false;
 }

@@ -11,6 +11,7 @@
                 <tr>
                     <th>STT</th>
                     <th>DocNum</th>
+                    <th>CardCode</th>
                     <th>Status</th>
                     <th>ErrorCode</th>
                     <th>Message</th>
@@ -21,6 +22,7 @@
                     <tr>
                         <td>{{ $index + 1 }}</td>
                         <td>{{ $data->DocNum }}</td>
+                        <td>{{ $data->CardCode }}</td>
                         <td>{{ $data->Status }}</td>
                         <td>{{ $data->Error_code }}</td>
                         <td>{{ $data->Message }}</td>
