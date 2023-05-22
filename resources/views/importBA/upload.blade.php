@@ -24,7 +24,8 @@
             </div>
             
             <input type="file" name="file" id="file" accept=".xlsx, .xls" onchange="displayFileName(this)">
-            <button type="submit">Upload</button>
+            <button type="submit" id="upload-btn" onclick="handleUpload()">Upload</button>
+
         </form>
     </div>
 </div>
@@ -78,6 +79,45 @@
         .form-container button[type="submit"]:hover {
             background-color: #218838;
         }
+        .form-container button[type="submit"].uploading {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .form-container button[type="submit"].uploading::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255, 255, 255, 0.7);
+        z-index: 1;
+    }
+
+    .form-container button[type="submit"].uploading::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 20px;
+        height: 20px;
+        border: 2px solid #ffffff;
+        border-top-color: #28a745;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        z-index: 2;
+    }
+
+    @keyframes spin {
+        0% {
+            transform: translate(-50%, -50%) rotate(0deg);
+        }
+        100% {
+            transform: translate(-50%, -50%) rotate(360deg);
+        }
+    }
 </style>
 @stop
  @push('js')
@@ -90,6 +130,14 @@
         } else {
             document.getElementById("file-name").textContent = "No file selected";
         }
+    }
+    function handleUpload() {
+        var uploadBtn = document.getElementById('upload-btn');
+        uploadBtn.classList.add('uploading');
+        uploadBtn.disabled = true;
+        setTimeout(function() {
+            uploadBtn.closest('form').submit();
+        }, 500);
     }
 </script>
  @endpush
