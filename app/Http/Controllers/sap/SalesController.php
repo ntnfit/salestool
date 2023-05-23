@@ -549,7 +549,7 @@ class SalesController extends Controller
             foreach ($line as $dt)
             {
                 $km="";
-                if($dt->TypePrd=="002")
+                if($dt->TypePrd!="001")
                 {
                     $km="1";
                     $price=0;
