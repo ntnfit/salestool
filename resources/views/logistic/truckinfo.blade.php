@@ -472,25 +472,21 @@
 
             return result;
             }
-            function selectSameU_DelNo(params) {
-                const selectedRows = gridOptions.api.getSelectedRows();
+            function selectSameU_DelNo() {
+            const selectedRows = gridOptions.api.getSelectedRows();
 
-// If there is only one row selected, check for other rows with the same DelNo and select them
-if (selectedRows.length === 1) {
-    const selectedDelNo = selectedRows[0].U_DelNo;
-    const selectedTruckInfo = selectedRows[0].U_TruckInfo;
+            // If there is at least one row selected, retrieve the U_DelNo value
+            if (selectedRows.length > 0) {
+                const selectedDelNo = selectedRows[0]?.U_DelNo;
 
-    gridOptions.api.forEachNode(function(node) {
-        if (node.group || !node.data.U_DelNo) {
-            return;
-        }
-      //  if (node.data.U_TruckInfo === selectedTruckInfo && node.data.U_DelNo ===
-        if (node.data.U_DelNo ==selectedDelNo && !node.isSelected()) {
-            node.setSelected(true);
-        }
-    });
-}
+                gridOptions.api.forEachNode(function (node) {
+                if (node.data && node.data.U_DelNo === selectedDelNo) {
+                    node.setSelected(true);
+                }
+                });
             }
+            }
+
 
 
         let filterData = {};
