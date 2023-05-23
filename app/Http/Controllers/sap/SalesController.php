@@ -591,6 +591,7 @@ class SalesController extends Controller
                 "DocumentLines"=>$ldt
                 
             ];
+           
             $response = Http::withOptions([
                 'verify' => false,
             ])->withHeaders([
