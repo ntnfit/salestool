@@ -122,6 +122,7 @@ class SalesBAController extends Controller
                 $itemLines[] = [
                     'ItemNo' => $itemCode,
                     'PlannedQuantity' => $quantity,
+                    'Price'=>0
                 ];
             }
         }
