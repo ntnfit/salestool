@@ -372,7 +372,7 @@
 
             $.ajax({
                 type: 'GET',
-                url: '{{ route('inv.loadall') }}',
+                url: '{{ route('sales.loadall') }}',
                 dataType: 'json',
                 success: function(data) {
                     gridOptions.api.setRowData(data);

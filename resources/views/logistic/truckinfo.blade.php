@@ -174,6 +174,7 @@
                 transform: rotate(360deg);
             }
         }
+  
     </style>
 @stop
 @push('js')
@@ -224,7 +225,8 @@
                 rowGroup: true,
                 enableRowGroup: true,
                 sort: 'asc',
-                hide: true
+                hide: true,
+                cellStyle: {color: 'red', 'background-color': 'green'}
             },
            
             {
