@@ -215,9 +215,15 @@
                         $index = 1;
                     @endphp
                     @if ($type == 'print')
+                   
                         @foreach ($group as $cardCode => $items)
                             @php
-                                $totalQuantity = $items->sum('Quantity');
+                               $totalQuantity = 0;
+                            foreach ($items as $item) {
+                                if (number_format(floatval($item->Quantity), 2) ) {
+                                    $totalQuantity +=floatval($item->Quantity);
+                                }
+                            }
                             @endphp
                             @foreach ($items as $index => $item)
                                 <tr class="group-{{ $cardCode }}">
@@ -230,7 +236,7 @@
                                     <td contentEditable="true">{{ $item->ItemCode }}</td>
                                     <td contentEditable="true">{{ $item->Dscription }}</td>
                                     <td contentEditable="true" style="text-align: right">
-                                        {{ number_format($item->Quantity, 2) }}
+                                        {{ number_format(floatval($item->Quantity), 2) }}
                                     </td>
                                     <td contentEditable="true">{{ $item->UomName }}</td>
                                     <td contentEditable="true">{{ $item->U_BatchNo }}</td>
@@ -247,7 +253,7 @@
                                 <td colspan="2"></td>
                                 <td colspan="2"></td>
                                 <td contentEditable="true" style="text-align: right">
-                                    {{ number_format($totalQuantity, 2) }}
+                                    {{ number_format($totalQuantity, 2) }} 
                                 </td>
                                 <td colspan="2"></td>
                                 <td></td>
@@ -257,19 +263,21 @@
                             </tr>
                         @endforeach
                     @else
-                        @php
-                            $totalQuantity = 0;
-                        @endphp
+                    @php
+                    $totalQuantity = 0;
+                     @endphp
                         @foreach ($group as $item)
                             <tr>
+                               
                                 @php
-                                    $totalQuantity += $item->Quantity;
+                                    $totalQuantity += floatval($item->Quantity);
                                 @endphp
+                            
                                 <td contentEditable="true">{{ $index++ }}</td>
                                 <td contentEditable="true">{{ $item->ItemCode }}</td>
                                 <td contentEditable="true">{{ $item->Dscription }}</td>
                                 <td contentEditable="true" style="text-align: right">
-                                    {{ number_format($item->Quantity, 2) }}</td>
+                                    {{ number_format(floatval($item->Quantity), 2) }}</td>
                                 <td contentEditable="true">{{ $item->UomName }}</td>
                                 <td contentEditable="true">{{ $item->U_BatchNo }}</td>
                                 <td contentEditable="true">{{ $item->Comments }}</td>
@@ -285,7 +293,7 @@
                             @else
                                 <td colspan="1"></td>
                             @endif
-                            <td contentEditable="true" style="text-align: right">{{ number_format($totalQuantity, 2) }}
+                            <td contentEditable="true" style="text-align: right">{{ number_format(floatval($totalQuantity), 2) }}
                             </td>
                             <td colspan="2"></td>
                             <td></td>
