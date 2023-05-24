@@ -220,6 +220,11 @@
                 field: 'TransferReqNo',
 
             },
+            {
+                headerName: 'Transfer No.',
+                field: 'TransferNo',
+
+            },
             
             {
                 field: 'ApplySAP'
