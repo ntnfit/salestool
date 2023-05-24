@@ -104,7 +104,7 @@
 
         th,
         td {
-            padding: 8px;
+            padding: 3px;
             border: 1px solid #ddd;
             text-align: left;
         }

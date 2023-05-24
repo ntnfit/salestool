@@ -164,7 +164,7 @@
                 </div>
                 <div class="right">
                     <p>{{$documents->last()->CardName}}</p>
-                    <p>Người giao hàng</p>
+                    <p>Người nhận hàng</p>
                    
                 </div>
             </footer>

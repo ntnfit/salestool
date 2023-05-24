@@ -213,7 +213,8 @@
             {
                 headerName: 'InvoiceNo',
                 field: 'NumAtCard',
-                sort: 'desc'
+                sort: 'desc',
+                cellClass: 'InvoiceNos' 
             },
             {
                 headerName: 'Total',
@@ -222,6 +223,18 @@
             {
                 headerName: 'Date',
                 field: 'DocDate',
+                cellClass: 'nguyen',
+                valueFormatter: (params) => {
+                    if (!params.value || isNaN(Date.parse(params.value))) {
+                    return ''; // Return an empty string for empty or invalid date values
+                    }
+                    const date = new Date(params.value);
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const year = date.getFullYear().toString().padStart(4, '0');
+        return `${day}/${month}/${year}`;
+                },
+              
             },
             {
                 headerName: 'SQ.No',
@@ -260,7 +273,21 @@
 
         ];
 
-
+            const excelstyle = [
+              
+                    {
+                        id: 'InvoiceNos',
+                        dataType: 'String',
+                    },
+                  {
+                    id: 'nguyen',
+                    dataType: 'Date',
+                    numberFormat: {
+                    format: 'dd/mm/yyyy',
+                     },
+                 },                   
+                
+            ];
 
         const gridOptions = {
             columnDefs: columnDefs,
@@ -282,7 +309,8 @@
                 suppressCount: true,
                 selectAllOnMiniFilter: true,
             },
-            
+            excelStyles:excelstyle
+           
         };
 
         function onBtExport() {
