@@ -37,6 +37,26 @@
                 <option value="{{ $so->OrderType }}">{{ $so->Name }}</option>
 
             </x-adminlte-select>
+            <x-adminlte-select label="Warehouse" label-class="text-lightblue" igroup-size="sm" name="WhsCode" id="WhsCode"
+                fgroup-class="col-md-2" enable-old-support>
+                <option value="{{ $so->FromWhsCode }}" selected>{{ $so->FromWhsCode }}</option>
+            </x-adminlte-select>
+            <x-adminlte-select label="Team" label-class="text-lightblue" igroup-size="sm" name="bincode" id="bincode"
+                fgroup-class="col-md-2" enable-old-support>
+                <option value="{{ $so->AbsEntry }}" selected>{{ $so->BinCode }}</option>
+            </x-adminlte-select>
+            <x-adminlte-select label="Customer Code" label-class="text-lightblue" igroup-size="sm" name="cuscode"
+                id="cuscode" fgroup-class="col-md-2" enable-old-support>
+                <option value="{{ $so->CustCode }}" selected>{{ $so->CustCode . '--' . $so->CustName }}</option>
+            </x-adminlte-select>
+
+            <x-adminlte-input label="SO ID" label-class="text-lightblue" name="sono" type="text" placeholder=""
+                value="{{ $so->StockNo }}" igroup-size="sm" fgroup-class="col-md-2" readonly="true">
+            </x-adminlte-input>
+
+
+        </div>
+        <div class="row">
             <x-adminlte-input label="PO ID" label-class="text-lightblue" name="pono" id="pono" type="text"
                 placeholder="" igroup-size="sm" fgroup-class="col-md-2" value="{{ $so->PoCardCode }}" readonly="true">
             </x-adminlte-input>
@@ -49,33 +69,12 @@
                     </div>
                 </x-slot>
             </x-adminlte-input-date>
-            <x-adminlte-input label="SO ID" label-class="text-lightblue" name="sono" type="text" placeholder=""
-                value="{{ $so->StockNo }}" igroup-size="sm" fgroup-class="col-md-2" readonly="true">
-            </x-adminlte-input>
-            <x-adminlte-select label="Customer Code" label-class="text-lightblue" igroup-size="sm" name="cuscode"
-            id="cuscode" fgroup-class="col-md-2" enable-old-support>
-
-            <option value="{{ $so->CustCode }}" selected>{{ $so->CustCode . '--' . $so->CustName }}</option>
-        </x-adminlte-select>
-          
-        </div>
-        <div class="row">
             <x-adminlte-select label="Support OrderNo" label-class="text-lightblue" igroup-size="sm" name="sporderno"
             id="sporderno" fgroup-class="col-md-2" enable-old-support>
             @if ($so->AbsID)
                 <option value="{{ $so->AbsID }}" selected>{{ $so->AbsID }}</option>
             @endif
-        </x-adminlte-select>
-            <x-adminlte-select label="Warehouse" label-class="text-lightblue" igroup-size="sm" name="WhsCode" id="WhsCode"
-                fgroup-class="col-md-2" enable-old-support>
-                <option value="{{ $so->FromWhsCode }}" selected>{{ $so->FromWhsCode }}</option>
-
             </x-adminlte-select>
-            <x-adminlte-select label="Team" label-class="text-lightblue" igroup-size="sm" name="bincode" id="bincode"
-                fgroup-class="col-md-2" enable-old-support>
-                <option value="{{ $so->AbsEntry }}" selected>{{ $so->BinCode }}</option>
-            </x-adminlte-select>
-
             <x-adminlte-input-date name="date" id="sodate" label="Date" :config="$configsodate"
                 label-class="text-lightblue" igroup-size="sm" fgroup-class="col-md-3" placeholder="Choose a date..."
                 value="{{ Carbon\Carbon::parse($so->StockDate)->format('d/m/Y') }}" readonly="true">
@@ -85,6 +84,7 @@
                     </div>
                 </x-slot>
             </x-adminlte-input-date>
+          
             <x-adminlte-button class="btn" id="search"
                 style="float: right;margin-top: 34px;font-size: small;height: 31px;" type="button" label="load item"
                 theme="success" icon="fas fa-filter" />
@@ -144,17 +144,17 @@
                             $totalStockOuts[$result['LotNo']] += $result['QuantityOut'];
                         @endphp
                     @endforeach
-                       
+
                     @foreach ($consolidatedData as $key => $result)
-                    @php
-                        $firstNonZeroLot = null;
-                        foreach ($result['PlanQty'] as $lot => $qty) {
-                            if ($qty != 0) {
-                                $firstNonZeroLot = $lot;
-                                break;
+                        @php
+                            $firstNonZeroLot = null;
+                            foreach ($result['PlanQty'] as $lot => $qty) {
+                                if ($qty != 0) {
+                                    $firstNonZeroLot = $lot;
+                                    break;
+                                }
                             }
-                        }
-                    @endphp
+                        @endphp
                         <tr class="{{ $result['QuantityOut'] > 0 ? 'has-stockout' : '' }}"
                             @if ($result['TypePrd'] === '002') style="background-color: rgb(223, 240, 216)" @endif>
                             <td>{{ $loop->iteration }}</td>
@@ -163,46 +163,50 @@
                             <td hidden><input type="text" class="sotype" name="sotype[{{ $result['ItemCode'] }}][]"
                                     value=""></td>
                             @if ($blanket != 0)
-                            <td style="text-color: orange;">
-                                {{ $result['PlanQty'][$firstNonZeroLot] ?? '' }}
-                            </td>
-                            <td>
-                                {{ $result['CumQty'][$firstNonZeroLot] ?? '' }}
-                            </td>
-                            <td class="openqtyrow">
-                                {{ $result['OpenQty'][$firstNonZeroLot] ?? '' }}
-                            </td>
+                                <td style="text-color: orange;">
+                                    {{ $result['PlanQty'][$firstNonZeroLot] ?? '' }}
+                                </td>
+                                <td>
+                                    {{ $result['CumQty'][$firstNonZeroLot] ?? '' }}
+                                </td>
+                                <td class="openqtyrow">
+                                    {{ $result['OpenQty'][$firstNonZeroLot] ?? '' }}
+                                </td>
                             @endif
                             @foreach ($distinctLots as $lot)
-                            @if ($blanket != 0)
-                            <td hidden>
-                                @if ($result['QuantityOut'][$lot] ==0 &&  $result['OpenQty'][$firstNonZeroLot]>0 && $result['QuantityIn'][$lot])
-                                    <input type="number" class="maxtotal" value="{{ result['OpenQty'][$lot] }}" hidden>
-                                @elseif($result['QuantityOut'][$lot] >0 &&  $result['OpenQty'][$firstNonZeroLot]>0)
-                                <input type="number" class="maxtotal" value="{{ $result['OpenQty'][$lot] +$result['QuantityOut'][$firstNonZeroLot] }}" hidden>
-                                @elseif($result['QuantityOut'][$lot] >0 &&  $result['OpenQty'][$firstNonZeroLot]==0)
-                                <input type="number" class="maxtotal" value="{{ $result['QuantityOut'][$lot] }}" hidden>
+                                @if ($blanket != 0)
+                                    <td hidden>
+                                        @if ($result['QuantityOut'][$lot] == 0 && $result['OpenQty'][$firstNonZeroLot] > 0 && $result['QuantityIn'][$lot])
+                                            <input type="number" class="maxtotal" value="{{ result['OpenQty'][$lot] }}"
+                                                hidden>
+                                        @elseif($result['QuantityOut'][$lot] > 0 && $result['OpenQty'][$firstNonZeroLot] > 0)
+                                            <input type="number" class="maxtotal"
+                                                value="{{ $result['OpenQty'][$lot] + $result['QuantityOut'][$firstNonZeroLot] }}"
+                                                hidden>
+                                        @elseif($result['QuantityOut'][$lot] > 0 && $result['OpenQty'][$firstNonZeroLot] == 0)
+                                            <input type="number" class="maxtotal"
+                                                value="{{ $result['QuantityOut'][$lot] }}" hidden>
+                                        @endif
+                                    </td>
                                 @endif
-                            </td>
-                            @endif
                                 <td class="{{ $result['QuantityOut'][$lot] > 0 ? 'orange' : '' }}">
                                     @if ($blanket != 0)
-                                    
-                                        @if ($result['QuantityOut'][$lot] ==0 &&  $result['OpenQty'][$firstNonZeroLot]>0 && $result['QuantityIn'][$lot])
+                                        @if ($result['QuantityOut'][$lot] == 0 && $result['OpenQty'][$firstNonZeroLot] > 0 && $result['QuantityIn'][$lot])
                                             <input type="number" class="Qtyout" style="text-color:orange"
                                                 name="stockOuts[{{ $result['ItemCode'] }}][{{ $lot }}][]"
                                                 value="{{ $result['QuantityOut'][$lot] }}"
                                                 max="{{ $result['OpenQty'][$lot] }}" min="0">
-                                        @elseif($result['QuantityOut'][$lot] >0 &&  $result['OpenQty'][$firstNonZeroLot]>0)
-                                        <input type="number" class="Qtyout" style="text-color:orange"
-                                        name="stockOuts[{{ $result['ItemCode'] }}][{{ $lot }}][]"
-                                        value="{{ $result['QuantityOut'][$lot] }}"
-                                        max="{{ $result['OpenQty'][$lot] +$result['QuantityOut'][$firstNonZeroLot]}}" min="0">
-                                        @elseif($result['QuantityOut'][$lot] >0 &&  $result['OpenQty'][$firstNonZeroLot]==0)
-                                        <input type="number" class="Qtyout" style="text-color:orange"
-                                        name="stockOuts[{{ $result['ItemCode'] }}][{{ $lot }}][]"
-                                        value="{{ $result['QuantityOut'][$lot] }}"
-                                        max="{{$result['QuantityOut'][$firstNonZeroLot]}}" min="0">
+                                        @elseif($result['QuantityOut'][$lot] > 0 && $result['OpenQty'][$firstNonZeroLot] > 0)
+                                            <input type="number" class="Qtyout" style="text-color:orange"
+                                                name="stockOuts[{{ $result['ItemCode'] }}][{{ $lot }}][]"
+                                                value="{{ $result['QuantityOut'][$lot] }}"
+                                                max="{{ $result['OpenQty'][$lot] + $result['QuantityOut'][$firstNonZeroLot] }}"
+                                                min="0">
+                                        @elseif($result['QuantityOut'][$lot] > 0 && $result['OpenQty'][$firstNonZeroLot] == 0)
+                                            <input type="number" class="Qtyout" style="text-color:orange"
+                                                name="stockOuts[{{ $result['ItemCode'] }}][{{ $lot }}][]"
+                                                value="{{ $result['QuantityOut'][$lot] }}"
+                                                max="{{ $result['QuantityOut'][$firstNonZeroLot] }}" min="0">
                                         @else
                                             <input type="number" class="Qtyout" style="text-color:orange"
                                                 name="stockOuts[{{ $result['ItemCode'] }}][{{ $lot }}][]"
@@ -246,7 +250,7 @@
                                     <td class="inlot"></td>
                                 @endif
                             @endforeach
-                           
+
                             <td>
                                 @if ($result['TypePrd'] === '001' && array_sum($result['QuantityOut']) > 0)
                                     <input type="number" class="totalrow"
@@ -463,9 +467,10 @@
                 transform: rotate(360deg);
             }
         }
+
         .dropdown-menu.show {
-        max-width: 500px;
-}
+            max-width: 500px;
+        }
     </style>
 @stop
 @push('js')
@@ -523,7 +528,7 @@
                         sodate: sodate,
                         Podate: Podate,
                         sono: document.getElementById("sono").value,
-                        sporderno:sporderno
+                        sporderno: sporderno
 
                     },
                     success: function(data) {
@@ -655,7 +660,7 @@
                         if (promotions.hasOwnProperty(itemCode)) {
                             var promotionQty = promotions[
                                 itemCode
-                                ]; // Get the promotion quantity for the current item code
+                            ]; // Get the promotion quantity for the current item code
                             var newQty =
                                 promotionQty; // Calculate the new quantity by adding the promotion quantity
                             // Clone the current row, update the "Total Qty" input field with the new quantity, and append it to the table
@@ -664,7 +669,7 @@
                             newRow.find(".sotype").val('KM');
                             newRow.find(".totalrow").val(
                                 newQty
-                                ); // Update the "Total Qty" input field with the new quantity
+                            ); // Update the "Total Qty" input field with the new quantity
                             newRow.find(".Qtyout").val("");
                             newRow.find(".Qtyout").removeClass('Qtyout').addClass('qtypro');
                             newRow.find(".totalrow").removeClass('totalrow').addClass(
@@ -788,7 +793,7 @@
                 var prototal = $row.find('.maxtotal').val();
                 console.log(sumpro);
                 if (sumpro > prototal) {
-                    alert('Quantity exceeds open quantity:'+prototal);
+                    alert('Quantity exceeds open quantity:' + prototal);
                     $row.find('input.Qtyout').val('');
                 }
             }
@@ -820,7 +825,7 @@
             return $(row).children('td').eq(index).text()
         };
         const searchInput = document.getElementById('searchInput');
-      
+
         searchInput.addEventListener('keyup', function(event) {
             const rows = document.querySelectorAll('tbody tr');
             const query = event.target.value.toLowerCase();
@@ -1069,35 +1074,35 @@
                 return true;
             }
         }
-        document.onkeydown = function (e) {
-    switch (e.key) {
-      case 'ArrowDown':
-        e.preventDefault(); // Prevent the default behavior of the arrow key
-        var activeElement = document.activeElement;
-        var currentRow = activeElement.closest('tr');
-        var nextRow = currentRow.nextElementSibling;
-        
-        if (nextRow && nextRow.tagName === 'TR') {
-          var input = nextRow.querySelector('.Qtyout');
-          if (input) {
-            input.focus();
-          }
-        }
-        break;
-      case 'ArrowUp':
-        e.preventDefault(); // Prevent the default behavior of the arrow key
-        var activeElement = document.activeElement;
-        var currentRow = activeElement.closest('tr');
-        var prevRow = currentRow.previousElementSibling;
-        
-        if (prevRow && prevRow.tagName === 'TR') {
-          var input = prevRow.querySelector('.Qtyout');
-          if (input) {
-            input.focus();
-          }
-        }
-        break;
-    }
-  };
+        document.onkeydown = function(e) {
+            switch (e.key) {
+                case 'ArrowDown':
+                    e.preventDefault(); // Prevent the default behavior of the arrow key
+                    var activeElement = document.activeElement;
+                    var currentRow = activeElement.closest('tr');
+                    var nextRow = currentRow.nextElementSibling;
+
+                    if (nextRow && nextRow.tagName === 'TR') {
+                        var input = nextRow.querySelector('.Qtyout');
+                        if (input) {
+                            input.focus();
+                        }
+                    }
+                    break;
+                case 'ArrowUp':
+                    e.preventDefault(); // Prevent the default behavior of the arrow key
+                    var activeElement = document.activeElement;
+                    var currentRow = activeElement.closest('tr');
+                    var prevRow = currentRow.previousElementSibling;
+
+                    if (prevRow && prevRow.tagName === 'TR') {
+                        var input = prevRow.querySelector('.Qtyout');
+                        if (input) {
+                            input.focus();
+                        }
+                    }
+                    break;
+            }
+        };
     </script>
 @endpush

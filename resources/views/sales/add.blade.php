@@ -50,20 +50,6 @@
                     <option value="{{ $orderType->Code }}">{{ $orderType->Name }}</option>
                 @endforeach
             </x-adminlte-select>
-            <x-adminlte-input label="PO ID" label-class="text-lightblue" name="pono" id="pono" type="text"
-                placeholder="" igroup-size="sm" fgroup-class="col-md-2">
-            </x-adminlte-input>
-            <x-adminlte-input-date name="podate" id="podate" label="PoDate" :config="$config"
-                label-class="text-lightblue" igroup-size="sm" fgroup-class="col-md-2" placeholder="Choose a date...">
-                <x-slot name="appendSlot">
-                    <div class="input-group-text bg-gradient-danger">
-                        <i class="fas fa-calendar-alt"></i>
-                    </div>
-                </x-slot>
-            </x-adminlte-input-date>
-            <x-adminlte-input label="SO ID" label-class="text-lightblue" name="sono" type="text" placeholder=""
-                igroup-size="sm" fgroup-class="col-md-1" disabled>
-            </x-adminlte-input>
             @php
             $configss = [
                 'title' => 'Select data',
@@ -73,22 +59,15 @@
                 'actionsBox' => true,
             ];
         @endphp
-        <x-adminlte-select-bs label="Customer Code" :config="$configss" label-class="text-lightblue" igroup-size="sm"
-            name="cuscode" id="cuscode" fgroup-class="col-md-3 cuscode" enable-old-support>
-            <option value=""></option>
-            @foreach ($customers as $customer)
-                <option value="{{ $customer->CardCode }}">
-                    {{ $customer->CardCode . '--' . $customer->CardName . '--StoreId: ' . $customer->U_SID }}
-                </option>
-            @endforeach
-        </x-adminlte-select-bs>
-           
-        </div>
-        <div class="row">
-            <x-adminlte-select label="Support OrderNo" label-class="text-lightblue" igroup-size="sm" name="sporderno"
-                id="sporderno" fgroup-class="col-md-2" enable-old-support>
-
-            </x-adminlte-select>
+            <x-adminlte-select-bs label="Customer Code" :config="$configss" label-class="text-lightblue" igroup-size="sm"
+                name="cuscode" id="cuscode" fgroup-class="col-md-3 cuscode" enable-old-support>
+                <option value=""></option>
+                @foreach ($customers as $customer)
+                    <option value="{{ $customer->CardCode }}">
+                        {{ $customer->CardCode . '--' . $customer->CardName . '--StoreId: ' . $customer->U_SID }}
+                    </option>
+                @endforeach
+            </x-adminlte-select-bs>
             <x-adminlte-select-bs label="Warehouse" label-class="text-lightblue" :config="$configss" igroup-size="sm"
                 name="WhsCode" id="WhsCode" fgroup-class="col-md-2" enable-old-support>
                 <option value=""></option>
@@ -100,20 +79,40 @@
                 name="bincode" id="bincode" fgroup-class="col-md-2" enable-old-support>
                 <option value=""></option>
             </x-adminlte-select-bs>
-
-            <x-adminlte-input-date name="date" id="sodate" label="Date" :config="$configsodate"
-                label-class="text-lightblue" igroup-size="sm" fgroup-class="col-md-3" placeholder="Choose a date...">
-                <x-slot name="appendSlot">
-                    <div class="input-group-text bg-gradient-danger">
-                        <i class="fas fa-calendar-alt"></i>
-                    </div>
-                </x-slot>
-            </x-adminlte-input-date>
+            <x-adminlte-input label="SO ID" label-class="text-lightblue" name="sono" type="text" placeholder=""
+            igroup-size="sm" fgroup-class="col-md-1" disabled>
+        </x-adminlte-input>   
+        </div>
+        <div class="row">           
+        <x-adminlte-input label="PO ID" label-class="text-lightblue" name="pono" id="pono" type="text"
+            placeholder="" igroup-size="sm" fgroup-class="col-md-2">
+        </x-adminlte-input>
+        <x-adminlte-input-date name="podate" id="podate" label="PoDate" :config="$config"
+            label-class="text-lightblue" igroup-size="sm" fgroup-class="col-md-2" placeholder="Choose a date...">
+            <x-slot name="appendSlot">
+                <div class="input-group-text bg-gradient-danger">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+            </x-slot>
+        </x-adminlte-input-date>
+        <x-adminlte-select label="Support OrderNo" label-class="text-lightblue" igroup-size="sm" name="sporderno"
+                id="sporderno" fgroup-class="col-md-2" enable-old-support>
+            </x-adminlte-select>
+        <x-adminlte-input-date name="date" id="sodate" label="Date" :config="$configsodate"
+            label-class="text-lightblue" igroup-size="sm" fgroup-class="col-md-3" placeholder="Choose a date...">
+            <x-slot name="appendSlot">
+                <div class="input-group-text bg-gradient-danger">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+            </x-slot>
+        </x-adminlte-input-date>
+        
             <x-adminlte-button class="btn" id="search"
                 style="float: right;margin-top: 34px;font-size: small;height: 31px;" type="button" label="load item"
                 theme="success" icon="fas fa-filter" />
 
-        </div>
+        
+            </div>
         <input type="text" id="searchInput" placeholder="Search...">
         <div class="row">
             <div style="height:auto;max-height: 600px; overflow: auto;" id="tabledata">
