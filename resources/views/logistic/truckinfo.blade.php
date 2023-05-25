@@ -80,7 +80,9 @@
 
     </div>
     <!-- form gird -->
-    <div id="MyGrid" class="ag-theme-alpine" style="height: 70%">
+    <div id="MyGrid" class="ag-theme-alpine" style="height: 50%">
+    </div>
+    <div id="subgird" class="ag-theme-alpine" style="height: 30%">
     </div>
 
 
@@ -730,5 +732,51 @@
                 // Refresh the grid to reflect the changes
                 params.api.refreshCells();
                 }
+    </script>
+    <script>
+         const columnDefsSub = [
+                
+            {
+                headerName: "ItemCode",
+                field: "ItemCode",
+            },
+            {
+                headerName: 'ItemName',
+                field: 'ItemName',
+            },
+            {
+                headerName: 'Quantity',
+                field: 'TypeName',
+            },
+            {
+                headerName: 'Delivery Qty',
+                field: 'Uom',
+            },
+            {
+                headerName: 'Weight',
+                field: 'Uom',
+            },
+            {
+                headerName: 'price before',
+                field: 'Uom',
+            },
+            {
+                headerName: 'price after',
+                field: 'Uom',
+            },
+        ]
+        const gridOptionssUB = {
+            columnDefs: columnDefs,
+            pagination: true,
+            defaultColDef: {
+                flex: 1,
+                minWidth: 150,
+                filter: true,
+                resizable: true,
+            },
+           
+            animateRows: true,
+            pagination: true,
+        };
     </script>
 @endpush
