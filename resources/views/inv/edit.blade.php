@@ -115,23 +115,40 @@ $configsodate = ['autoclose' => true, 'format' => 'DD/MM/yyy', 'immediateUpdates
                         <td hidden><input type="text" class="sotype" name="sotype[{{ $result['ItemCode'] }}][]"
                                 value=""></td>
                         @foreach ($distinctLots as $lot)
-                            <td class="{{ $result['QuantityOut'][$lot] > 0 ? 'orange' : '' }}">
-                                @if ($result['QuantityIn'][$lot] > 0)
-                                    <input type="number" class="Qtyout" style="text-color:orange"
-                                        name="stockOuts[{{ $result['ItemCode'] }}][{{ $lot }}][]"
-                                        value="{{ $result['QuantityOut'][$lot] }}" max="{{ $result['QuantityIn'][$lot] }}"
-                                        min="0">
-                                @else
-                                    <input type="number" class="Qtyout" style="text-color:orange"
-                                        name="stockOuts[{{ $result['ItemCode'] }}][{{ $lot }}][]"
-                                        value="" readonly="true">
-                                @endif
-                            </td>
+                        <td class="{{ $result['QuantityOut'][$lot] > 0 ? 'orange' : '' }}">
+                            
+                            @if ($result['QuantityOut'][$lot] > 0 && $result['QuantityIn'][$lot] > 0)
+                               
+                                <input type="number" class="Qtyout" style="text-color:orange"
+                                    name="stockOuts[{{ $result['ItemCode'] }}][{{ $lot }}][]"
+                                    value="{{ $result['QuantityOut'][$lot] }}" max="{{$result['QuantityOut'][$lot]+ $result['QuantityIn'][$lot]}}"
+                                    min="0">
+        
+                            @elseif($result['QuantityIn'][$lot] > 0 && $result['QuantityOut'][$lot]== 0)
+                                <input type="number" class="Qtyout" style="text-color:orange"
+                                    name="stockOuts[{{ $result['ItemCode'] }}][{{ $lot }}][]" max={{$result['QuantityIn'][$lot]}}
+                                    value="">
+                            @else
+                                <input type="number" class="Qtyout" style="text-color:orange"
+                                    name="stockOuts[{{ $result['ItemCode'] }}][{{ $lot }}][]"
+                                    value="" readonly="true">
+                            @endif
+                        </td>
+                        @if ($result['QuantityIn'][$lot] > 0)
                             <td class="inlot">{{ $result['QuantityIn'][$lot] }}</td>
+                        @else
+                            <td class="inlot"></td>
+                        @endif
                         @endforeach
 
-                        <td> <input type="number" class="totalrow" value="{{ array_sum($result['QuantityOut']) }}"
+                        <td>  @if ( array_sum($result['QuantityOut']) > 0)
+                           
+                            <input type="number" class="totalrow" value="{{ array_sum($result['QuantityOut']) }}"
                                 readonly="true"></td>
+                                @else
+                                <input type="number" class="totalrow" value=""
+                                readonly="true"></td>
+                                @endif
                     </tr>
                 @endforeach
             </tbody>
@@ -219,7 +236,7 @@ $configsodate = ['autoclose' => true, 'format' => 'DD/MM/yyy', 'immediateUpdates
             color: orange;
         }
         input[type="number"] {
-            width: 182.4px;
+            width: 80.4px;
             }
     </style>
 @stop
@@ -288,11 +305,16 @@ if (sumpro > prototal) {
 }
 
 // total stock out total
-let total = 0;
+    let total = 0;
     const totalRowElements = document.querySelectorAll('input.totalrow');
 
     totalRowElements.forEach((element) => {
-    total += parseFloat(element.value);
+        const value = parseFloat(element.value);
+                if (isNaN(value)) {
+                    total += 0; // Set value to 0 if NaN
+                } else {
+                    total += value;
+                }
     });
     document.querySelector('th.totalstockout').textContent = total;
 
@@ -344,7 +366,10 @@ rows.forEach(function(row) {
 });
 });
 // Select the date picker input field
-document.onkeydown = function (e) {
+
+</script>
+<script>
+    document.onkeydown = function (e) {
     switch (e.key) {
       case 'ArrowDown':
         e.preventDefault(); // Prevent the default behavior of the arrow key
