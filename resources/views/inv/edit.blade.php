@@ -344,5 +344,35 @@ rows.forEach(function(row) {
 });
 });
 // Select the date picker input field
+document.onkeydown = function (e) {
+    switch (e.key) {
+      case 'ArrowDown':
+        e.preventDefault(); // Prevent the default behavior of the arrow key
+        var activeElement = document.activeElement;
+        var currentRow = activeElement.closest('tr');
+        var nextRow = currentRow.nextElementSibling;
+        
+        if (nextRow && nextRow.tagName === 'TR') {
+          var input = nextRow.querySelector('.Qtyout');
+          if (input) {
+            input.focus();
+          }
+        }
+        break;
+      case 'ArrowUp':
+        e.preventDefault(); // Prevent the default behavior of the arrow key
+        var activeElement = document.activeElement;
+        var currentRow = activeElement.closest('tr');
+        var prevRow = currentRow.previousElementSibling;
+        
+        if (prevRow && prevRow.tagName === 'TR') {
+          var input = prevRow.querySelector('.Qtyout');
+          if (input) {
+            input.focus();
+          }
+        }
+        break;
+    }
+  };
 </script>
 @endpush
