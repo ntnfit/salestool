@@ -8,6 +8,7 @@ use App\Http\Controllers\sap\SAPB1Controller;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Models\Role;
 use League\Flysystem\Visibility;
+use Carbon\Carbon;
 class DeliveryController extends Controller
 {
     function __construct()
@@ -147,6 +148,7 @@ class DeliveryController extends Controller
     }
     function truckview()
     {
+        
         $conDB = (new SAPB1Controller)->connect_sap();
         $sql='select * from "@BS_TRUCKINFO" Where "U_Status"=?';
         $stmt = odbc_prepare($conDB, $sql);
@@ -155,8 +157,18 @@ class DeliveryController extends Controller
         while ($row = odbc_fetch_object($stmt)) {
             $results[] = $row;
         };
+        $fromDate = Carbon::now()->subDays(3)->format('Ymd');
+        $toDate = date("Ymd");
+        $sql='call "USP_BS_TRUCKINFOMATION_DOUPPLICATE" (?,?,?)';
+        $stmt = odbc_prepare($conDB, $sql);
+        odbc_execute($stmt,array($fromDate, $toDate,1));
+        $listData = array();
+        while ($row = odbc_fetch_object($stmt)) {
+            $listData[] = $row;
+        }
+        $listData=json_encode($listData);
         odbc_close($conDB);
-        return view ('logistic.truckinfo',compact('results'));
+        return view ('logistic.truckinfo',compact('results','listData'));
     }
 
     function TruckApply(Request $request){

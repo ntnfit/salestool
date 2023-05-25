@@ -441,7 +441,7 @@
             // Make an API call to abc.com to retrieve 100 records
 
             // Update the grid with the retrieved data
-            gridOptions.api.setRowData([]);
+            gridOptions.api.setRowData({!!$listData!!});
         }
 
         function loadFilteredData() {
