@@ -449,4 +449,18 @@ class DeliveryController extends Controller
         return response()->json(["success" => true,"data"=>"okay"]);
 
     }
+    function GetDetail(Request $request)
+    {
+        $conDB = (new SAPB1Controller)->connect_sap();
+
+        $sql='call USP_BS_TRUCKINFOMATION_ITEM (?,?)';
+        $stmt = odbc_prepare($conDB, $sql);
+        odbc_execute($stmt,[$request->DocEntry,$request->Type]);
+        $results = array();
+        while ($row = odbc_fetch_object($stmt)) {
+            $results[] = $row;
+        };
+      
+         return  json_encode( $results);   
+    }
 }

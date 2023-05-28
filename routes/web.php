@@ -123,7 +123,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/export-truckinfor', [ExportCrystalReportController::class,'print_do'])->name('print-do');
     route::get('/print-preview',[GetItemController::class,'loadprintkeyorder'])->name('print-preview');
     route::get('/check-qty-bap',[GetItemController::class,'ValidateBAP'])->name('check-quantityBAP');
-    
+    route::get('/truck-detail-data',[DeliveryController::class,'GetDetail'])->name('truck-detail');
     //upload file 
     route::get('/upload-file',[SalesBAController::class,'view'])->name('import.upload');
     route::post('/upload-excel',[SalesBAController::class,'upload'])->name('import.handle');

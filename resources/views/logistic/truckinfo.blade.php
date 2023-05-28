@@ -433,19 +433,26 @@
             getContextMenuItems: getContextMenuItems,
             groupSelectsChildren: true,
             suppressRowClickSelection: true,
+            onRowClicked: onSelectionChanged,
         };
 
         function onBtExport() {
             gridOptions.api.exportDataAsExcel();
         }
-
+        function onSelectionChanged(event) {
+            const docEntry = event.data.DocNum;
+            const Type = event.data.TypeName;
+            loadData_Detail(docEntry,Type)
+        //console.log(docEntry+Type);
+        }
         function loadInitialData() {
             // Make an API call to abc.com to retrieve 100 records
 
             // Update the grid with the retrieved data
             gridOptions.api.setRowData({!!$listData!!});
+            gridOptionssUB.api.setRowData([]);
         }
-
+       
         function loadFilteredData() {
 
             $.ajax({
@@ -498,7 +505,9 @@
         document.addEventListener('DOMContentLoaded', function() {
 
             var gridDiv = document.querySelector('#myGrid');
+            var gridDivSub = document.querySelector('#subgird');
             new agGrid.Grid(gridDiv, gridOptions);
+            new agGrid.Grid(gridDivSub, gridOptionssUB);
 
             const filterButton = document.querySelector('#search');
             filterButton.addEventListener('click', function() {
@@ -524,9 +533,7 @@
                     submitBtn.disabled = false;
                 }
 
-            });
-
-       
+            });   
             const collectButton = document.querySelector('#rmdo');
             collectButton.addEventListener('click', () => {
                 if (updatedData.length === 0) {
@@ -555,8 +562,6 @@
                 }
                 
             });
-
-
             loadInitialData();
 
             document.querySelector("#apply").addEventListener("click", function() {
@@ -731,7 +736,7 @@
 
                 // Refresh the grid to reflect the changes
                 params.api.refreshCells();
-                }
+            }
     </script>
     <script>
          const columnDefsSub = [
@@ -742,31 +747,39 @@
             },
             {
                 headerName: 'ItemName',
-                field: 'ItemName',
+                field: 'Dscription',
             },
             {
                 headerName: 'Quantity',
-                field: 'TypeName',
+                field: 'Quantity',
             },
             {
                 headerName: 'Delivery Qty',
-                field: 'Uom',
+                field: 'DeliverQty',
             },
             {
                 headerName: 'Weight',
-                field: 'Uom',
+                field: 'Weight',
+            },
+            {
+                headerName: 'Uom',
+                field: 'UomName',
             },
             {
                 headerName: 'price before',
-                field: 'Uom',
+                field: 'PriceBefDi',
             },
             {
                 headerName: 'price after',
-                field: 'Uom',
+                field: 'Price',
+            },
+            {
+                headerName: 'Line Total',
+                field: 'LineTotal',
             },
         ]
         const gridOptionssUB = {
-            columnDefs: columnDefs,
+            columnDefs: columnDefsSub,
             pagination: true,
             defaultColDef: {
                 flex: 1,
@@ -778,5 +791,18 @@
             animateRows: true,
             pagination: true,
         };
+        function loadData_Detail(DocEntry,Type)
+        {
+            $.ajax({
+                type: 'GET',
+                url: '{{ route('truck-detail') }}',
+                data: {DocEntry:DocEntry,Type:Type},
+                dataType: 'json',
+                success: function(data) {
+                     gridOptionssUB.api.setRowData(data);
+                }
+            });
+
+        }
     </script>
 @endpush
