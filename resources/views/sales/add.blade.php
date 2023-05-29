@@ -64,7 +64,7 @@
                 <option value=""></option>
                 @foreach ($customers as $customer)
                     <option value="{{ $customer->CardCode }}">
-                        {{ $customer->CardCode . '--' . $customer->CardName . '--StoreId: ' . $customer->U_SID }}
+                        {{ 'StoreId: ' . $customer->U_SID.'--'.$customer->CardCode . '--' . $customer->CardName . '--'.$customer->GroupName.'--'.$customer->ChannelName.'--'. $customer->RouteName.'--' . $customer->LocationName }}
                     </option>
                 @endforeach
             </x-adminlte-select-bs>
@@ -698,7 +698,7 @@
     <script>
         $(document).ready(function() {
             $('#cuscode').change(function() {
-                var CustName = document.getElementById("cuscode").selectedOptions[0].text.split("--")[1];
+                var CustName = document.getElementById("cuscode").selectedOptions[0].text.split("--")[2];
                 var cuscode = document.getElementById("cuscode").selectedOptions[0].value;
                 console.log();
                 document.getElementById("custname").value = CustName;
