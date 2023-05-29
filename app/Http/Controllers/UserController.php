@@ -28,10 +28,20 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
-    {
-        $data = User::orderBy('id','DESC')->paginate(8);
-        return view('users.index',compact('data'))
-            ->with('i', ($request->input('page', 1) - 1) * 8);
+    {$search = $request->input('search');
+        $query = User::orderBy('id', 'DESC');
+    
+        if (!empty($search)) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', '%' . $search . '%')
+                  ->orWhere('email', 'like', '%' . $search . '%');
+            });
+        }
+    
+        $data = $query->paginate(20);
+    
+        return view('users.index', compact('data', 'search'))
+            ->with('i', ($request->input('page', 1) - 1) * 20);
     }
     
     /**

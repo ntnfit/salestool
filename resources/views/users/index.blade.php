@@ -26,6 +26,19 @@
 </div>
 @endif
 
+<div class="mb-3">
+    <form action="{{ route('users.index') }}" method="GET">
+        <div class="input-group">
+            <input type="text" class="form-control" name="search" placeholder="Search by name or email" value="{{ $search ?? '' }}">
+            <div class="input-group-append">
+                <button class="btn btn-primary" type="submit">Search</button>
+                @if (isset($search))
+                    <a class="btn btn-secondary" href="{{ route('users.index') }}">Clear</a>
+                @endif
+            </div>
+        </div>
+    </form>
+</div>
 
 <table class="table table-bordered">
  <tr>
@@ -56,8 +69,13 @@
     </td>
   </tr>
  @endforeach
-</table>
 
+ @if ($data->isEmpty())
+ <tr>
+    <td colspan="5">No users found.</td>
+ </tr>
+ @endif
+</table>
 
 {!! $data->render() !!}
 @endsection
