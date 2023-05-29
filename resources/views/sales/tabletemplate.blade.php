@@ -183,8 +183,12 @@
                 <th>{{ $totalQuantity }}</th>
             @endforeach
 
-
+            @if(array_sum($totalStockOuts)>0)
             <th class="totalstockout">{{ array_sum($totalStockOuts) }}</th>
+            @else
+            <th class="totalstockout"></th>
+            @endif
+            
         </tr>
     </tfoot>
 </table>
