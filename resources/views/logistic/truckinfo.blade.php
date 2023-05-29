@@ -7,7 +7,7 @@
 @section('plugins.DateRangePicker', true)
 @section('plugins.TempusDominusBs4', true)
 @section('plugins.select2', true)
-<link rel="shortcut icon" href="{{ asset('favicons/favicon.ico') }}"/>
+<link rel="shortcut icon" href="{{ asset('favicons/favicon.ico') }}" />
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
     integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
@@ -65,7 +65,7 @@
                     <option value=""></option>
                     @foreach ($results as $result)
                         <option value="{{ $result->Code }}">
-                            {{ 'Code:' . $result->Code}}
+                            {{ 'Code:' . $result->Code }}
                         </option>
                     @endforeach
                     <option value="">null</option>
@@ -79,7 +79,7 @@
 
 
     </div>
-    <input type="text" id="filter-text-box" placeholder="Filter..." oninput="onFilterTextBoxChanged()">
+    {{-- <input type="text" id="filter-text-box" placeholder="Filter..." oninput="onFilterTextBoxChanged()"> --}}
     <!-- form gird -->
     <div id="MyGrid" class="ag-theme-alpine" style="height: 50%">
     </div>
@@ -89,7 +89,7 @@
 
     </form>
     <x-adminlte-button class="btn-flat" id="rmdo" style="float: right;  margin-right: 20px;" type="button"
-    label="remove DO" theme="danger" />
+        label="remove DO" theme="danger" />
     <x-adminlte-button class="btn-flat" id="print" style="float: right;  margin-right: 20px;" type="button"
         label="Print" theme="success" />
     <x-adminlte-button class="btn-flat" id="stockout" style="float: right;  margin-right: 20px;" type="button"
@@ -177,7 +177,6 @@
                 transform: rotate(360deg);
             }
         }
-  
     </style>
 @stop
 @push('js')
@@ -189,7 +188,7 @@
     <script src="https://cdn.jsdelivr.net/npm/ag-grid-enterprise@28.2.1/dist/ag-grid-enterprise.min.js"></script>
     <script>
         var filterParams = {
-            comparator: (filterLocalDateAtMidnight, cellValue) => {
+            comparator: function(filterLocalDateAtMidnight, cellValue) {
                 var dateAsString = cellValue;
                 if (dateAsString == null) return -1;
                 var dateParts = dateAsString.split('/');
@@ -212,7 +211,21 @@
                 }
             },
             browserDatePicker: true,
+            datePicker: function() {
+                var eInput = document.createElement('input');
+                eInput.type = 'text';
+                // Set the date format for the date picker
+                eInput.setAttribute('data-inputmask', "'alias': 'dd-mm-yyyy'");
+                // Initialize the inputmask for the date picker
+                Inputmask().mask(eInput);
+                return eInput;
+            },
+            datePickerParams: {
+                // Set the format for displaying the date in the date picker input
+                format: 'dd-mm-yyyy',
+            },
         };
+
 
         const columnDefs = [{
                 headerName: '',
@@ -229,34 +242,42 @@
                 enableRowGroup: true,
                 sort: 'asc',
                 hide: true,
-                cellStyle: {color: 'red', 'background-color': 'green'}
+                cellStyle: {
+                    color: 'red',
+                    'background-color': 'green'
+                }
             },
-           
+
             {
                 headerName: 'Due Date',
                 field: 'DocDueDate',
                 valueFormatter: (params) => {
                     if (!params.value || isNaN(Date.parse(params.value))) {
-                    return ''; // Return an empty string for empty or invalid date values
+                        return ''; // Return an empty string for empty or invalid date values
                     }
-                var date = new Date(params.value);
-                var day = date.getDate().toString().padStart(2, '0');
-                var month = (date.getMonth() + 1).toString().padStart(2, '0');
-                var year = date.getFullYear().toString();
-                return day + '/' + month + '/' + year;
-            }
+                    var date = new Date(params.value);
+                    var day = date.getDate().toString().padStart(2, '0');
+                    var month = (date.getMonth() + 1).toString().padStart(2, '0');
+                    var year = date.getFullYear().toString();
+                    return day + '/' + month + '/' + year;
+
+                },
+
             },
             {
                 headerName: 'Warehouse',
                 field: 'WhsName',
+                filter: 'agTextColumnFilter',
             },
             {
                 headerName: 'Type',
                 field: 'TypeName',
+                filter: 'agTextColumnFilter',
             },
             {
                 headerName: 'Truck Info',
                 field: 'U_TruckInfo',
+                filter: 'agTextColumnFilter',
             },
             {
                 headerName: 'Weight',
@@ -265,30 +286,37 @@
                     let sum = 0;
                     params.values.forEach((value) => (sum += parseFloat(value)));
                     return sum.toFixed(3);
-                }
+                },
+                filter: 'agTextColumnFilter',
+
             },
             {
                 headerName: 'Route Name',
                 field: 'U_RouteName',
+                filter: 'agTextColumnFilter',
             },
             {
                 headerName: 'Card Code',
                 field: 'CardCode',
+                filter: 'agTextColumnFilter',
             },
             {
                 headerName: 'Card Name',
                 field: 'CardName',
+                filter: 'agTextColumnFilter',
             },
             {
                 headerName: 'Delivery_Addr',
                 field: 'Delivery_Addr',
-                
+                filter: 'agTextColumnFilter',
+
             },
 
             {
                 headerName: 'Del No',
                 field: 'U_DelNo',
-                editable: true
+                editable: true,
+                filter: 'agTextColumnFilter',
             },
             {
                 headerName: 'Doc Entry',
@@ -300,7 +328,7 @@
                 field: 'DocNum',
                 hide: true,
             },
-                 
+
             {
                 headerName: 'Tax Date',
                 field: 'TaxDate',
@@ -309,17 +337,19 @@
             {
                 headerName: 'So Phieu',
                 field: 'U_SoPhieu',
+                filter: 'agTextColumnFilter',
             },
             {
                 headerName: 'Route',
                 field: 'U_Route',
                 hide: true,
             },
-           
-           
+
+
             {
                 headerName: 'Quantity',
                 field: 'Quantity',
+                filter: 'agTextColumnFilter',
             },
 
             {
@@ -335,26 +365,32 @@
             {
                 headerName: 'Truck Driver',
                 field: 'TruckDriver',
+                filter: 'agTextColumnFilter',
             },
             {
                 headerName: 'Full Name',
                 field: 'FullName',
+                filter: 'agTextColumnFilter',
             },
             {
                 headerName: 'Phone',
                 field: 'Phone',
+                filter: 'agTextColumnFilter',
             },
             {
                 headerName: 'Truck Driver 1',
                 field: 'TruckDriver1',
+                filter: 'agTextColumnFilter',
             },
             {
                 headerName: 'Full Name 1',
                 field: 'FullName1',
+                filter: 'agTextColumnFilter',
             },
             {
                 headerName: 'Phone 1',
                 field: 'Phone1',
+                filter: 'agTextColumnFilter',
             },
             {
                 headerName: 'Delivery Status',
@@ -370,10 +406,12 @@
             {
                 headerName: 'Truck Weight',
                 field: 'TruckWeight',
+                filter: 'agTextColumnFilter',
             },
             {
                 headerName: 'Truck Time',
                 field: 'TruckTime',
+                filter: 'agTextColumnFilter',
             },
 
         ];
@@ -388,6 +426,7 @@
                 minWidth: 150,
                 filter: true,
                 resizable: true,
+                floatingFilter: true,
             },
             groupDefaultExpanded: 1,
             rowGroupPanelShow: 'always',
@@ -421,12 +460,12 @@
                 suppressCount: true,
                 selectAllOnMiniFilter: true,
             },
-            onCellEditingStopped: function (event) {
+            onCellEditingStopped: function(event) {
                 // Store updated data in the array
                 const rowNode = event.node;
                 const data = rowNode.data;
                 if (updatedData.indexOf(data) === -1) {
-                updatedData.push(data);
+                    updatedData.push(data);
                 }
             },
             enableRangeSelection: true,
@@ -435,30 +474,35 @@
             groupSelectsChildren: true,
             suppressRowClickSelection: true,
             onRowClicked: onSelectionChanged,
-            cacheQuickFilter:true
+            //cacheQuickFilter: true,
+
         };
-        function onFilterTextBoxChanged() {
-        gridOptions.api.setQuickFilter(
-            document.getElementById('filter-text-box').value
-        );
-        }
+
+        // function onFilterTextBoxChanged() {
+        //     gridOptions.api.setQuickFilter(
+        //         document.getElementById('filter-text-box').value
+        //     );
+        // }
+
         function onBtExport() {
             gridOptions.api.exportDataAsExcel();
         }
+
         function onSelectionChanged(event) {
             const docEntry = event.data.DocNum;
             const Type = event.data.TypeName;
-            loadData_Detail(docEntry,Type)
-        //console.log(docEntry+Type);
+            loadData_Detail(docEntry, Type)
+            //console.log(docEntry+Type);
         }
+
         function loadInitialData() {
             // Make an API call to abc.com to retrieve 100 records
 
             // Update the grid with the retrieved data
-            gridOptions.api.setRowData({!!$listData!!});
+            gridOptions.api.setRowData({!! $listData !!});
             gridOptionssUB.api.setRowData([]);
         }
-       
+
         function loadFilteredData() {
 
             $.ajax({
@@ -475,34 +519,36 @@
             });
 
         }
+
         function getContextMenuItems(params) {
             var result = [
                 // Other menu items...
                 {
-                name: 'Choose All DO',
-                action: function () {
-                    selectSameU_DelNo(params);
-                },
+                    name: 'Choose All DO',
+                    action: function() {
+                        selectSameU_DelNo(params);
+                    },
                 },
                 'export',
             ];
 
             return result;
-            }
-            function selectSameU_DelNo() {
+        }
+
+        function selectSameU_DelNo() {
             const selectedRows = gridOptions.api.getSelectedRows();
 
             // If there is at least one row selected, retrieve the U_DelNo value
             if (selectedRows.length > 0) {
                 const selectedDelNo = selectedRows[0]?.U_DelNo;
 
-                gridOptions.api.forEachNode(function (node) {
-                if (node.data && node.data.U_DelNo === selectedDelNo) {
-                    node.setSelected(true);
-                }
+                gridOptions.api.forEachNode(function(node) {
+                    if (node.data && node.data.U_DelNo === selectedDelNo) {
+                        node.setSelected(true);
+                    }
                 });
             }
-            }
+        }
 
 
 
@@ -517,8 +563,8 @@
 
             const filterButton = document.querySelector('#search');
             filterButton.addEventListener('click', function() {
-               
-              
+
+
                 console.log("okay");
                 const submitBtn = document.getElementById("search");
                 const loadingModal = document.getElementById("loadingModal");
@@ -539,7 +585,7 @@
                     submitBtn.disabled = false;
                 }
 
-            });   
+            });
             const collectButton = document.querySelector('#rmdo');
             collectButton.addEventListener('click', () => {
                 if (updatedData.length === 0) {
@@ -548,31 +594,36 @@
                 } else {
                     console.log(updatedData);
                     const csrfToken = $('meta[name="csrf-token"]').attr('content');
-                $.ajax({
-                    url:  '{{ route('logistic.removeDo') }}',
-                    type: 'POST',
-                    data: { dataNo:updatedData},
-                    headers: {
-                        'X-CSRF-TOKEN': csrfToken
-                    },
-                    success: function(response) {
-                        updatedData=[];
-                        alert("save data suceess!");
-                        loadFilteredData();
-                    },
-                    error: function(xhr, status, error) {
-                        console.log("save failed");
-                        alert("save data fail!");
-                    }
-                });
+                    $.ajax({
+                        url: '{{ route('logistic.removeDo') }}',
+                        type: 'POST',
+                        data: {
+                            dataNo: updatedData
+                        },
+                        headers: {
+                            'X-CSRF-TOKEN': csrfToken
+                        },
+                        success: function(response) {
+                            updatedData = [];
+                            alert("save data suceess!");
+                            loadFilteredData();
+                        },
+                        error: function(xhr, status, error) {
+                            console.log("save failed");
+                            alert("save data fail!");
+                        }
+                    });
                 }
-                
+
             });
             loadInitialData();
 
             document.querySelector("#apply").addEventListener("click", function() {
                 const selectedRows = gridOptions.api.getSelectedRows().filter(row => row.DocNum);
-                const selectedProIds = selectedRows.map((row) =>  ({ DocNum: row.DocNum, DocType: row.TypeName }));
+                const selectedProIds = selectedRows.map((row) => ({
+                    DocNum: row.DocNum,
+                    DocType: row.TypeName
+                }));
                 const TruckCode = document.getElementById('truckcode').value;
                 const loadingModal = document.getElementById("loadingModal");
                 const submitBtn = document.getElementById("apply");
@@ -612,141 +663,141 @@
                 }
 
             })
-             });
-        
-            document.querySelector("#print").addEventListener("click", function() {
-                const selectedRows = gridOptions.api.getSelectedRows().filter(row => row.DocNum);
-                const selectedProIds = selectedRows.map((row) => row.DocNum);
-                const selectPramaDoc = selectedRows.map((row) => row.DocNum + '-' + row.TypeName);
+        });
 
-                // Get distinct values of TruckInfor
-                const truckInforSet = new Set(selectedRows.map((row) => row.U_TruckInfo).filter(Boolean));
-                const truckInforArray = Array.from(truckInforSet);
+        document.querySelector("#print").addEventListener("click", function() {
+            const selectedRows = gridOptions.api.getSelectedRows().filter(row => row.DocNum);
+            const selectedProIds = selectedRows.map((row) => row.DocNum);
+            const selectPramaDoc = selectedRows.map((row) => row.DocNum + '-' + row.TypeName);
 
-                // Get distinct values of U_DelNo
-                const uDelNoSet = new Set(selectedRows.map((row) => row.U_DelNo).filter(Boolean));
-                const uDelNoArray = Array.from(uDelNoSet);
+            // Get distinct values of TruckInfor
+            const truckInforSet = new Set(selectedRows.map((row) => row.U_TruckInfo).filter(Boolean));
+            const truckInforArray = Array.from(truckInforSet);
 
-                // Check if any selected row has null or empty TruckInfor
-                const hasNullTruckInfor = selectedRows.some(row => !row.U_TruckInfo);
+            // Get distinct values of U_DelNo
+            const uDelNoSet = new Set(selectedRows.map((row) => row.U_DelNo).filter(Boolean));
+            const uDelNoArray = Array.from(uDelNoSet);
 
-                if (hasNullTruckInfor) {
-                    alert('Please apply the truck code before printing!');
-                    return;
-                }
+            // Check if any selected row has null or empty TruckInfor
+            const hasNullTruckInfor = selectedRows.some(row => !row.U_TruckInfo);
 
-                if (selectedProIds.length === 0) {
-                    alert("Please choose DocNum!");
-                    return;
-                }
-                if (uDelNoArray.length > 1) {
-                    alert("Cannot select more than 2 Do No!");
-                    return;
-                }
-                // if (truckInforArray.length > 1) {
-                //     alert("Cannot select more than 2 TruckCode!!");
-                //     return;
-                // }
-                console.log("TruckInfor:" + truckInforArray);
-                console.log("DelNo:" + uDelNoArray);
-                console.log("Prama" + selectPramaDoc);
-                const url = '{{ route('print-do') }}' + '?type=print' + '&pra=' + encodeURIComponent(selectPramaDoc);
-                // redirect to the new URL
-                window.open(url, '_blank');
-            });
-
-            document.querySelector("#stockout").addEventListener("click", function() {
-                const selectedRows = gridOptions.api.getSelectedRows().filter(row => row.DocNum);
-                const selectedProIds = selectedRows.map((row) => row.DocNum);
-                const selectPramaDoc = selectedRows.map((row) => row.DocNum + '-' + row.TypeName);
-
-                // Get distinct values of TruckInfor
-                const truckInforSet = new Set(selectedRows.map((row) => row.U_TruckInfo).filter(Boolean));
-                const truckInforArray = Array.from(truckInforSet);
-
-                // Get distinct values of U_DelNo
-                const uDelNoSet = new Set(selectedRows.map((row) => row.U_DelNo).filter(Boolean));
-                const uDelNoArray = Array.from(uDelNoSet);
-
-                // Check if any selected row has null or empty TruckInfor
-                const hasNullTruckInfor = selectedRows.some(row => !row.U_TruckInfo);
-
-                if (hasNullTruckInfor) {
-                    alert('Please apply the truck code before printing!');
-                    return;
-                }
-
-                // if (truckInforArray.length > 1) {
-                //     alert("Cannot select more than 2 TruckCode!!");
-                //     return;
-                // }
-                if (selectedProIds.length === 0) {
-                    alert("Please choose DocNum!");
-                    return;
-                }
-
-                if (uDelNoArray.length > 1) {
-                    alert("Cannot select more than 2 DO No!");
-                    return;
-                }
-                const loadingModal = document.getElementById("loadingModal");
-                const submitBtn = document.getElementById("apply");
-                console.log("TruckInfor:" + truckInforArray);
-                console.log("DelNo:" + uDelNoArray);
-                console.log("Prama" + selectPramaDoc);
-                loadingModal.style.display = "block";
-
-                // Disable the submit button
-                submitBtn.disabled = true;
-
-                $.ajax({
-                    type: 'GET',
-                    url: '{{ route('applyDo') }}',
-                    data: {
-                        delno: uDelNoArray,
-                        Prama: selectPramaDoc,
-                        No: selectedProIds,
-                        type: "01"
-                    },
-                    dataType: 'json',
-                    success: function(data) {
-                        loadFilteredData();
-                        const url = '{{ route('print-do') }}' + '?type=stockout' + '&pra=' +
-                            encodeURIComponent(selectPramaDoc);
-
-                            window.open(url, '_blank','noopener');
-                    
-
-                    },
-                    error: function() {
-                        alert("sorry, It happen error please contact administrator!");
-                        loadingModal.style.display = "none";
-
-                        // Enable the submit button
-                        submitBtn.disabled = false;
-                    }
-                })
-
-            });
-
-            function selectGroupCallback(params) {
-                const selectedValue = params.api.getValue('selected', params.node);
-
-                // Get all the child nodes of the group node
-                const childNodes = params.api.getChildrenOfNode(params.node);
-
-                // Set the selected value for each child node
-                childNodes.forEach((childNode) => {
-                    params.api.setValue('selected', !selectedValue, childNode);
-                });
-
-                // Refresh the grid to reflect the changes
-                params.api.refreshCells();
+            if (hasNullTruckInfor) {
+                alert('Please apply the truck code before printing!');
+                return;
             }
+
+            if (selectedProIds.length === 0) {
+                alert("Please choose DocNum!");
+                return;
+            }
+            if (uDelNoArray.length > 1) {
+                alert("Cannot select more than 2 Do No!");
+                return;
+            }
+            // if (truckInforArray.length > 1) {
+            //     alert("Cannot select more than 2 TruckCode!!");
+            //     return;
+            // }
+            console.log("TruckInfor:" + truckInforArray);
+            console.log("DelNo:" + uDelNoArray);
+            console.log("Prama" + selectPramaDoc);
+            const url = '{{ route('print-do') }}' + '?type=print' + '&pra=' + encodeURIComponent(selectPramaDoc);
+            // redirect to the new URL
+            window.open(url, '_blank');
+        });
+
+        document.querySelector("#stockout").addEventListener("click", function() {
+            const selectedRows = gridOptions.api.getSelectedRows().filter(row => row.DocNum);
+            const selectedProIds = selectedRows.map((row) => row.DocNum);
+            const selectPramaDoc = selectedRows.map((row) => row.DocNum + '-' + row.TypeName);
+
+            // Get distinct values of TruckInfor
+            const truckInforSet = new Set(selectedRows.map((row) => row.U_TruckInfo).filter(Boolean));
+            const truckInforArray = Array.from(truckInforSet);
+
+            // Get distinct values of U_DelNo
+            const uDelNoSet = new Set(selectedRows.map((row) => row.U_DelNo).filter(Boolean));
+            const uDelNoArray = Array.from(uDelNoSet);
+
+            // Check if any selected row has null or empty TruckInfor
+            const hasNullTruckInfor = selectedRows.some(row => !row.U_TruckInfo);
+
+            if (hasNullTruckInfor) {
+                alert('Please apply the truck code before printing!');
+                return;
+            }
+
+            // if (truckInforArray.length > 1) {
+            //     alert("Cannot select more than 2 TruckCode!!");
+            //     return;
+            // }
+            if (selectedProIds.length === 0) {
+                alert("Please choose DocNum!");
+                return;
+            }
+
+            if (uDelNoArray.length > 1) {
+                alert("Cannot select more than 2 DO No!");
+                return;
+            }
+            const loadingModal = document.getElementById("loadingModal");
+            const submitBtn = document.getElementById("apply");
+            console.log("TruckInfor:" + truckInforArray);
+            console.log("DelNo:" + uDelNoArray);
+            console.log("Prama" + selectPramaDoc);
+            loadingModal.style.display = "block";
+
+            // Disable the submit button
+            submitBtn.disabled = true;
+
+            $.ajax({
+                type: 'GET',
+                url: '{{ route('applyDo') }}',
+                data: {
+                    delno: uDelNoArray,
+                    Prama: selectPramaDoc,
+                    No: selectedProIds,
+                    type: "01"
+                },
+                dataType: 'json',
+                success: function(data) {
+                    loadFilteredData();
+                    const url = '{{ route('print-do') }}' + '?type=stockout' + '&pra=' +
+                        encodeURIComponent(selectPramaDoc);
+
+                    window.open(url, '_blank', 'noopener');
+
+
+                },
+                error: function() {
+                    alert("sorry, It happen error please contact administrator!");
+                    loadingModal.style.display = "none";
+
+                    // Enable the submit button
+                    submitBtn.disabled = false;
+                }
+            })
+
+        });
+
+        function selectGroupCallback(params) {
+            const selectedValue = params.api.getValue('selected', params.node);
+
+            // Get all the child nodes of the group node
+            const childNodes = params.api.getChildrenOfNode(params.node);
+
+            // Set the selected value for each child node
+            childNodes.forEach((childNode) => {
+                params.api.setValue('selected', !selectedValue, childNode);
+            });
+
+            // Refresh the grid to reflect the changes
+            params.api.refreshCells();
+        }
     </script>
     <script>
-         const columnDefsSub = [
-                
+        const columnDefsSub = [
+
             {
                 headerName: "ItemCode",
                 field: "ItemCode",
@@ -793,19 +844,22 @@
                 filter: true,
                 resizable: true,
             },
-           
+
             animateRows: true,
             pagination: true,
         };
-        function loadData_Detail(DocEntry,Type)
-        {
+
+        function loadData_Detail(DocEntry, Type) {
             $.ajax({
                 type: 'GET',
                 url: '{{ route('truck-detail') }}',
-                data: {DocEntry:DocEntry,Type:Type},
+                data: {
+                    DocEntry: DocEntry,
+                    Type: Type
+                },
                 dataType: 'json',
                 success: function(data) {
-                     gridOptionssUB.api.setRowData(data);
+                    gridOptionssUB.api.setRowData(data);
                 }
             });
 
