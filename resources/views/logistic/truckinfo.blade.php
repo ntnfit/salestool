@@ -79,6 +79,7 @@
 
 
     </div>
+    <input type="text" id="filter-text-box" placeholder="Filter..." oninput="onFilterTextBoxChanged()">
     <!-- form gird -->
     <div id="MyGrid" class="ag-theme-alpine" style="height: 50%">
     </div>
@@ -434,8 +435,13 @@
             groupSelectsChildren: true,
             suppressRowClickSelection: true,
             onRowClicked: onSelectionChanged,
+            cacheQuickFilter:true
         };
-
+        function onFilterTextBoxChanged() {
+        gridOptions.api.setQuickFilter(
+            document.getElementById('filter-text-box').value
+        );
+        }
         function onBtExport() {
             gridOptions.api.exportDataAsExcel();
         }
