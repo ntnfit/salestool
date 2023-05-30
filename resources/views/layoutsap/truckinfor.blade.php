@@ -161,9 +161,9 @@
                         <p contentEditable="true">TruckNo: {{ $group->last()->U_TruckInfo }}</p>
                     @endif
                     @if ($type == 'print')
-                        <p contentEditable="true">Capacity: {{ $group->first()->first()->Capacity }}</p>
+                        <p contentEditable="true">Route Name: {{ $group->first()->first()->Capacity }}</p>
                     @else
-                        <p contentEditable="true">Capacity: {{ $group->last()->Capacity }}</p>
+                        <p contentEditable="true">Route Name: {{ $group->last()->Capacity }}</p>
                     @endif
 
 
