@@ -28,31 +28,34 @@
 
         h5 {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
 
         .content {
             display: flex;
-            margin-bottom: 30px;
+            margin-bottom: 10px;
         }
 
         .left-content {
             flex: 1;
+            font-size: 12px;
         }
 
         .right-content {
             flex: 1;
             text-align: center;
+            font-size: 12px;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
+            font-size: 12px;
         }
 
         th,
         td {
-            padding: 8px;
+            padding: 4px;
             border: 1px solid #000;
         }
 
@@ -68,6 +71,7 @@
         .footer-left,
         .footer-right {
             flex: 1;
+            font-size: 12px;
         }
 
         .footer {

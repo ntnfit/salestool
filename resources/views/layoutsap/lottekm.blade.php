@@ -28,26 +28,30 @@
 
         h5 {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
 
         .content {
             display: flex;
-            margin-bottom: 30px;
+            margin-bottom: 10px;
+            font-size: 12px;
         }
 
         .left-content {
             flex: 1;
+            font-size: 12px;
         }
 
         .right-content {
             flex: 1;
             text-align: center;
+            font-size: 12px;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
+            font-size: 12px;
         }
 
         th,
@@ -68,6 +72,7 @@
         .footer-left,
         .footer-right {
             flex: 1;
+            font-size: 12px;
         }
 
         .footer {

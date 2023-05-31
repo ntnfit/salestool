@@ -29,31 +29,34 @@
 
         h5 {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
 
         .content {
             display: flex;
-            margin-bottom: 30px;
+            margin-bottom: 10px;
         }
 
         .left-content {
             flex: 1;
+            font-size: 12px;
         }
 
         .right-content {
             flex: 1;
             text-align: center;
+            font-size: 12px;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
+            font-size: 12px;
         }
 
         th,
         td {
-            padding: 8px;
+            padding: 4px;
             border: 1px solid #000;
         }
 
@@ -69,12 +72,13 @@
         .footer-left,
         .footer-right {
             flex: 1;
+            font-size: 12px;
         }
 
         .footer {
             display: flex;
             justify-content: space-between;
-            margin-top: 50px;
+            margin-top: 5x;
             padding: 10px 30px;
         }
 
@@ -152,7 +156,7 @@
                                 <td>{{ $document->TenHang }}</td>
                                 <td class="text-center">{{ $document->CustQC }}</td>
                                 <td class="text-center">{{ $document->unitMsr }}</td>
-                                <td class="text-center">{{ number_format($document->Quantity,2) }}</td>
+                                <td class="text-center" style="text-align: right">{{ number_format($document->Quantity,2) }}</td>
                             </tr>
                         @endforeach
                     </tbody>

@@ -864,5 +864,14 @@
             });
 
         }
+        $(document).ready(function() {
+            $('#todate').val(moment().format(
+                'DD/MM/YYYY')); // set the value of the input element to the current date
+            $('#sodate').datetimepicker(); // initialize the datetimepicker
+
+            var currentDate = moment().subtract(3, 'days').format('DD/MM/YYYY');
+            $('#fromdate').val(currentDate); // set the value of the input element to the current date minus 3 days
+            $('#fromdate').datetimepicker(); // initialize the datetimepicker
+        });
     </script>
 @endpush

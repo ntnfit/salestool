@@ -100,6 +100,7 @@
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 30px;
+            font-size: 12px;
         }
 
         th,
