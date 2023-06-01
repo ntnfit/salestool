@@ -407,7 +407,7 @@
         }
 
         .orange {
-            color: orange;
+            color: #3adf92;
         }
 
         button,
@@ -415,9 +415,12 @@
             /* background: coral; */
             overflow: visible;
             border: none;
-            color: orange;
+            color: #3adf92;
+            font-weight: bold;
         }
-
+        .inlot{
+            font-weight: bold;
+        }
         input[type="number"] {
             width: 60.4px;
         }
