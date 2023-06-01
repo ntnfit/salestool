@@ -129,7 +129,7 @@
                                 min="0">
                         @elseif($result['QuantityIn'][$lot] > 0)
                             <input type="number" class="Qtyout" style="text-color:orange"
-                                name="stockOuts[{{ $result['ItemCode'] }}][{{ $lot }}][]" value="">
+                                name="stockOuts[{{ $result['ItemCode'] }}][{{ $lot }}][]" value="" max="{{ $result['QuantityIn'][$lot]}}" min="0">
                         @else
                         <input type="number" class="Qtyout" style="text-color:orange"
                                         name="stockOuts[{{ $result['ItemCode'] }}][{{ $lot }}][]"

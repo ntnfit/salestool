@@ -691,6 +691,11 @@ class SalesController extends Controller
         while ($row = odbc_fetch_array($stmt)) {
             $results[] = $row;
         }
+       
+        $results = array_filter($results, function($item) {
+            return $item['QuantityIn'] > 0;
+        });
+        
         $itemCodes = array_column($results, 'ItemCode');
         $typePrds = array_column($results, 'TypePrd');
 
