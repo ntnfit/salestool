@@ -122,7 +122,7 @@ class SalesBAController extends Controller
                 $itemLines[] = [
                     'ItemNo' => $itemCode,
                     'PlannedQuantity' => $quantity,
-                    'Price'=>0
+                    'UnitPrice'=>0
                 ];
             }
         }
@@ -133,7 +133,7 @@ class SalesBAController extends Controller
     {
         try {
         $serviceLayerUrl = "https://" . env('SAP_SERVER') . ":" . env('SAP_PORT');
-
+       
         $response = Http::withOptions([
             'verify' => false,
         ])->withHeaders([
