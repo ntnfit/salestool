@@ -180,49 +180,57 @@
             },
             {
                 headerName: 'Doc No',
-                field: 'StockNo'
+                field: 'StockNo',
+                filter: 'agTextColumnFilter',
 
             },
             {
                 headerName: 'Doc Date',
                 field: 'StockDate',
-                maxWidth: 150
+                maxWidth: 150,
             },
             {
                 headerName: 'WhsCode',
-                field: 'FromWhsCode'
+                field: 'FromWhsCode',
+                filter: 'agTextColumnFilter',
             },
             {
                 headerName: 'WhsName',
-                field: 'FromWhsName'
+                field: 'FromWhsName',
+                filter: 'agTextColumnFilter',
             },
             {
                 headerName: 'TeamCode',
-                field: 'BinCode'
+                field: 'BinCode',
+                filter: 'agTextColumnFilter',
 
             },
             {
                 headerName: 'To WhsCode',
-                field: 'ToWhsCode'
+                field: 'ToWhsCode',
+                filter: 'agTextColumnFilter',
             },
             {
                 headerName: 'To WhsName',
-                field: 'ToWhsName'
+                field: 'ToWhsName',
+                filter: 'agTextColumnFilter',
             },
             {
                 headerName: 'To TeamCode',
-                field: 'BinCode1'
+                field: 'BinCode1',
+                filter: 'agTextColumnFilter',
 
             },
             
             {
                 headerName: 'Transfer Request No.',
                 field: 'TransferReqNo',
-
+                filter: 'agTextColumnFilter',
             },
             {
                 headerName: 'Transfer No.',
                 field: 'TransferNo',
+                filter: 'agTextColumnFilter',
 
             },
             
@@ -235,16 +243,19 @@
 
             },
             {
-                field: 'Note'
+                field: 'Note',
+                filter: 'agTextColumnFilter',
 
             },
             {
-                field: 'DeliveryStatus'
+                field: 'DeliveryStatus',
+                filter: 'agTextColumnFilter',
 
             },
             {
                 headerName: 'UserCreate',
-                field: 'UserName'
+                field: 'UserName',
+                filter: 'agTextColumnFilter',
             },
             {
                 field: 'DateCreate'
@@ -291,6 +302,7 @@
                 minWidth: 150,
                 filter: true,
                 resizable: true,
+                floatingFilter: true,
             },
             onRowDoubleClicked: function(params) {
                 var id = params.data.StockNo;

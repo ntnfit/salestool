@@ -184,22 +184,27 @@
             {
                 headerName: 'No',
                 field: 'DocNum',
+                filter: 'agTextColumnFilter',
             },
             {
                 headerName: 'Invoice Number',
                 field: 'NumAtCard',
+                filter: 'agTextColumnFilter',
             },
             {
                 headerName: 'CardCode',
                 field: 'CardCode',
+                filter: 'agTextColumnFilter',
             },
             {
                 headerName: 'CardName',
                 field: 'CardName',
+                filter: 'agTextColumnFilter',
             },
             {
                 headerName: 'WhsName',
                 field: 'WhsName',
+                filter: 'agTextColumnFilter',
             },
             {
                 headerName: 'DocDate',
@@ -208,34 +213,42 @@
             {
                 headerName: 'DelDate',
                 field: 'TaxDate',
+                filter: 'agTextColumnFilter',
             },
             {
                 headerName: 'SQ.No',
                 field: 'U_SoPhieu',
+                filter: 'agTextColumnFilter',
             },
             {
                 headerName: 'Truck Infor',
                 field: 'U_TruckInfo',
+                filter: 'agTextColumnFilter',
             },
             {
                 headerName: 'Driver name',
                 field: 'U_DriverName',
+                filter: 'agTextColumnFilter',
             },
             {
                 headerName: 'Driver infor',
                 field: 'U_DriverInfo',
+                filter: 'agTextColumnFilter',
             },
             {
                 headerName: 'Driver assistant',
                 field: 'U_DriverAss',
+                filter: 'agTextColumnFilter',
             },
             {
                 headerName: 'Driver assistant infor',
                 field: 'U_DriverAssInfo',
+                filter: 'agTextColumnFilter',
             },
             {
                 headerName: 'Cust.Po.No',
                 field: 'CustPoNo',
+                filter: 'agTextColumnFilter',
             },
             {
                 field: 'CustPoDate',
@@ -243,9 +256,11 @@
             {
                 headerName: 'Quantity',
                 field: 'Quantity',
+                filter: 'agTextColumnFilter',
             },
             {
                 field: 'Weight',
+                filter: 'agTextColumnFilter',
             },
             {
                 headerName: 'Received',
@@ -335,10 +350,13 @@
             {
                 headerName: 'Receiver',
                 field: 'Receiver',
+                editable: true,
+                filter: 'agTextColumnFilter',
             },
             {
 
                 field: "DocEntry",
+                filter: 'agTextColumnFilter',
             }
 
         ];
@@ -353,6 +371,7 @@
                 minWidth: 150,
                 filter: true,
                 resizable: true,
+                floatingFilter: true,
             },
 
             animateRows: true,
@@ -470,7 +489,7 @@
                     const data = node.data;
                     const oldData = node.oldData || {};
                     if (data.DateReceived != oldData.DateReceived || data.DateSend != oldData
-                        .DateSend) {
+                        .DateSend || data.Receiver != oldData.Receiver) {
                         updatedRows.push(data);
                     }
                 });

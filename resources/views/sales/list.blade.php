@@ -179,8 +179,8 @@
             },
             {
                 headerName: 'Doc No',
-                field: 'StockNo'
-
+                field: 'StockNo',
+                filter: 'agTextColumnFilter',
             },
             {
                 headerName: 'Doc Date',
@@ -190,38 +190,47 @@
             {
                 headerName: 'StoreID',
                 field: 'U_SID',
-                maxWidth: 150
+                maxWidth: 150,
+                filter: 'agTextColumnFilter',
             },
             {
                 field: 'CustCode',
+                filter: 'agTextColumnFilter',
 
             },
             {
                 field: 'CustName',
+                filter: 'agTextColumnFilter',
             },
             {
-                field: 'saleSup'
+                field: 'saleSup',
+                filter: 'agTextColumnFilter',
             },
             {
                 headerName: 'OrderTypeName',
-                field: 'Name'
+                field: 'Name',
+                filter: 'agTextColumnFilter',
             },
             {
                 headerName: 'SupportOrderNo',
                 field: 'AbsID',
+                filter: 'agTextColumnFilter',
 
             },
             {
                 headerName: 'WhsCode',
-                field: 'FromWhsCode'
+                field: 'FromWhsCode',
+                filter: 'agTextColumnFilter',
             },
             {
                 headerName: 'WhsName',
-                field: 'FromWhsName'
+                field: 'FromWhsName',
+                filter: 'agTextColumnFilter',
             },
             {
                 headerName: 'PoNo.',
                 field: 'POCardCode',
+                filter: 'agTextColumnFilter',
 
             },
             {
@@ -231,7 +240,8 @@
             },
             {
                 headerName: 'TeamCode',
-                field: 'BinCode'
+                field: 'BinCode',
+                filter: 'agTextColumnFilter',
 
             },
             {
@@ -239,7 +249,8 @@
 
             },
             {
-                field: 'ApplySAPRemark'
+                field: 'ApplySAPRemark',
+                filter: 'agTextColumnFilter',
 
             },
             {
@@ -247,21 +258,25 @@
 
             },
             {
-                field: 'SQNO'
+                field: 'SQNO',
+                filter: 'agTextColumnFilter',
 
             },
             {
-                field: 'SONO'
+                field: 'SONO',
+                filter: 'agTextColumnFilter',
 
             },
             {
                 headerName: 'Delivery No.',
-                field: 'DeliveryNO'
+                field: 'DeliveryNO',
+                filter: 'agTextColumnFilter',
 
             },
             {
                 headerName: 'AR.NO',
-                field: 'ARNo'
+                field: 'ARNo',
+                filter: 'agTextColumnFilter',
             },
             {
                 field: 'DeliveryStatus'
@@ -269,7 +284,8 @@
             },
             {
                 headerName: 'UserCreate',
-                field: 'UserName'
+                field: 'UserName',
+                filter: 'agTextColumnFilter',
             },
             {
                 field: 'DateCreate'
@@ -316,6 +332,7 @@
                 minWidth: 150,
                 filter: true,
                 resizable: true,
+                floatingFilter: true,
             },
             onRowDoubleClicked: function(params) {
                 var id = params.data.StockNo;

@@ -200,21 +200,25 @@
             },
             {
                 headerName: "Cust.Group Name",
-                field: "GroupName"
+                field: "GroupName",
+                filter: 'agTextColumnFilter',
             },
             {
                 headerName: 'CardCode',
-                field: 'CardCode'
+                field: 'CardCode',
+                filter: 'agTextColumnFilter',
             },
             {
                 headerName: 'CardName',
                 field: 'CardName',
+                filter: 'agTextColumnFilter',
             },
             {
                 headerName: 'InvoiceNo',
                 field: 'NumAtCard',
                 sort: 'desc',
-                cellClass: 'InvoiceNos' 
+                cellClass: 'InvoiceNos',
+                filter: 'agTextColumnFilter',
             },
             {
                 headerName: 'Total',
@@ -239,35 +243,43 @@
             {
                 headerName: 'SQ.No',
                 field: 'U_SoPhieu',
+                filter: 'agTextColumnFilter',
             },
             {
                 headerName: 'SO_No',
                 field: 'U_SONo',
+                filter: 'agTextColumnFilter',
             },
             {
                 headerName: 'RouteCode',
                 field: 'RouteCode',
+                filter: 'agTextColumnFilter',
             },
             {
                 headerName: 'RouteName',
                 field: 'RouteName',
+                filter: 'agTextColumnFilter',
             },
 
             {
                 headerName: 'TruckInfo',
                 field: 'U_TruckInfo',
+                filter: 'agTextColumnFilter',
             },
             {
                 headerName: 'WhsCode',
                 field: 'WhsCode',
+                filter: 'agTextColumnFilter',
             },
             {
                 headerName: 'Whs Name',
                 field: 'WhsName',
+                filter: 'agTextColumnFilter',
             },
             {
                 headerName: 'DocEntry',
                 field: 'DocEntry',
+                filter: 'agTextColumnFilter',
             },
 
 
@@ -299,6 +311,7 @@
                 filter: true,
                 resizable: true,
                 sortable: true,
+                floatingFilter: true,
             },
             animateRows: true,
             pagination: true,
