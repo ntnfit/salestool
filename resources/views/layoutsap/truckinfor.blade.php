@@ -250,7 +250,7 @@
                             @php
                                 $index = 1;
                             @endphp
-                            <tr class="group-{{ $cardCode }}">
+                            <tr style="background-color: #827b7b" class="group-{{ $cardCode }}">
                                 <td colspan="2"></td>
                                 <td colspan="2"></td>
                                 <td contentEditable="true" style="text-align: right">
@@ -287,14 +287,14 @@
                                 </td>
                             </tr>
                         @endforeach
-                        <tr>
+                        <tr style="background-color: #827b7b">
                             <td colspan="2"></td>
                             @if ($type == 'print')
                                 <td colspan="2"></td>
                             @else
                                 <td colspan="1"></td>
                             @endif
-                            <td contentEditable="true" style="text-align: right">{{ number_format(floatval($totalQuantity), 2) }}
+                            <td  contentEditable="true" style="text-align: right">{{ number_format(floatval($totalQuantity), 2) }}
                             </td>
                             <td colspan="2"></td>
                             <td></td>
