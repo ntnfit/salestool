@@ -349,8 +349,9 @@
             {
                 headerName: 'Quantity',
                 field: 'Quantity',
+                valueFormatter: params => Number(params.value).toFixed(2)
                 filter: 'agTextColumnFilter',
-                valueFormatter: params => params.data.number.toFixed(2)
+               
             },
 
             {
@@ -407,7 +408,7 @@
             {
                 headerName: 'Truck Weight',
                 field: 'TruckWeight',
-                valueFormatter: params => params.data.number.toFixed(2),
+                valueFormatter: params => Number(params.value).toFixed(2),
                 filter: 'agTextColumnFilter',
                 
             },
