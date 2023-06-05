@@ -172,7 +172,7 @@
     <tfoot>
         <tr>
             <th></th>
-            <th colspan="3">Total Quantity</th>
+            <th colspan="4">Total Quantity</th>
             @if ($blanket != 0)
                 <th></th>
                 <th></th>

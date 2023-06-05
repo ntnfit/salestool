@@ -97,7 +97,7 @@
                     <tr>
                         <th>STT</th>
                         <th>ItemCode</th>
-                        <th colspan="2">ItemName</th>
+                        <th colspan="3">ItemName</th>
                         <th hidden>Type</th>
                         @if ($blanket != 0)
                             <th>PlanQty</th>
@@ -157,7 +157,7 @@
                             @if ($result['TypePrd'] === '002') style="background-color: rgb(223, 240, 216)" @endif>
                             <td>{{ $loop->iteration }}</td>
                             <td class="ItemCode">{{ $result['ItemCode'] }}</td>
-                            <td class="ItemName" colspan="2">{{ $result['ItemName'] }}</td>
+                            <td class="ItemName" colspan="3">{{ $result['ItemName'] }}</td>
                             <td hidden><input type="text" class="sotype" name="sotype[{{ $result['ItemCode'] }}][]"
                                     value=""></td>
                             @if ($blanket != 0)
@@ -266,7 +266,7 @@
                 <tfoot>
                     <tr>
                         <th></th>
-                        <th colspan="3">Total Quantity</th>
+                        <th colspan="4">Total Quantity</th>
                         @if ($blanket != 0)
                             <th></th>
                             <th></th>
@@ -363,7 +363,7 @@
         }
 
         table#tableadd tr:nth-child(even) {
-            background-color: #f2f2f2;
+            background-color: #e3e3e3;
             max-width: 35%;
         }
 
@@ -471,6 +471,12 @@
 
         .dropdown-menu.show {
             max-width: 500px;
+        }
+      
+
+        tr:nth-child(even) input {
+            /* Apply your styles to the input field here */
+            background-color: #e3e3e3;
         }
     </style>
 @stop

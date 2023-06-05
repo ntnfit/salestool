@@ -195,7 +195,7 @@
         }
 
         table#tableadd tr:nth-child(even) {
-            background-color: #f2f2f2;
+            background-color: #e3e3e3;
             max-width: 35%;
         }
 
@@ -319,13 +319,11 @@
     .dropdown-menu.show {
         max-width: 500px;
 }
-tr:nth-child(even) {
-    background-color: #b7d8c9;
-}
 
-tr:nth-child(even) input {
-    background-color: ##b7d8c9;
-}
+        table#tableadd tr:nth-child(even) input {
+            /* Apply your styles to the input field here */
+            background-color: #e3e3e3;
+        }
     </style>
 @stop
 @push('js')
