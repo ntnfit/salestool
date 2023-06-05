@@ -285,7 +285,7 @@
                 aggFunc: (params) => {
                     let sum = 0;
                     params.values.forEach((value) => (sum += parseFloat(value)));
-                    return sum.toFixed(3);
+                    return sum.toFixed(2);
                 },
                 filter: 'agTextColumnFilter',
 
@@ -350,6 +350,7 @@
                 headerName: 'Quantity',
                 field: 'Quantity',
                 filter: 'agTextColumnFilter',
+                valueFormatter: params => params.data.number.toFixed(2)
             },
 
             {
@@ -406,7 +407,9 @@
             {
                 headerName: 'Truck Weight',
                 field: 'TruckWeight',
+                valueFormatter: params => params.data.number.toFixed(2),
                 filter: 'agTextColumnFilter',
+                
             },
             {
                 headerName: 'Truck Time',
@@ -809,14 +812,19 @@
             {
                 headerName: 'Quantity',
                 field: 'Quantity',
+                valueFormatter: params =>Number(params.value).toFixed(2)
             },
             {
                 headerName: 'Delivery Qty',
                 field: 'DeliverQty',
+                valueFormatter: params =>Number(params.value).toFixed(2)
+                
             },
             {
                 headerName: 'Weight',
                 field: 'Weight',
+                valueFormatter: params =>Number(params.value).toFixed(2)
+               
             },
             {
                 headerName: 'Uom',
@@ -825,14 +833,20 @@
             {
                 headerName: 'price before',
                 field: 'PriceBefDi',
+                valueFormatter: params =>Number(params.value).toFixed(2)
+               
             },
             {
                 headerName: 'price after',
                 field: 'Price',
+                valueFormatter: params =>Number(params.value).toFixed(2)
+               
             },
             {
                 headerName: 'Line Total',
                 field: 'LineTotal',
+                valueFormatter: params =>Number(params.value).toFixed(2)
+               
             },
         ]
         const gridOptionssUB = {

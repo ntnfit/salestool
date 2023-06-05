@@ -68,6 +68,9 @@
                     </option>
                 @endforeach
             </x-adminlte-select-bs>
+            <x-adminlte-select label="Support OrderNo" label-class="text-lightblue" igroup-size="sm" name="sporderno"
+                id="sporderno" fgroup-class="col-md-2" enable-old-support>
+            </x-adminlte-select>
             <x-adminlte-select-bs label="Warehouse" label-class="text-lightblue" :config="$configss" igroup-size="sm"
                 name="WhsCode" id="WhsCode" fgroup-class="col-md-2" enable-old-support>
                 <option value=""></option>
@@ -79,9 +82,7 @@
                 name="bincode" id="bincode" fgroup-class="col-md-2" enable-old-support>
                 <option value=""></option>
             </x-adminlte-select-bs>
-            <x-adminlte-input label="SO ID" label-class="text-lightblue" name="sono" type="text" placeholder=""
-            igroup-size="sm" fgroup-class="col-md-1" disabled>
-        </x-adminlte-input>   
+           
         </div>
         <div class="row">           
         <x-adminlte-input label="PO ID" label-class="text-lightblue" name="pono" id="pono" type="text"
@@ -95,9 +96,7 @@
                 </div>
             </x-slot>
         </x-adminlte-input-date>
-        <x-adminlte-select label="Support OrderNo" label-class="text-lightblue" igroup-size="sm" name="sporderno"
-                id="sporderno" fgroup-class="col-md-2" enable-old-support>
-            </x-adminlte-select>
+        
         <x-adminlte-input-date name="date" id="sodate" label="Date" :config="$configsodate"
             label-class="text-lightblue" igroup-size="sm" fgroup-class="col-md-3" placeholder="Choose a date...">
             <x-slot name="appendSlot">
@@ -319,6 +318,13 @@
         }
     .dropdown-menu.show {
         max-width: 500px;
+}
+tr:nth-child(even) {
+    background-color: #b7d8c9;
+}
+
+tr:nth-child(even) input {
+    background-color: ##b7d8c9;
 }
     </style>
 @stop
@@ -1081,36 +1087,62 @@
 
         });
 
-  document.onkeydown = function (e) {
-    switch (e.key) {
-      case 'ArrowDown':
-        e.preventDefault(); // Prevent the default behavior of the arrow key
-        var activeElement = document.activeElement;
-        var currentRow = activeElement.closest('tr');
-        var nextRow = currentRow.nextElementSibling;
-        
-        if (nextRow && nextRow.tagName === 'TR') {
-          var input = nextRow.querySelector('.Qtyout');
-          if (input) {
-            input.focus();
-          }
+        document.onkeydown = function (e) {
+  switch (e.key) {
+    case 'ArrowDown':
+      e.preventDefault(); 
+      var activeElement = document.activeElement;
+      var currentRow = activeElement.closest('tr');
+      var nextRow = currentRow.nextElementSibling;
+      
+      if (nextRow && nextRow.tagName === 'TR') {
+        var currentInputIndex = Array.from(currentRow.querySelectorAll('.Qtyout')).indexOf(activeElement);
+        var inputsInNextRow = nextRow.querySelectorAll('.Qtyout');
+        if (inputsInNextRow[currentInputIndex]) {
+          inputsInNextRow[currentInputIndex].focus();
         }
-        break;
-      case 'ArrowUp':
-        e.preventDefault(); // Prevent the default behavior of the arrow key
-        var activeElement = document.activeElement;
-        var currentRow = activeElement.closest('tr');
-        var prevRow = currentRow.previousElementSibling;
-        
-        if (prevRow && prevRow.tagName === 'TR') {
-          var input = prevRow.querySelector('.Qtyout');
-          if (input) {
-            input.focus();
-          }
+      }
+      break;
+
+    case 'ArrowUp':
+      e.preventDefault(); 
+      var activeElement = document.activeElement;
+      var currentRow = activeElement.closest('tr');
+      var prevRow = currentRow.previousElementSibling;
+      
+      if (prevRow && prevRow.tagName === 'TR') {
+        var currentInputIndex = Array.from(currentRow.querySelectorAll('.Qtyout')).indexOf(activeElement);
+        var inputsInPrevRow = prevRow.querySelectorAll('.Qtyout');
+        if (inputsInPrevRow[currentInputIndex]) {
+          inputsInPrevRow[currentInputIndex].focus();
         }
-        break;
-    }
-  };
+      }
+      case 'ArrowRight':
+      e.preventDefault();
+      var activeElement = document.activeElement;
+      var currentRow = activeElement.closest('tr');
+      var inputsInCurrentRow = Array.from(currentRow.querySelectorAll('.Qtyout'));
+      var currentIndex = inputsInCurrentRow.indexOf(activeElement);
+      
+      if (inputsInCurrentRow[currentIndex + 1]) {
+        inputsInCurrentRow[currentIndex + 1].focus();
+      }
+      break;
+      
+    case 'ArrowLeft':
+      e.preventDefault();
+      var activeElement = document.activeElement;
+      var currentRow = activeElement.closest('tr');
+      var inputsInCurrentRow = Array.from(currentRow.querySelectorAll('.Qtyout'));
+      var currentIndex = inputsInCurrentRow.indexOf(activeElement);
+      
+      if (inputsInCurrentRow[currentIndex - 1]) {
+        inputsInCurrentRow[currentIndex - 1].focus();
+      }
+      break;
+  }
+};
+
 
     </script>
 @endpush

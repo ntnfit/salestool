@@ -37,6 +37,16 @@
                 <option value="{{ $so->OrderType }}">{{ $so->Name }}</option>
 
             </x-adminlte-select>
+            <x-adminlte-select label="Customer Code" label-class="text-lightblue" igroup-size="sm" name="cuscode"
+            id="cuscode" fgroup-class="col-md-2" enable-old-support>
+            <option value="{{ $so->CustCode }}" selected>{{ $so->CustCode . '--' . $so->CustName }}</option>
+             </x-adminlte-select>
+            <x-adminlte-select label="Support OrderNo" label-class="text-lightblue" igroup-size="sm" name="sporderno"
+            id="sporderno" fgroup-class="col-md-2" enable-old-support>
+            @if ($so->AbsID)
+                <option value="{{ $so->AbsID }}" selected>{{ $so->AbsID }}</option>
+            @endif
+            </x-adminlte-select>
             <x-adminlte-select label="Warehouse" label-class="text-lightblue" igroup-size="sm" name="WhsCode" id="WhsCode"
                 fgroup-class="col-md-2" enable-old-support>
                 <option value="{{ $so->FromWhsCode }}" selected>{{ $so->FromWhsCode }}</option>
@@ -45,18 +55,11 @@
                 fgroup-class="col-md-2" enable-old-support>
                 <option value="{{ $so->AbsEntry }}" selected>{{ $so->BinCode }}</option>
             </x-adminlte-select>
-            <x-adminlte-select label="Customer Code" label-class="text-lightblue" igroup-size="sm" name="cuscode"
-                id="cuscode" fgroup-class="col-md-2" enable-old-support>
-                <option value="{{ $so->CustCode }}" selected>{{ $so->CustCode . '--' . $so->CustName }}</option>
-            </x-adminlte-select>
-
-            <x-adminlte-input label="SO ID" label-class="text-lightblue" name="sono" type="text" placeholder=""
-                value="{{ $so->StockNo }}" igroup-size="sm" fgroup-class="col-md-2" readonly="true">
-            </x-adminlte-input>
-
-
         </div>
         <div class="row">
+            <x-adminlte-input label="SO ID" label-class="text-lightblue" name="sono" type="text" placeholder=""
+            value="{{ $so->StockNo }}" igroup-size="sm" fgroup-class="col-md-2" readonly="true">
+        </x-adminlte-input>
             <x-adminlte-input label="PO ID" label-class="text-lightblue" name="pono" id="pono" type="text"
                 placeholder="" igroup-size="sm" fgroup-class="col-md-2" value="{{ $so->PoCardCode }}" readonly="true">
             </x-adminlte-input>
@@ -69,12 +72,7 @@
                     </div>
                 </x-slot>
             </x-adminlte-input-date>
-            <x-adminlte-select label="Support OrderNo" label-class="text-lightblue" igroup-size="sm" name="sporderno"
-            id="sporderno" fgroup-class="col-md-2" enable-old-support>
-            @if ($so->AbsID)
-                <option value="{{ $so->AbsID }}" selected>{{ $so->AbsID }}</option>
-            @endif
-            </x-adminlte-select>
+          
             <x-adminlte-input-date name="date" id="sodate" label="Date" :config="$configsodate"
                 label-class="text-lightblue" igroup-size="sm" fgroup-class="col-md-3" placeholder="Choose a date..."
                 value="{{ Carbon\Carbon::parse($so->StockDate)->format('d/m/Y') }}" readonly="true">
@@ -1077,35 +1075,60 @@
                 return true;
             }
         }
-        document.onkeydown = function(e) {
-            switch (e.key) {
-                case 'ArrowDown':
-                    e.preventDefault(); // Prevent the default behavior of the arrow key
-                    var activeElement = document.activeElement;
-                    var currentRow = activeElement.closest('tr');
-                    var nextRow = currentRow.nextElementSibling;
+        document.onkeydown = function (e) {
+  switch (e.key) {
+    case 'ArrowDown':
+      e.preventDefault(); 
+      var activeElement = document.activeElement;
+      var currentRow = activeElement.closest('tr');
+      var nextRow = currentRow.nextElementSibling;
+      
+      if (nextRow && nextRow.tagName === 'TR') {
+        var currentInputIndex = Array.from(currentRow.querySelectorAll('.Qtyout')).indexOf(activeElement);
+        var inputsInNextRow = nextRow.querySelectorAll('.Qtyout');
+        if (inputsInNextRow[currentInputIndex]) {
+          inputsInNextRow[currentInputIndex].focus();
+        }
+      }
+      break;
 
-                    if (nextRow && nextRow.tagName === 'TR') {
-                        var input = nextRow.querySelector('.Qtyout');
-                        if (input) {
-                            input.focus();
-                        }
-                    }
-                    break;
-                case 'ArrowUp':
-                    e.preventDefault(); // Prevent the default behavior of the arrow key
-                    var activeElement = document.activeElement;
-                    var currentRow = activeElement.closest('tr');
-                    var prevRow = currentRow.previousElementSibling;
-
-                    if (prevRow && prevRow.tagName === 'TR') {
-                        var input = prevRow.querySelector('.Qtyout');
-                        if (input) {
-                            input.focus();
-                        }
-                    }
-                    break;
-            }
-        };
+    case 'ArrowUp':
+      e.preventDefault(); 
+      var activeElement = document.activeElement;
+      var currentRow = activeElement.closest('tr');
+      var prevRow = currentRow.previousElementSibling;
+      
+      if (prevRow && prevRow.tagName === 'TR') {
+        var currentInputIndex = Array.from(currentRow.querySelectorAll('.Qtyout')).indexOf(activeElement);
+        var inputsInPrevRow = prevRow.querySelectorAll('.Qtyout');
+        if (inputsInPrevRow[currentInputIndex]) {
+          inputsInPrevRow[currentInputIndex].focus();
+        }
+      }
+      case 'ArrowRight':
+      e.preventDefault();
+      var activeElement = document.activeElement;
+      var currentRow = activeElement.closest('tr');
+      var inputsInCurrentRow = Array.from(currentRow.querySelectorAll('.Qtyout'));
+      var currentIndex = inputsInCurrentRow.indexOf(activeElement);
+      
+      if (inputsInCurrentRow[currentIndex + 1]) {
+        inputsInCurrentRow[currentIndex + 1].focus();
+      }
+      break;
+      
+    case 'ArrowLeft':
+      e.preventDefault();
+      var activeElement = document.activeElement;
+      var currentRow = activeElement.closest('tr');
+      var inputsInCurrentRow = Array.from(currentRow.querySelectorAll('.Qtyout'));
+      var currentIndex = inputsInCurrentRow.indexOf(activeElement);
+      
+      if (inputsInCurrentRow[currentIndex - 1]) {
+        inputsInCurrentRow[currentIndex - 1].focus();
+      }
+      break;
+  }
+}
     </script>
 @endpush

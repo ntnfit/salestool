@@ -4,7 +4,7 @@
         <tr>
             <th>STT</th>
             <th>ItemCode</th>
-            <th colspan="2">ItemName</th>
+            <th colspan="3">ItemName</th>
             <th hidden>Type</th>
             @if ($blanket != 0)
                 <th>PlanQty</th>
@@ -54,7 +54,7 @@
                 @if ($result['TypePrd'] === '002') style="background-color: rgb(223, 240, 216)" @endif>
                 <td>{{ $loop->iteration }}</td>
                 <td class="ItemCode">{{ $result['ItemCode'] }}</td>
-                <td class="ItemName" colspan="2">{{ $result['ItemName'] }}</td>
+                <td class="ItemName" colspan="3">{{ $result['ItemName'] }}</td>
 
                 <td hidden><input type="text" class="sotype" name="sotype[{{ $result['ItemCode'] }}][]"
                         value="{{ $ordertype }}"></td>
@@ -96,10 +96,20 @@
                     <td class="{{ $result['QuantityOut'][$lot] > 0 ? 'orange' : '' }}">
 
                         @if ($blanket != 0)
-                            @if ($result['QuantityIn'][$lot] > 0)
+                            @if ($result['QuantityIn'][$lot] > 0 && $result['QuantityOut'][$lot] >0)
                                 <input type="number" class="Qtyout" style="text-color:orange"
                                     name="stockOuts[{{ $result['ItemCode'] }}][{{ $lot }}][]"
                                     value="{{ $result['QuantityOut'][$lot] }}" max="{{ $result['OpenQty'][$lot] }}"
+                                    min="0">
+                            @elseif ($result['QuantityIn'][$lot] < 0 && $result['QuantityOut'][$lot] >0)
+                            <input type="number" class="Qtyout" style="text-color:orange"
+                                name="stockOuts[{{ $result['ItemCode'] }}][{{ $lot }}][]"
+                                value="{{ $result['QuantityOut'][$lot] }}" max="{{ $result['OpenQty'][$lot] }}"
+                                min="0">
+                                @elseif ($result['QuantityIn'][$lot] > 0 && $result['QuantityOut'][$lot] =0)
+                                <input type="number" class="Qtyout" style="text-color:orange"
+                                    name="stockOuts[{{ $result['ItemCode'] }}][{{ $lot }}][]"
+                                    value="" max="{{ $result['OpenQty'][$lot] }}"
                                     min="0">
                             @else
                                 <input type="number" class="Qtyout" style="text-color:orange"

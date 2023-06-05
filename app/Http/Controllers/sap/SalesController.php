@@ -583,7 +583,7 @@ class SalesController extends Controller
             }
             $body=[
                 "CardCode"=> $results[0]['CustCode'],
-                "Comments"=>"Apply from salesHub ".$results[0]['Note'],
+                "Comments"=>"".$results[0]['Note'],
                 "U_SoPhieu"=>$SoNo,
                 "U_SoNo"=>$results[0]['POCardCode'],
                 "U_FromBIN"=> $results[0]['AbsEntry'],

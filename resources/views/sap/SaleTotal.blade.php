@@ -23,7 +23,7 @@
                 </div>
                 <div class="col-sm-3">
                     <label for="team">
-                        <h6>Team</6>
+                        <h6>Team</h6>
                     </label>
                     <select class="selectpicker" multiple data-live-search="true" id="team" name="team">
                     </select>

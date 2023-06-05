@@ -213,19 +213,23 @@
             {
                 headerName: 'TotalQuantity',
                 field: 'TotalQuantity',
+                valueFormatter: params =>Number(params.value).toFixed(2)
             },
             {
                 headerName: 'Quantity_Carton',
                 field: 'Quantity_Carton',
+                valueFormatter: params =>Number(params.value).toFixed(2)
             },
 
             {
                 headerName: 'LineTotal',
                 field: 'LineTotal',
+                valueFormatter: params =>Number(params.value).toFixed(2)
             },
             {
                 headerName: 'Gtoal',
                 field: 'Gtoal',
+                valueFormatter: params =>Number(params.value).toFixed(2)
             }
 
         ];
