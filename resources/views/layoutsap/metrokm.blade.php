@@ -144,7 +144,7 @@
                             <th class="text-center">Mã hàng</th>
                             <th>Tên Hàng</th>
                             <th class="text-center">Số lương giao</th>
-                         
+                            <th class="text-center"> ĐVT </th>
                             <th class="text-center">Số lượng nhận</th>
                         </tr>
                     </thead>
@@ -156,6 +156,7 @@
                                 <td class="text-center">{{ $document->MaHang }}</td>
                                 <td>{{ $document->TenHang }}</td>
                                 <td class="text-center">{{ number_format($document->DelQtybyThung,2) }}</td>
+                                <td class="text-center">{{$document->CustUomQuyDoi }}</td>
                                 <td class="text-center"></td>
                             </tr>
                         @endforeach

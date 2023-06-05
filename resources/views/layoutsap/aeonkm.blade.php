@@ -135,6 +135,7 @@
                     <th style="width: 200px;"> MÃ HÀNG <br> Item No</th>
                     <th style="width: 600px;"> TÊN HÀNG<br> Item Description </th>
                     <th style="width: 200px;"> SỐ LƯỢNG <br> Quantity </th>
+                    <th style="width: 200px;"> ĐVT<br> UoM </th>
                     <th style="width: 400px;"> GHI CHÚ <br>Note</th>
                 </tr>
             </thead>
@@ -147,6 +148,7 @@
                     <td>{{ $document->MaHang }}</td>
                     <td>{{ $document->TenHang }}</td>
                     <td>{{ number_format($document->Quantity) }}</td>
+                    <td>{{$document->CustUomQuyDoi }}</td>
                     <td>{{$document->GhiChu }}</td>
                 </tr>
               
