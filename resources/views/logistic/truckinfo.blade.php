@@ -349,7 +349,7 @@
             {
                 headerName: 'Quantity',
                 field: 'Quantity',
-                valueFormatter: params => Number(params.value).toFixed(2)
+                valueFormatter: params => Number(params.value).toFixed(2),
                 filter: 'agTextColumnFilter',
                
             },
