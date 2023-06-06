@@ -296,6 +296,7 @@ class DeliveryController extends Controller
     }
     function PrintLayoutDO(Request $request)
     {
+       
         $conDB = (new SAPB1Controller)->connect_sap();
         $results = array();
         $layout=$request->layout;
@@ -409,6 +410,8 @@ class DeliveryController extends Controller
                 $results[] = $row;
             };
             sort($results);
+            $groupedDocuments=collect($results)->groupBy('DocEntry');
+            return view ('layoutsap.betagenkm',compact('groupedDocuments'));
         }
         else {
             //layout Betagen
@@ -418,8 +421,7 @@ class DeliveryController extends Controller
             while ($row = odbc_fetch_object($stmt)) {
                 $results[] = $row;
             };
-            sort($results);
-            
+            sort($results);           
             $groupedDocuments=collect($results)->groupBy('DocEntry');
             return view ('layoutsap.betagen',compact('groupedDocuments'));
           }

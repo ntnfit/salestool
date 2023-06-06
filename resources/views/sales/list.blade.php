@@ -145,6 +145,7 @@
     <script src="https://cdn.jsdelivr.net/npm/ag-grid-community@28.2.1/dist/ag-grid-community.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/ag-grid-enterprise@28.2.1/dist/ag-grid-enterprise.min.js"></script>
     <script>
+        
         var filterParams = {
             comparator: (filterLocalDateAtMidnight, cellValue) => {
                 var dateAsString = cellValue;
@@ -176,6 +177,7 @@
                 maxWidth: 50,
                 headerCheckboxSelection: true,
                 checkboxSelection: true,
+                headerCheckboxSelectionFilteredOnly: true,
             },
             {
                 headerName: 'Doc No',
@@ -340,7 +342,7 @@
                 url = url.replace(':id', id);
                 window.location.href = url;
             },
-            rowSelection: 'multiple'
+            rowSelection: 'multiple',
         };
 
 
