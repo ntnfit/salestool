@@ -116,22 +116,8 @@ class SalesController extends Controller
     }
     function loadall()
     {
-        $conDB = (new SAPB1Controller)->connect_sap();
-     
-        $sql = 'SELECT * FROM UV_SO_LOADALL';
-        $stmt = odbc_prepare($conDB, $sql);
-        if (!odbc_execute($stmt)) {
-            // Handle execution error
-            die("Error executing SQL statement: " . odbc_errormsg());
-        }
-
-        // Retrieve the result set from the stored procedure
-        $results = array();
-        while ($row = odbc_fetch_array($stmt)) {
-            $results[] = $row;
-        }
+        $result=db::table('ALL_SO')->get();
         $results=json_encode($results);
-        odbc_close($conDB);
         return  $results;
     }
     function edit($id)
