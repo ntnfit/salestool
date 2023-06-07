@@ -117,18 +117,32 @@ class SalesController extends Controller
     function loadall()
     {
         $conDB = (new SAPB1Controller)->connect_sap();
-        $sql = 'select  * from "UV_SO_LOADALL"';
+        $sql = 'CALL USP_BS_STOCKOUTREQUEST2(?,?,?,?)';
         $stmt = odbc_prepare($conDB, $sql);
-        odbc_execute($stmt);
+        if (!$stmt) {
+            // Handle SQL error
+            die("Error preparing SQL statement: " . odbc_errormsg());
+        }
+
+        // Set the input parameters for the stored procedure
+        $promotionType = '';
+        
+        $special = 0;
+
+        // Execute the stored procedure with the input parameters
+        if (!odbc_execute($stmt, array($promotionType,"", "", $special))) {
+            // Handle execution error
+            die("Error executing SQL statement: " . odbc_errormsg());
+        }
+
+        // Retrieve the result set from the stored procedure
         $results = array();
         while ($row = odbc_fetch_array($stmt)) {
-        $results[] = $row;
+            $results[] = $row;
         }
+        $results=json_encode($results);
         odbc_close($conDB);
-        $results = json_encode($results);
-
-        return $results;
-
+        return  $results;
     }
     function edit($id)
     {
