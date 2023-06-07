@@ -117,7 +117,7 @@ class SalesController extends Controller
     function loadall()
     {
         $conDB = (new SAPB1Controller)->connect_sap();
-        $sql = 'select TOP 10000 * from "UV_SO_LOADALL"';
+        $sql = 'select  * from "UV_SO_LOADALL"';
         $stmt = odbc_prepare($conDB, $sql);
         odbc_execute($stmt);
         $results = array();
