@@ -117,7 +117,7 @@ class SalesController extends Controller
     function loadall()
     {
         $conDB = (new SAPB1Controller)->connect_sap();
-        $sql = 'CALL USP_BS_STOCKOUTREQUEST2(?,?,?,?)';
+        $sql = 'CALL USP_BS_STOCKOUTREQUEST2_ALL(?,?,?,?)';
         $stmt = odbc_prepare($conDB, $sql);
         if (!$stmt) {
             // Handle SQL error
