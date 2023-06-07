@@ -118,15 +118,9 @@ class SalesController extends Controller
     {
         $conDB = (new SAPB1Controller)->connect_sap();
      
-        $sql = 'CALL "USP_BS_STOCKOUTREQUEST2"(?,?,?,?)';
+        $sql = 'SELECT * FROM UV_SO_LOADALL';
         $stmt = odbc_prepare($conDB, $sql);
-        // Set the input parameters for the stored procedure
-        $promotionType = '';
-        
-        $special = 0;
-
-        // Execute the stored procedure with the input parameters
-        if (!odbc_execute($stmt, array($promotionType,"", "", $special))) {
+        if (!odbc_execute($stmt)) {
             // Handle execution error
             die("Error executing SQL statement: " . odbc_errormsg());
         }
