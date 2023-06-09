@@ -17,9 +17,6 @@
                 page-break-before: always;
             }
 
-			
-			
-
         }
 
         h1 {
@@ -118,7 +115,12 @@
 </head>
 
 <body>
+    @php
+    $pagenumber=0;
+        $totalPage=count($groupedDocuments);
+    @endphp
     @foreach ($groupedDocuments as $docentry => $documents)
+
         <div class="page-break">
             <header class="header">
                 <h1>PHIẾU GIAO HÀNG</h1>

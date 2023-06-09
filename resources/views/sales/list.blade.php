@@ -182,6 +182,7 @@
             {
                 headerName: 'Doc No',
                 field: 'StockNo',
+                sort: 'desc',
                 filter: 'agTextColumnFilter',
             },
             {
