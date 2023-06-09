@@ -24,12 +24,13 @@
 
         h1 {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: -8px;
+            height: 30px;
         }
 
         h5 {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 5px;
         }
 
         .content {
@@ -172,9 +173,9 @@
                             <td colspan="2"></td>
                             <td colspan="2"></td>
                         
-                            <td  colspan="4"></td>
+                            <td  colspan="4" style="text-align: center;font-weight: bold">Tổng</td>
                            
-                            <td class="text-center">{{number_format($total,2) }}</td>
+                            <td class="text-center" style="font-weight: bold">{{number_format($total,2) }}</td>
                         </tr>
                     </tbody>
                 </table>

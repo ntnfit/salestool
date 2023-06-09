@@ -24,12 +24,13 @@
 
         h1 {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: -8px;
+            height: 30px;
         }
 
         h5 {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 5px;
         }
 
         .content {
