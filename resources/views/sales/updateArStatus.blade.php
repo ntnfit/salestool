@@ -357,6 +357,16 @@
 
                 field: "DocEntry",
                 filter: 'agTextColumnFilter',
+            },
+            {
+
+                field: "KHHD",
+                filter: 'agTextColumnFilter',
+            },
+            {
+
+                field: "Location",
+                filter: 'agTextColumnFilter',
             }
 
         ];

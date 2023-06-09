@@ -472,11 +472,20 @@
                     data: {
                         SoNo: selectedProIds
                     },
+                    
                     dataType: 'json',
+                    async: false,
+                    beforeSend: function() {
+                        // Show the loading modal
+                        loadingModal.style.display = "block";
+                        // Disable the submit button
+                        submitBtn.disabled = true;
+                    },
                     success: function(data) {
                         alert("đã apply thành công! Vui lòng kiểm tra SO apply")
-                        loadFilteredData()
                         submitBtn.disabled = false;
+                        loadFilteredData()
+                       
                     },
                     error: function(xhr, status, error) {
                         if (xhr.status === 500) {
@@ -485,6 +494,7 @@
                         var response = JSON.parse(xhr.responseText);
                          var responseData = response.data;
                          alert("apply thất bại! message error:"+responseData);
+                         loadFilteredData();
                     }
 
                     console.log(error);
@@ -492,9 +502,10 @@
 
                         // Enable the submit button
                         submitBtn.disabled = false;
-                        loadFilteredData()
+                        loadFilteredData();
                     }
                 })
+
             }
 
         });
