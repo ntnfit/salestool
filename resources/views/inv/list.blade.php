@@ -177,6 +177,7 @@
                 maxWidth: 50,
                 headerCheckboxSelection: true,
                 checkboxSelection: true,
+                headerCheckboxSelectionFilteredOnly: true,
             },
             {
                 headerName: 'Doc No',

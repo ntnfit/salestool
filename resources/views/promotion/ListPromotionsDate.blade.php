@@ -141,7 +141,7 @@
 };
 
 const columnDefs = [
-    { headerName: '', field: '', maxWidth: 50,  headerCheckboxSelection: true, checkboxSelection: true, },
+    { headerName: '', field: '', maxWidth: 50,  headerCheckboxSelection: true, checkboxSelection: true, headerCheckboxSelectionFilteredOnly: true, },
   { headerName:"ProId",field: 'ProId',maxWidth: 100 
     },
   {headerName:"Promotion Name",field: 'ProName'},
