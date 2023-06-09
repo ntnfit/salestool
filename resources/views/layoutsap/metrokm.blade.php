@@ -8,7 +8,7 @@
     <style>
         @page {
             size: auto;
-            margin: 1cm;
+            margin: 0;
         }
 
 
@@ -80,7 +80,7 @@
         .footer {
             display: flex;
             justify-content: space-between;
-            margin-top: 50px;
+            margin-top: 5px;
             padding: 10px 30px;
         }
 

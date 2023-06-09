@@ -8,7 +8,7 @@
     <style>
         @page {
             size:auto;
-            margin: 1cm;
+            margin: 0;
         }
 
 

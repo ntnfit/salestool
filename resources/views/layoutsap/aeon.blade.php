@@ -13,7 +13,7 @@
     <style>
         @page {
             size: A4 landscape;
-            margin: 1cm;
+            margin: 0;
         }
 
         @media print {
