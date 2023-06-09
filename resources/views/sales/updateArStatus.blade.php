@@ -189,6 +189,7 @@
             {
                 headerName: 'Invoice Number',
                 field: 'NumAtCard',
+                cellClass: 'InvoiceNos',
                 filter: 'agTextColumnFilter',
             },
             {
@@ -371,7 +372,14 @@
 
         ];
 
-
+        const excelstyle = [
+              
+              {
+                  id: 'InvoiceNos',
+                  dataType: 'String',
+              },                   
+          
+      ];
 
         const gridOptions = {
             columnDefs: columnDefs,
@@ -395,6 +403,7 @@
                     };
                 });
             },
+            excelStyles:excelstyle
         };
 
         function onBtExport() {

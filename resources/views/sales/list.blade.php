@@ -343,13 +343,28 @@
                 window.location.href = url;
             },
             rowSelection: 'multiple',
+            getContextMenuItems: getContextMenuItems,
         };
 
 
         function onBtExport() {
             gridOptions.api.exportDataAsExcel();
         }
+        function getContextMenuItems(params) {
+            var result = [
+                // Other menu items...
+                {
+                    name: 'Refresh',
+                    action: function() {
+                        loadFilteredData();
+                    },
+                },
+                'export',
+                'copy'
+            ];
 
+            return result;
+        }
         function loadInitialData() {
             // Make an API call to abc.com to retrieve 100 records
 
@@ -363,6 +378,16 @@
 
             filter.disabled = true;
             loadingModal.style.display = "block";
+            if (!filterData || Object.keys(filterData).length === 0) {
+            const currentDate = new Date();
+            const day = String(currentDate.getDate()).padStart(2, '0');
+            const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+            const year = currentDate.getFullYear();
+
+            const formattedDate = `${day}/${month}/${year}`;
+
+            filterData = { fromdate: formattedDate, todate: formattedDate };
+            } 
             $.ajax({
                 type: 'GET',
                 url: '{{ route('sales.list') }}',
