@@ -170,10 +170,9 @@
                             </tr>
                         @endforeach
                         <tr>
-                            <td colspan="2"></td>
-                            <td colspan="2"></td>
+                            
                         
-                            <td  colspan="4" style="text-align: center;font-weight: bold">Tổng</td>
+                            <td  colspan="8" style="text-align: center;font-weight: bold">Tổng</td>
                            
                             <td class="text-center" style="font-weight: bold">{{number_format($total,2) }}</td>
                         </tr>
