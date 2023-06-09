@@ -191,6 +191,7 @@
                 field: 'NumAtCard',
                 cellClass: 'InvoiceNos',
                 filter: 'agTextColumnFilter',
+                sortable: true
             },
             {
                 headerName: 'CardCode',
