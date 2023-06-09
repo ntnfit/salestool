@@ -23,7 +23,11 @@
             $consolidatedData = [];
             $totalQuantityIns = array_fill_keys($distinctLots, 0);
             $totalStockOuts = array_fill_keys($distinctLots, 0);
+            usort($results, function ($a, $b) {
+                return strcmp($a['ItemCode'], $b['ItemCode']);
+            });
         @endphp
+    
         @foreach ($results as $key => $result)
             @php
                 $consolidatedKey = $result['ItemCode'] . '_' . $result['TypePrd'];

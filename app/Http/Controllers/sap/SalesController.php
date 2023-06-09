@@ -689,9 +689,9 @@ class SalesController extends Controller
         
         $itemCodes = array_column($results, 'ItemCode');
         $typePrds = array_column($results, 'TypePrd');
-
+        $Lotdata = array_column($results, 'LotNo');
         // Sort the data based on multiple columns
-        array_multisort($typePrds, SORT_ASC, $itemCodes, SORT_ASC, $results);
+        array_multisort( $typePrds, SORT_ASC,$Lotdata,SORT_ASC,  $itemCodes, SORT_DESC, $results);
         // get number lot
         $distinctLots = array_unique(array_column($results, 'LotNo'));
         $ordertype=$request->ordertype;
