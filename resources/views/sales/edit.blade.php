@@ -363,7 +363,7 @@
         }
 
         table#tableadd tr:nth-child(even) {
-            background-color: #e3e3e3;
+            background-color: #efd0d0;
             max-width: 35%;
         }
 
@@ -476,7 +476,7 @@
 
         tr:nth-child(even) input {
             /* Apply your styles to the input field here */
-            background-color: #e3e3e3;
+            background-color: #efd0d0;
         }
     </style>
 @stop
@@ -1090,8 +1090,8 @@
       var nextRow = currentRow.nextElementSibling;
       
       if (nextRow && nextRow.tagName === 'TR') {
-        var currentInputIndex = Array.from(currentRow.querySelectorAll('.Qtyout')).indexOf(activeElement);
-        var inputsInNextRow = nextRow.querySelectorAll('.Qtyout');
+        var currentInputIndex = Array.from(currentRow.querySelectorAll('.Qtyout, .qtypro')).indexOf(activeElement);
+        var inputsInNextRow = nextRow.querySelectorAll('.Qtyout, .qtypro');
         if (inputsInNextRow[currentInputIndex]) {
           inputsInNextRow[currentInputIndex].focus();
         }
@@ -1105,8 +1105,8 @@
       var prevRow = currentRow.previousElementSibling;
       
       if (prevRow && prevRow.tagName === 'TR') {
-        var currentInputIndex = Array.from(currentRow.querySelectorAll('.Qtyout')).indexOf(activeElement);
-        var inputsInPrevRow = prevRow.querySelectorAll('.Qtyout');
+        var currentInputIndex = Array.from(currentRow.querySelectorAll('.Qtyout, .qtypro')).indexOf(activeElement);
+        var inputsInPrevRow = prevRow.querySelectorAll('.Qtyout, .qtypro');
         if (inputsInPrevRow[currentInputIndex]) {
           inputsInPrevRow[currentInputIndex].focus();
         }
@@ -1115,7 +1115,7 @@
       e.preventDefault();
       var activeElement = document.activeElement;
       var currentRow = activeElement.closest('tr');
-      var inputsInCurrentRow = Array.from(currentRow.querySelectorAll('.Qtyout'));
+      var inputsInCurrentRow = Array.from(currentRow.querySelectorAll('.Qtyout, .qtypro'));
       var currentIndex = inputsInCurrentRow.indexOf(activeElement);
       
       if (inputsInCurrentRow[currentIndex + 1]) {
@@ -1127,7 +1127,7 @@
       e.preventDefault();
       var activeElement = document.activeElement;
       var currentRow = activeElement.closest('tr');
-      var inputsInCurrentRow = Array.from(currentRow.querySelectorAll('.Qtyout'));
+      var inputsInCurrentRow = Array.from(currentRow.querySelectorAll('.Qtyout, .qtypro'));
       var currentIndex = inputsInCurrentRow.indexOf(activeElement);
       
       if (inputsInCurrentRow[currentIndex - 1]) {
