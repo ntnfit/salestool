@@ -416,21 +416,57 @@
             loadingModal.style.display = "block";
 
             $.ajax({
-                type: 'GET',
-                url: '{{ route('sales.all') }}',
-                dataType: 'json',
-                success: function(data) {
-                    gridOptions.api.setRowData(data);
+                    beforeSend: function(xhr) {
+                        xhr.setRequestHeader("Authorization", "Basic " + '{{ env('BSHeader') }}');
+                        xhr.withCredentials = true;
+                    },
+                    crossDomain: true,
+                    url: " https://" + '{{ env('SAP_SERVER') }}' + ":" + '{{ env('SAP_PORT') }}' +
+                        "/b1s/v1/sml.svc/LOADATA",
+                    xhrFields: {
+                        withCredentials: true,
+                        rejectUnauthorized: false
+                    },
+                    // whether this is a POST or GET request
+                    type: "get",
+                    // the type of data we expect back
+                    dataType: "json",
+                    headers: {
+                        "Prefer": "odata.maxpagesize=all",
+                    },
+                    // code to run if the request succeeds;
+                    // the response is passed to the function
+                    success: function(response) {
+                        console.log(response);
+
+                    gridOptions.api.setRowData(response.value);
                     loadingModal.style.display = "none";
                     getallBtn.disabled = false;
-
-                },
-                error: function(xhr, status, error) {
+                    },
+                    error: function(xhr, status, error) {
                     console.error('Error loading data:', error);
                     loadingModal.style.display = "none";
                     getallBtn.disabled = false;
+                    alert("load all faild!");
                 }
-            });
+                });
+
+            // $.ajax({
+            //     type: 'GET',
+            //     url: '{{ route('sales.all') }}',
+            //     dataType: 'json',
+            //     success: function(data) {
+            //         gridOptions.api.setRowData(data);
+            //         loadingModal.style.display = "none";
+            //         getallBtn.disabled = false;
+
+            //     },
+            //     error: function(xhr, status, error) {
+            //         console.error('Error loading data:', error);
+            //         loadingModal.style.display = "none";
+            //         getallBtn.disabled = false;
+            //     }
+            // });
         }
 
         let filterData = {};
