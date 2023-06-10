@@ -373,18 +373,26 @@
             gridOptions.api.setRowData({!! $results !!});
         }
 
-        function loadFilteredData() {
+        function loadFilteredData( loadall) {
             const loadingModal = document.getElementById("loadingModal");
             const filter = document.getElementById("filterButton");
 
             filter.disabled = true;
             loadingModal.style.display = "block";
-            if (!filterData || Object.keys(filterData).length === 0) {
+            if (loadall==true) {
                 loadallData()
                 filter.disabled = false;
             } 
             else
             {
+                if (!filterData || Object.keys(filterData).length === 0) {
+                    const currentDate = new Date();
+                    const day = String(currentDate.getDate()).padStart(2, '0');
+                    const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+                    const year = currentDate.getFullYear();
+                    const formattedDate = `${day}/${month}/${year}`;
+                    filterData = { fromdate: formattedDate, todate: formattedDate };
+                }
                 $.ajax({
                 type: 'GET',
                 url: '{{ route('sales.list') }}',
@@ -491,7 +499,7 @@
                     // Disable the submit button
                     filter.disabled = true;
                     // Load the filtered data from the API
-                    loadFilteredData();
+                    loadFilteredData(false);
                 }
 
             });
@@ -544,7 +552,7 @@
                     success: function(data) {
                         alert("đã apply thành công! Vui lòng kiểm tra SO apply")
                         submitBtn.disabled = false;
-                        loadFilteredData()
+                        loadFilteredData(false)
                        
                     },
                     error: function(xhr, status, error) {
@@ -562,7 +570,7 @@
 
                         // Enable the submit button
                         submitBtn.disabled = false;
-                        loadFilteredData();
+                        loadFilteredData(false);
                     }
                 })
 
@@ -598,7 +606,7 @@
                     },
                     success: function(data) {
                         alert("Canceled success!")
-                        loadFilteredData()
+                        loadFilteredData(false)
                         submitBtn.disabled = false;
                     },
                     error: function() {
@@ -607,7 +615,7 @@
 
                         // Enable the submit button
                         submitBtn.disabled = false;
-                        loadFilteredData()
+                        loadFilteredData(false)
                     }
                 })
             }

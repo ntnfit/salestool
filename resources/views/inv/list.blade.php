@@ -367,13 +367,26 @@
             gridOptions.api.setRowData({!! $results !!});
         }
 
-        function loadFilteredData() {
-            if (!filterData || Object.keys(filterData).length === 0) {
+        function loadFilteredData(loadall) {
+            const loadingModal = document.getElementById("loadingModal");
+            const filter = document.getElementById("filterButton");
+
+            filter.disabled = true;
+            loadingModal.style.display = "block";
+            if (loadall==true) {
                 loadallData()
-              
+                filter.disabled = false;
             } 
             else
             {
+                if (!filterData || Object.keys(filterData).length === 0) {
+                    const currentDate = new Date();
+                    const day = String(currentDate.getDate()).padStart(2, '0');
+                    const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+                    const year = currentDate.getFullYear();
+                    const formattedDate = `${day}/${month}/${year}`;
+                    filterData = { fromdate: formattedDate, todate: formattedDate };
+                }
             $.ajax({
                 type: 'GET',
                 url: '{{ route('inv.list') }}',
@@ -381,11 +394,19 @@
                 dataType: 'json',
                 success: function(data) {
                     gridOptions.api.setRowData(data);
+                    loadingModal.style.display = "none";
+                    filter.disabled = false;
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error loading data:', error);
+                    loadingModal.style.display = "none";
+                    filter.disabled = false;
                 }
             });
-        }
 
         }
+
+    }
         let filterData = {};
         // setup the grid after the page has finished loading
         document.addEventListener('DOMContentLoaded', function() {
