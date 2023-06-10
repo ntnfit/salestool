@@ -380,16 +380,12 @@
             filter.disabled = true;
             loadingModal.style.display = "block";
             if (!filterData || Object.keys(filterData).length === 0) {
-            const currentDate = new Date();
-            const day = String(currentDate.getDate()).padStart(2, '0');
-            const month = String(currentDate.getMonth() + 1).padStart(2, '0');
-            const year = currentDate.getFullYear();
-
-            const formattedDate = `${day}/${month}/${year}`;
-
-            filterData = { fromdate: formattedDate, todate: formattedDate };
+                loadallData()
+                filter.disabled = false;
             } 
-            $.ajax({
+            else
+            {
+                $.ajax({
                 type: 'GET',
                 url: '{{ route('sales.list') }}',
                 data: filterData,
@@ -406,6 +402,8 @@
                 }
             });
 
+            }
+           
         }
 
         function loadallData() {

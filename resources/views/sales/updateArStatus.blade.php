@@ -420,6 +420,13 @@
 
         function loadFilteredData() {
 
+            loadingModal.style.display = "block";
+            if (!filterData || Object.keys(filterData).length === 0) {
+                loadallData()
+               
+            } 
+            else
+            {
 
             $.ajax({
                 type: 'GET',
@@ -437,25 +444,49 @@
 
                 }
             });
-
+        }
         }
 
         function loadAllData() {
-            $.ajax({
-                type: 'GET',
-                url: '{{ route('sales.arlist') }}',
-                dataType: 'json',
-                success: function(data) {
-                    gridOptions.api.setRowData(data);
-                    gridOptions.api.forEachNode((node) => {
-                        node.oldData = {
-                            ...node.data
-                        };
-                    });
-                    loadingModal.style.display = "none";
 
+            $.ajax({
+                    beforeSend: function(xhr) {
+                        xhr.setRequestHeader("Authorization", "Basic " + '{{ env('BSHeader') }}');
+                        xhr.withCredentials = true;
+                    },
+                    crossDomain: true,
+                    url: " https://" + '{{ env('SAP_SERVER') }}' + ":" + '{{ env('SAP_PORT') }}' +
+                        "/b1s/v1/sml.svc/LOADALLINVOICE",
+                    xhrFields: {
+                        withCredentials: true,
+                        rejectUnauthorized: false
+                    },
+                    // whether this is a POST or GET request
+                    type: "get",
+                    // the type of data we expect back
+                    dataType: "json",
+                    headers: {
+                        "Prefer": "odata.maxpagesize=all",
+                    },
+                    // code to run if the request succeeds;
+                    // the response is passed to the function
+                    success: function(response) {
+                        gridOptions.api.setRowData(response.value);
+                        gridOptions.api.forEachNode((node) => {
+                            node.oldData = {
+                                ...node.data
+                            };
+                        });
+                    loadingModal.style.display = "none";
+                    },
+                    error: function(xhr, status, error) {
+                    console.error('Error loading data:', error);
+                    loadingModal.style.display = "none";
+                    getallBtn.disabled = false;
+                    alert("load all faild!");
                 }
-            });
+                });
+        
 
         }
         let filterData = {};

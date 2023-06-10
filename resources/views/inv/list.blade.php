@@ -325,21 +325,40 @@
             loadingModal.style.display = "block";
 
             $.ajax({
-                type: 'GET',
-                url: '{{ route('inv.loadall') }}',
-                dataType: 'json',
-                success: function(data) {
-                    gridOptions.api.setRowData(data);
+                    beforeSend: function(xhr) {
+                        xhr.setRequestHeader("Authorization", "Basic " + '{{ env('BSHeader') }}');
+                        xhr.withCredentials = true;
+                    },
+                    crossDomain: true,
+                    url: " https://" + '{{ env('SAP_SERVER') }}' + ":" + '{{ env('SAP_PORT') }}' +
+                        "/b1s/v1/sml.svc/UV_LOADALL_IT",
+                    xhrFields: {
+                        withCredentials: true,
+                        rejectUnauthorized: false
+                    },
+                    // whether this is a POST or GET request
+                    type: "get",
+                    // the type of data we expect back
+                    dataType: "json",
+                    headers: {
+                        "Prefer": "odata.maxpagesize=all",
+                    },
+                    // code to run if the request succeeds;
+                    // the response is passed to the function
+                    success: function(response) {
+                        console.log(response);
+
+                    gridOptions.api.setRowData(response.value);
                     loadingModal.style.display = "none";
                     getallBtn.disabled = false;
-
-                },
-                error: function(xhr, status, error) {
+                    },
+                    error: function(xhr, status, error) {
                     console.error('Error loading data:', error);
                     loadingModal.style.display = "none";
                     getallBtn.disabled = false;
+                    alert("load all faild!");
                 }
-            });
+                });
         }
         function loadInitialData() {
             // Make an API call to abc.com to retrieve 100 records
@@ -349,6 +368,12 @@
         }
 
         function loadFilteredData() {
+            if (!filterData || Object.keys(filterData).length === 0) {
+                loadallData()
+              
+            } 
+            else
+            {
             $.ajax({
                 type: 'GET',
                 url: '{{ route('inv.list') }}',
@@ -358,6 +383,7 @@
                     gridOptions.api.setRowData(data);
                 }
             });
+        }
 
         }
         let filterData = {};
