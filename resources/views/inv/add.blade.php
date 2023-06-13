@@ -181,7 +181,7 @@ table#tableadd td:nth-child(3) {
   position: sticky;
   left: 0;
  
-  background-color: #ddd; /* ensure that the fixed columns have the same background color as the table */
+  /* ensure that the fixed columns have the same background color as the table */
 }
 
 table#tableadd td:first-child {
@@ -597,6 +597,31 @@ tbody tr.matched {
       }
       break;
   }
+
+  // Lấy tất cả các hàng trong bảng
+var rows = document.querySelectorAll('#tableadd tr');
+
+// Duyệt qua từng hàng
+for (var i = 0; i < rows.length; i++) {
+    // Lấy giá trị của cột đầu tiên và cột thứ hai
+    var value = rows[i].cells[1].innerText;
+
+    // So sánh giá trị và đặt màu sắc tương ứng cho cột đầu tiên
+    if (value == 85) {
+        rows[i].cells[0].style.backgroundColor = 'red';
+        rows[i].cells[1].style.backgroundColor = 'red';
+        rows[i].cells[1].style.backgroundColor = 'red';
+    } else if (value == 90) {
+        rows[i].cells[0].style.backgroundColor = 'green';
+        rows[i].cells[0].style.backgroundColor = 'green';
+        rows[i].cells[0].style.backgroundColor = 'green';
+    } else {
+        rows[i].cells[0].style.backgroundColor = 'white';
+        rows[i].cells[0].style.backgroundColor = 'white';
+        rows[i].cells[0].style.backgroundColor = 'white';
+    }
+
+}
   };
 </script>
 
