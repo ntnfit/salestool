@@ -63,8 +63,8 @@
                 name="cuscode" id="cuscode" fgroup-class="col-md-3 cuscode" enable-old-support>
                 <option value=""></option>
                 @foreach ($customers as $customer)
-                    <option value="{{ $customer->CardCode }}">
-                        {{ 'StoreId: ' . $customer->U_SID.'--'.$customer->CardCode . '--' . $customer->CardName . '--'.$customer->GroupName.'--'.$customer->ChannelName.'--'. $customer->RouteName.'--' . $customer->LocationName }}
+                    <option value="{{ $customer['CardCode'] }}">
+                        {{ 'StoreId: ' . $customer['U_SID'].'--'.$customer['CardCode'] . '--' . $customer['CardName'] . '--'.$customer['GroupName'].'--'.$customer['ChannelName'].'--'.$customer['RouteName'].'--' .$customer['LocationName'] }}
                     </option>
                 @endforeach
             </x-adminlte-select-bs>
@@ -1140,7 +1140,6 @@
       break;
   }
 };
-
-
+         
     </script>
 @endpush

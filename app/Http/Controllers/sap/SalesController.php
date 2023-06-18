@@ -192,11 +192,20 @@ class SalesController extends Controller
     }
     function addView()
     {
-        
+        $response = Http::withOptions([
+            'verify' => false,
+        ])->withHeaders([
+            "Content-Type" => "application/json",
+            "Accept" => "application/json",
+            "Authorization" => "Basic U1lTVEVNOlNhcEAyMDIzI0Ix",
+            ])->get("http://172.31.246.123:8000/GTHUB/xsjs/LoadCustData.xsjs");
+
+         // Make a request to the service layer
+    //$response = $client->request("POST", "/b1s/v1/Quotations",['verify' => false, 'body' =>  json_encode($body)]);
+        $customers = json_decode($response, true);
         $orderTypes=DB::table('SAL_ORDER_TYPE')->get();
-        $customers=DB::table('Customerlist')->orderby('CardCode','ASC')->get();
         $whsCodes=DB::table('SAL_OWHS')->get();
-        
+     
         return view('sales.add',compact('orderTypes','customers','whsCodes'));
     }
     function store(Request $request)

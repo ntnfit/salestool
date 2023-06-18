@@ -14,11 +14,26 @@
 
         @media print {
             .page-break {
-                page-break-before: always;
+                page-break-after: always;
             }
+            .page-number {
+           counter-reset: page;
+             }
+             .page-break::after{
+                content: "Trang" counter(page) "/" counter(pagecount)
+             }
+             header{
+                max-height: 20%;
+             }
+             main {
+                max-height: 70%;
+             }
+             .pageFooter{
+                max-height: 10%;
 
+             }
         }
-
+        
         h1 {
             text-align: center;
             margin-bottom: -8px;
@@ -100,17 +115,41 @@
             margin-right: 30px;
         }
 
-        .page-number:after {
-            content: counter(page);
-        }
+    
 
-        .break {
-            page-break-after: always;
-        }
-
+      
+       
         table th {
             background-color: #dddd;
         }
+      
+        #pageFooter
+        {
+            page-break-after: always;
+            counter-increment: page;
+    
+        }
+        #pageFooter:after
+        {
+            display: block;
+            text-align: right;
+            content: "Trang " counter(page) " / " counter(pagecount);
+        }
+        #pageFooter {
+            counter-reset: pagecount;
+        }
+
+        #pageFooter::after {
+            counter-increment: pagecount;
+            content: "Trang " counter(page) " / " counter(pagecount);
+        }
+        #pageFooter.first.page
+        {
+            page-break-before: avoid;
+        }
+       
+    
+    
     </style>
 </head>
 
@@ -192,6 +231,8 @@
                    
                 </div>
             </footer>
+            <div id="pageFooter" class="pageFooter">
+            </div>
         </div>
 		
     @endforeach

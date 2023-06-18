@@ -24,7 +24,7 @@
     @php
         $config = ['format' => 'yyyy/MM/DD'];
     @endphp
-    <h3> Sale by cust Group /Customer/Product</h3>
+    <h3> Sale by cust Group /Customer</h3>
    
     <div class="content">
         <form>
