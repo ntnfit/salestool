@@ -5,10 +5,16 @@
     <meta charset="UTF-8">
     <title>Phiếu giao hàng</title>
     <link rel="shortcut icon" href="{{ asset('favicons/favicon.ico') }}"/>
+    <script src="https://unpkg.com/pagedjs/dist/paged.polyfill.js"></script>
     <style>
-        @page {
-            size: auto;
-            margin: 0;
+      @page {
+            size: A4 landscape;
+            margin: 0 1 1 0;
+
+            @bottom-right {
+                content: counter(page) ' of 'counter(pages);
+                margin-bottom: 2px;
+            }
         }
 
 
@@ -17,25 +23,32 @@
                 page-break-before: always;
             }
 
-			
-			
-
         }
+        .pagedjs_page {
+        --pagedjs-margin-bottom: 19px !important;
+        --pagedjs-margin-right: 2px !important;
+    }
 
+    .pagedjs_pagebox>.pagedjs_area>.pagedjs_page_content {
+        margin-top: 10px !important;
+        margin-left: 12px !important;
+        margin-right: 10px !important;
+        width: 98% !important;
+    }
         h1 {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: -8px;
+            height: 30px;
         }
 
         h5 {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 5px;
         }
 
         .content {
             display: flex;
             margin-bottom: 10px;
-            font-size: 12px;
         }
 
         .left-content {
@@ -79,27 +92,34 @@
         .footer {
             display: flex;
             justify-content: space-between;
-            margin-top: 50px;
-            padding: 10px 30px;
+            margin-top: 16px;
+          
         }
 
         .footer-left {
             font-size: 14px;
             line-height: 1.5;
+            border: 1px solid;
         }
-
-        .footer-right {
-            font-size: 14px;
-            line-height: 1.5;
-            text-align: right;
+        .left{
+            border: solid;
+         border-width: 1.5px;
+         text-align: center;
+         width: auto
         }
-
+        .right{
+            border: solid;
+            border-width: 1.5px;
+            text-align: center;
+            width: auto
+        }
         /* Footer right block */
         .footer-right {
             font-size: 14px;
             line-height: 1.5;
             text-align: right;
             margin-right: 30px;
+            
         }
 
         .page-number:after {
@@ -114,12 +134,8 @@
             background-color: #dddd;
         }
         .conteft{
-            margin-top: 100px;
-            position: absolute;  right: 0px;
-        }
-        p.inline{
-            display: inline-block;
-             margin-right: 80px;
+            display: flex;
+            justify-content: space-between;
         }
     </style>
 </head>
@@ -135,7 +151,7 @@
                     <div class="left-content">
                         <p>Mã nhà cung cấp: 110013/2003471</p>
                         <p>Nhà cung cấp: Cong TY TNHH BETAGEN VIET NAM</p>
-                        <br><br>
+                       
                         <p>Khách hàng: {{ $documents->last()->CardName }}</p>
                         <p>Kho nhận: {{ $documents->last()->Buyer }}</p>
                     </div>
@@ -181,15 +197,17 @@
                 <div class="right">
                     <p>Ngày ............ Tháng ............ Năm ............</p>
                     <p>Người giao hàng</p>
-                   
+              
                 </div>
+                
             </footer>
+            <div class="conteft" >
+                <p class="inline">Bảo vệ</p>
+                <p class="inline">Nhân viên nhận hàng</p>
+                <p class="inline">Ngành hàng</p>
+            </div>
         </div>
-		<div class="conteft" >
-            <p class="inline">Bảo vệ</p>
-            <p class="inline">Nhân viên nhận hàng</p>
-            <p class="inline">Ngành hàng</p>
-        </div>
+		
        
     @endforeach
 </body>

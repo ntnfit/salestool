@@ -5,10 +5,20 @@
     @if ($type == 'print')
         <title>Truck Information</title>
         <link rel="shortcut icon" href="{{ asset('favicons/favicon.ico') }}" />
+        <script src="https://unpkg.com/pagedjs/dist/paged.polyfill.js"></script>
     @else
         <title>Phiếu Xuất Kho</title>
     @endif
     <style>
+         @page {
+            size: A4;
+            margin: 0 1 1 0;
+
+            @bottom-right {
+                content: counter(page) ' of 'counter(pages);
+                margin-bottom: 2px;
+            }
+        }
         @media print {
             .no-print {
                 display: none;
@@ -130,6 +140,10 @@
 
         .Quantity {
             width: 30px;
+        }
+        .pagedjs_page {
+            --pagedjs-margin-bottom: 19px !important;
+            --pagedjs-margin-right: 2px !important;
         }
     </style>
 </head>

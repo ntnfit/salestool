@@ -5,10 +5,16 @@
     <meta charset="UTF-8">
     <title>Phiếu giao hàng KM</title>
     <link rel="shortcut icon" href="{{ asset('favicons/favicon.ico') }}"/>
+    <script src="https://unpkg.com/pagedjs/dist/paged.polyfill.js"></script>
     <style>
         @page {
-            size: auto;
-            margin: 0;
+            size: A4 landscape;
+            margin: 0 1 1 0;
+
+            @bottom-right {
+                content: counter(page) ' of 'counter(pages);
+                margin-bottom: 2px;
+            }
         }
 
 
@@ -17,11 +23,18 @@
                 page-break-before: always;
             }
 
-			
-			
-
         }
+        .pagedjs_page {
+        --pagedjs-margin-bottom: 19px !important;
+        --pagedjs-margin-right: 2px !important;
+    }
 
+    .pagedjs_pagebox>.pagedjs_area>.pagedjs_page_content {
+        margin-top: 10px !important;
+        margin-left: 12px !important;
+        margin-right: 10px !important;
+        width: 98% !important;
+    }
         h1 {
             text-align: center;
             margin-bottom: -8px;

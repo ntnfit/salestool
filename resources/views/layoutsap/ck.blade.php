@@ -4,21 +4,24 @@
 <head>
     <meta charset="UTF-8">
     <title>Phiếu giao hàng</title>
-    <link rel="shortcut icon" href="{{ asset('favicons/favicon.ico') }}"/>
+    <script src="https://unpkg.com/pagedjs/dist/paged.polyfill.js"></script>
+    <link rel="shortcut icon" href="{{ asset('favicons/favicon.ico') }}" />
     <style>
         @page {
-            size: auto;
-            margin: 0;
+            size: A4 landscape;
+            margin: 0 1 1 0;
+
+            @bottom-right {
+                content: counter(page) ' of 'counter(pages);
+                margin-bottom: 2px;
+            }
         }
 
-
         @media print {
+
             .page-break {
                 page-break-before: always;
             }
-
-			
-			
 
         }
 
@@ -102,16 +105,20 @@
             margin-right: 30px;
         }
 
-        .page-number:after {
-            content: counter(page);
-        }
-
-        .break {
-            page-break-after: always;
-        }
-
         table th {
             background-color: #dddd;
+        }
+
+        .pagedjs_page {
+            --pagedjs-margin-bottom: 19px !important;
+            --pagedjs-margin-right: 2px !important;
+        }
+
+        .pagedjs_pagebox>.pagedjs_area>.pagedjs_page_content {
+            margin-top: 10px !important;
+            margin-left: 12px !important;
+            margin-right: 10px !important;
+            width: 98% !important;
         }
     </style>
 </head>
@@ -130,7 +137,7 @@
                         <p>Địa chỉ: {{ $documents->last()->Address }}</p>
                     </div>
                     <div class="right-content">
-                        <p style="text-align: end;">{{ date("d/m/Y", strtotime($documents->last()->DocDate))}}</p>
+                        <p style="text-align: end;">{{ date('d/m/Y', strtotime($documents->last()->DocDate)) }}</p>
                         <p>Số đơn hàng: {{ $documents->last()->OrderNo }}</p>
                         <p>Số Hóa đơn: {{ $documents->last()->InvNo }}</p>
                     </div>
@@ -157,7 +164,8 @@
                                 <td>{{ $document->TenHang }}</td>
                                 <td class="text-center">{{ $document->CustQC }}</td>
                                 <td class="text-center">{{ $document->unitMsr }}</td>
-                                <td class="text-center" style="text-align: right">{{ number_format($document->Quantity,2) }}</td>
+                                <td class="text-center" style="text-align: right">
+                                    {{ number_format($document->Quantity, 2) }}</td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -171,26 +179,24 @@
                 <div class="right">
                     <p>Ngày ............ Tháng ............ Năm ............</p>
                     <p>Người giao hàng</p>
-                   
+
                 </div>
             </footer>
         </div>
-		
     @endforeach
 
 
 </body>
 <script>
-	window.addEventListener("load", function () {
-    var A4HeightInPx = 1123; // Approximate A4 height in pixels at 96 DPI
-    var totalPages = Math.ceil(document.body.scrollHeight / A4HeightInPx);
-    var pageNumberElements = document.querySelectorAll(".page-number");
+    window.addEventListener("load", function() {
+        var A4HeightInPx = 1123; // Approximate A4 height in pixels at 96 DPI
+        var totalPages = Math.ceil(document.body.scrollHeight / A4HeightInPx);
+        var pageNumberElements = document.querySelectorAll(".page-number");
 
-    pageNumberElements.forEach(function (element, index) {
-        element.textContent = "Page " + (index + 1) + " of " + totalPages;
+        pageNumberElements.forEach(function(element, index) {
+            element.textContent = "Page " + (index + 1) + " of " + totalPages;
+        });
     });
-});
-
-
 </script>
+
 </html>

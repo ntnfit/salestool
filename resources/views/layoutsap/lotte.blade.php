@@ -5,34 +5,24 @@
     <meta charset="UTF-8">
     <title>Phiếu giao hàng</title>
     <link rel="shortcut icon" href="{{ asset('favicons/favicon.ico') }}"/>
+    <script src="https://unpkg.com/pagedjs/dist/paged.polyfill.js"></script>
     <style>
-        @page {
-            size: auto;
-            margin: 0;
-        }
-
+   
+   @page {
+    size: A4 landscape;
+            margin: 0 1 1 0;
+            @bottom-right {
+                content: counter(page) ' of ' counter(pages);
+                margin-bottom: 2px;
+            }
+    }
 
         @media print {
-            .page-break {
-                page-break-after: always;
+                     .page-break {
+                page-break-before: always;
             }
-            .page-number {
-           counter-reset: page;
-             }
-             .page-break::after{
-                content: "Trang" counter(page) "/" counter(pagecount)
-             }
-             header{
-                max-height: 20%;
-             }
-             main {
-                max-height: 70%;
-             }
-             .pageFooter{
-                max-height: 10%;
-
-             }
-        }
+           
+            }
         
         h1 {
             text-align: center;
@@ -123,32 +113,16 @@
             background-color: #dddd;
         }
       
-        #pageFooter
-        {
-            page-break-after: always;
-            counter-increment: page;
-    
-        }
-        #pageFooter:after
-        {
-            display: block;
-            text-align: right;
-            content: "Trang " counter(page) " / " counter(pagecount);
-        }
-        #pageFooter {
-            counter-reset: pagecount;
-        }
-
-        #pageFooter::after {
-            counter-increment: pagecount;
-            content: "Trang " counter(page) " / " counter(pagecount);
-        }
-        #pageFooter.first.page
-        {
-            page-break-before: avoid;
-        }
-       
-    
+        .pagedjs_page {
+    --pagedjs-margin-bottom: 19px  !important;
+    --pagedjs-margin-right: 2px  !important;
+}
+.pagedjs_pagebox > .pagedjs_area > .pagedjs_page_content {
+    margin-top: -15px !important;
+    margin-left: 12px !important;
+    margin-right: 10px !important;
+    width: 98% !important;
+}
     
     </style>
 </head>
@@ -161,11 +135,11 @@
     @foreach ($groupedDocuments as $docentry => $documents)
 
         <div class="page-break">
-            <header class="header">
+            <header class="header"  style="max-height: 20%">
                 <h1>PHIẾU GIAO HÀNG</h1>
                 <h5>NGÀY GIAO: {{date("d/m/Y", strtotime($documents->last()->DocDate))  }}</h5>
             </header>
-            <main>
+            <main style="max-height: 55%">
                 <div class="content">
                     <div class="left-content">
                         <p>Nhà cung cấp: 5965</p>
@@ -220,7 +194,7 @@
                     </tbody>
                 </table>
             </main>
-            <footer class="footer">
+            <footer class="footer" style="max-height: 20%">
                 <div class="left">
                     <p>{{$documents->last()->CardName}}</p>
                     <p>Người nhận</p>
@@ -231,13 +205,14 @@
                    
                 </div>
             </footer>
-            <div id="pageFooter" class="pageFooter">
-            </div>
+           
         </div>
 		
     @endforeach
 	
 
 </body>
-
+<script>
+    paged.auto();
+</script>
 </html>
