@@ -145,7 +145,7 @@
     <script src="https://cdn.jsdelivr.net/npm/ag-grid-community@28.2.1/dist/ag-grid-community.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/ag-grid-enterprise@28.2.1/dist/ag-grid-enterprise.min.js"></script>
     <script>
-        
+
         var filterParams = {
             comparator: (filterLocalDateAtMidnight, cellValue) => {
                 var dateAsString = cellValue;
@@ -382,7 +382,7 @@
             if (loadall==true) {
                 loadallData()
                 filter.disabled = false;
-            } 
+            }
             else
             {
                 if (!filterData || Object.keys(filterData).length === 0) {
@@ -411,7 +411,7 @@
             });
 
             }
-           
+
         }
 
         function loadallData() {
@@ -540,7 +540,7 @@
                     data: {
                         SoNo: selectedProIds
                     },
-                    
+
                     dataType: 'json',
                     async: false,
                     beforeSend: function() {
@@ -553,7 +553,7 @@
                         alert("đã apply thành công! Vui lòng kiểm tra SO apply")
                         submitBtn.disabled = false;
                         loadFilteredData(false)
-                       
+
                     },
                     error: function(xhr, status, error) {
                         if (xhr.status === 500) {
@@ -627,6 +627,15 @@
             const url = '{{ route('print-preview') }}'+'?so='+selectedProIds;
                           // redirect to the new URL
                           window.open(url, '_blank');
+        });
+        $(document).ready(function() {
+            $('#toDate').val(moment().format(
+                'DD/MM/YYYY')); // set the value of the input element to the current date
+            $('#toDate').datetimepicker(); // initialize the datetimepicker
+
+            var currentDate = moment().format('DD/MM/YYYY');
+            $('#fromDate').val(currentDate); // set the value of the input element to the current date minus 3 days
+            $('#fromDate').datetimepicker(); // initialize the datetimepicker
         });
     </script>
 @stop
