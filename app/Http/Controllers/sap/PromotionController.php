@@ -14,42 +14,42 @@ class PromotionController extends Controller
     function __construct()
     {
         $this->middleware('permission:marketing-module');
-         
+
     }
     // get list promotion
     function listPromotion(Request $request)
     {
         $Promotionlist = DB::table('promotionlist')->orderby('ProId', 'desc')->get();
-        
+
         return view('promotion.ListPromotions',compact('Promotionlist'))
         ->with('i', ($request->input('page', 1) - 1) * 100);
     }
     function listPromotionDate(Request $request)
     {
         $Promotionlist = DB::table('PromotionDateList')->orderby('ProId', 'desc')->get();
-        
+
         return view('promotion.ListPromotionsDate',compact('Promotionlist'))
         ->with('i', ($request->input('page', 1) - 1) * 100);
     }
 
-    
+
     function dfPromotion()
     {
         $PromTypes = DB::table('PromotionType')->get();
-        $Custgroups =DB::table('CUSTGroupDis')->get();
+        $Custgroups =DB::table('CUSTGroupDis')->orderBy('Name','ASC')->get();
         $channels=DB::table('Channel')->get();
         $Routes=DB::table('Routes')->get();
         $ItemCodes=DB::table('ItemSAP')->get();
         $Locations=DB::table('Locations')->get();
        // $Customers=DB::table('Customerlist')->get();
         $Uoms=DB::table('UOMSAP')->get();
-       
+
         return view('promotion.add',compact('PromTypes','Custgroups','channels','Routes','Locations','ItemCodes','Uoms'));
 
     }
 
      function edit ($id)
-    {   
+    {
         $conDB =(new SAPB1Controller)->connect_sap();
         $sql='select * from "BS_PROMOTION" where "ProId"=('.$id.')';
         $stmt = odbc_prepare($conDB, $sql);
@@ -86,7 +86,7 @@ class PromotionController extends Controller
         }
         odbc_close($conDB);
 
-       
+
         $PromTypes = DB::table('PromotionType')->get();
         $Custgroups =DB::table('CUSTGroupDis')->get();
         $channels=DB::table('Channel')->get();
@@ -94,9 +94,9 @@ class PromotionController extends Controller
         $ItemCodes=DB::table('ItemSAP')->get();
         $Locations=DB::table('Locations')->get();
         $Uoms=DB::table('UOMSAP')->get();
-       
+
         $customerdt=json_encode( $customerdt);
-       
+
         return view('promotion.edit',compact('PromTypes','Custgroups',
         'channels','Routes','Locations',
         'ItemCodes','Uoms','listItems','customerdt','header','proitems'
@@ -104,7 +104,7 @@ class PromotionController extends Controller
 
     }
     function edit_prodate ($id)
-    {   
+    {
         $conDB =(new SAPB1Controller)->connect_sap();
         $sql='select * from "BS_DatePromotion" where "ProID"=('.$id.')';
         $stmt = odbc_prepare($conDB, $sql);
@@ -140,8 +140,8 @@ class PromotionController extends Controller
         $ItemCodes=DB::table('ItemSAP')->get();
         $Locations=DB::table('Locations')->get();
         $Uoms=DB::table('UOMSAP')->get();
-       
-       
+
+
         return view('promotion.editdate',compact('PromTypes','Custgroups',
         'channels','Routes','Locations',
         'ItemCodes','Uoms','listItems','customerdt','header'
@@ -152,37 +152,37 @@ class PromotionController extends Controller
     {
         $query = DB::table('Customerlist');
 
-       
+
         if ($request->cusgrp) {
             $query->whereIn('GroupCode', array_map('trim', explode(',', $request->cusgrp)));
         }
-    
+
         if ($request->channel) {
             $query->whereIn('ChannelCode', array_map('trim', explode(',', $request->channel)));
         }
-    
+
         if ($request->route) {
             $query->whereIn('RouteCode', array_map('trim', explode(',', $request->route)));
         }
-    
+
         if ($request->location) {
             $query->whereIn('LocationCode', array_map('trim', explode(',', $request->location)));
-          
+
         }
-    
+
         $results = $query->get();
 
         return json_encode($results);
-     
+
        // return response()->json(['cust' => $Customers], 200);
     }
     function store(Request $request)
     {
-      
-     
-        
+
+
+
         $conDB =(new SAPB1Controller)->connect_sap();
-       
+
        $sql="";
         if($request->protype!="5")
         {
@@ -192,23 +192,23 @@ class PromotionController extends Controller
         }
         else
         {
-            $sql = 'INSERT INTO "BS_DatePromotion" ("ProName","FromDate","ToDate","Rouding","FixCust","DateCreated") 
+            $sql = 'INSERT INTO "BS_DatePromotion" ("ProName","FromDate","ToDate","Rouding","FixCust","DateCreated")
             VALUES (?,?,?,?,?,?)';
         }
-       
-        
+
+
         //format data
         $period = $request->period;
         $date_parts = explode('-', $period);
         $fromdate = date('Ymd', strtotime(str_replace('/', '-',$date_parts[0])));
         $todate = date('Ymd', strtotime(str_replace('/', '-',$date_parts[1])));
-      
+
         // Bind the values to the statement
         $PromotionType = $request->protype;
         $PromotionName = $request->promotionname;
         $Fromdate=$fromdate;
         $ToDate=$todate;
-       
+
         $Quantity=$request->Quantity;
         $TotalAmount=$request->Amount;
         $DiscountAmt=0;
@@ -234,8 +234,8 @@ class PromotionController extends Controller
        else{
         $fixcus=0;
        }
-       
-       
+
+
         $stmt = odbc_prepare($conDB, $sql);
         if (!$stmt) {
             // Handle SQL error
@@ -272,48 +272,48 @@ class PromotionController extends Controller
                 $ProQtydate=$request->ProQtydate[$key];
                 $ProBatchdate=$request->ProBatchdate[$key];
                     if($request->protype!="5")
-                    { 
+                    {
                         $querySQL='insert into BS_PRO_ITEMLIST ("ProId", "ItemCode","Quantity","UoMEntry","BaseQuantity","BaseUoMEntry")
                         values (?, ?, ?, ?, ?, ?)';
-                        $stmt = odbc_prepare($conDB, $querySQL);               
+                        $stmt = odbc_prepare($conDB, $querySQL);
                         $result = odbc_execute($stmt, array($id, $item, $Qty, $UomCode, $BaseQty, $BaseUom));
                     }
                     else
                     {
                         $querySQL='insert into "BS_DatePromotion_Item" ("ProId", "ItemCode","InputQty","InputUoMCode","Quantity","UoMCode","BatchNo","ProItemCode","ProQuantity","ProDate")
                         values (?,?,?,?,?,?,?,?,?,?)';
-                        $stmt = odbc_prepare($conDB, $querySQL);               
+                        $stmt = odbc_prepare($conDB, $querySQL);
                         $result = odbc_execute($stmt, array($id, $item, $Qty, $UomCode, $BaseQty, $BaseUom,$Batch,$Itemdate, $ProQtydate, $ProBatchdate));
 
                     }
-                }    
+                }
 
             }
             $cusdata=json_decode($request->customerdata[0]);
              //Customer row
             if (!empty( $cusdata)) {
-                
-                
-                foreach ($cusdata as $key => $cusCode) {    
+
+
+                foreach ($cusdata as $key => $cusCode) {
                     if($cusCode !== null)
                     {
                         $customercode= $cusCode->CardCode;
-                     
+
                         if($request->protype!="5")
                         {
-                            $insertCusQuery='insert into BS_PRO_CUSTOMER  ("ProId","ProCustCode","ProCustName","GroupCode","ChannelCode","RouteCode","LocationCode")';  
+                            $insertCusQuery='insert into BS_PRO_CUSTOMER  ("ProId","ProCustCode","ProCustName","GroupCode","ChannelCode","RouteCode","LocationCode")';
                         }
                         else
                         {
                             $insertCusQuery='insert into "BS_DatePromotion_Cust" ("ProId","CustCode","CustName","GroupCode","ChannelCode","RouteCode","LocationCode")';
                         }
 
-                       
+
                         $cusQuery='SELECT '.$id.',"CardCode","CardName","GroupCode","ChannelCode","RouteCode","LocationCode" FROM ST_CUSTOMER_DROPDOWN where "CardCode"='."'".$customercode."'";
                         $run=odbc_prepare($conDB,$insertCusQuery.$cusQuery);
                         odbc_execute($run );
-                    }   
-              
+                    }
+
                 }
             }
             if (!empty($request->proitem)) {
@@ -326,7 +326,7 @@ class PromotionController extends Controller
                 $BaseQty=(float)$request->probaseqty[$key];
                 $BaseUom=$request->probaseoum[$key];
                 $querySQL='insert into BS_PROMOTION_ITEM ("ProId", "ProItemCode","ProQuantity","ProUoMEntry","ProBaseQuantity","ProBaseUoMEntry")
-                values (?,?,?,?,?,?)';              
+                values (?,?,?,?,?,?)';
                $stmt = odbc_prepare($conDB, $querySQL);
                $result = odbc_execute($stmt, array($id,$item,$Qty,$UomCode,$BaseQty,$BaseUom));
 
@@ -341,13 +341,13 @@ class PromotionController extends Controller
         {
             return redirect()->route('list-promotion-date')->with('message', 'Add promotion successfully.');
         }
-        
+
 
     }
     function check_baseUoM(Request $request)
     {
-        
-        $BaseUom=DB::table('ST_BaseUom')->where('ItemCode',$request->itemcode)->where('UomEntry',$request->uomcode)->get()->first(); 
+
+        $BaseUom=DB::table('ST_BaseUom')->where('ItemCode',$request->itemcode)->where('UomEntry',$request->uomcode)->get()->first();
        return response()->json(['baseUomCode'=>$BaseUom->BaseUoMEntry,
                         'baseQuantity'=>$request->quantity*$BaseUom->UoMCode_Qty
          ]);
@@ -355,10 +355,10 @@ class PromotionController extends Controller
 
     function update(Request $request, $id)
     {
-       
-       
+
+
         $conDB =(new SAPB1Controller)->connect_sap();
-        
+
         $sql="";
         if($request->protype!="5")
         {
@@ -384,16 +384,16 @@ class PromotionController extends Controller
                 "ToDate" = ?,
                 "Rouding" = ?,
                 "FixCust" = ?,
-                "DateUpdated"=?      
+                "DateUpdated"=?
                 WHERE "ProID"='.$id;
         }
-       
+
 
         //format data
         $period = $request->period;
         $dates = explode(" - ", $period);
         // Convert each date to the "YYYYMMDD" format
-        
+
         $from_date = \Carbon\Carbon::createFromFormat('d/m/Y',$dates[0])->format('Ymd');
         $to_date =\Carbon\Carbon::createFromFormat('d/m/Y',$dates[1])->format('Ymd');
         // Bind the values to the statement
@@ -459,10 +459,10 @@ class PromotionController extends Controller
                 odbc_exec($conDB,$sql);
 
         }
-        
-        
-        
-       
+
+
+
+
         // insert to row data
             // Item row
             foreach($request->Item as $key => $Items)
@@ -473,13 +473,13 @@ class PromotionController extends Controller
                     $UomCode=(INT)$request->UomCode[$key];
                     $BaseQty=(float)$request->BaseQty[$key];
                     $BaseUom=(INT)$request->BaseUom[$key];
-                   
-                   
+
+
                         if($request->protype!="5")
-                        { 
+                        {
                             $querySQL='insert into BS_PRO_ITEMLIST ("ProId", "ItemCode","Quantity","UoMEntry","BaseQuantity","BaseUoMEntry")
                             values (?, ?, ?, ?, ?, ?)';
-                            $stmt = odbc_prepare($conDB, $querySQL);               
+                            $stmt = odbc_prepare($conDB, $querySQL);
                             $result = odbc_execute($stmt, array($id, $item, $Qty, $UomCode, $BaseQty, $BaseUom));
                         }
                         else
@@ -488,28 +488,28 @@ class PromotionController extends Controller
                             $ProQtydate=$request->ProQtydate[$key];
                             $ProBatchdate=$request->ProBatchdate[$key];
                             $Batch=$request->Batch[$key];
-                            $querySQL='insert into "BS_DatePromotion_Item" 
+                            $querySQL='insert into "BS_DatePromotion_Item"
                             ("ProId", "ItemCode","InputQty","InputUoMCode",
                             "Quantity","UoMCode","BatchNo","ProItemCode","ProQuantity","ProDate")
                             values (?,?,?,?,?,?,?,?,?,?)';
-                            $stmt = odbc_prepare($conDB, $querySQL);               
+                            $stmt = odbc_prepare($conDB, $querySQL);
                             $result = odbc_execute($stmt, array($id, $item, $Qty, $UomCode, $BaseQty, $BaseUom,$Batch,$Itemdate, $ProQtydate, $ProBatchdate));
-    
+
                         }
-                    }            
+                    }
 
             }
              //Customer row
              $cusdata=json_decode($request->customerdata[0]);
             if (!empty($cusdata)) {
-            
-                foreach ( $cusdata as $key => $cusCode) {       
-                  
+
+                foreach ( $cusdata as $key => $cusCode) {
+
                     if($request->protype!="5")
-                    { 
+                    {
                         $customercode=$cusCode->ProCustCode;
                         $insertCusQuery='insert into BS_PRO_CUSTOMER ("ProId","ProCustCode","ProCustName","GroupCode","ChannelCode","RouteCode","LocationCode")';
-                       
+
                     }
                     else
                     {
@@ -530,9 +530,9 @@ class PromotionController extends Controller
                 $UomCode=$request->prouomcode[$key];
                 $BaseQty=(float)$request->probaseqty[$key];
                 $BaseUom=$request->probaseoum[$key];
-                
+
                $querySQL='insert into BS_PROMOTION_ITEM ("ProId", "ProItemCode","ProQuantity","ProUoMEntry","ProBaseQuantity","ProBaseUoMEntry")
-                values (?,?,?,?,?,?)';              
+                values (?,?,?,?,?,?)';
                $stmt = odbc_prepare($conDB, $querySQL);
                $result = odbc_execute($stmt, array($id,$item,$Qty,$UomCode,$BaseQty,$BaseUom));
 
@@ -559,9 +559,9 @@ class PromotionController extends Controller
             }
             else
             {
-                $querySQL='update "BS_DatePromotion" set "HasTerm"=1 where "ProID"=?';   
+                $querySQL='update "BS_DatePromotion" set "HasTerm"=1 where "ProID"=?';
             }
-                    
+
             $stmt = odbc_prepare($conDB, $querySQL);
             $result = odbc_execute($stmt, array($SoNo));
         }
