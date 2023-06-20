@@ -31,7 +31,7 @@
         h1 {
             text-align: center;
             margin-bottom: -8px;
-            height: 30px;
+            height: 50px;
         }
 
         h5 {
@@ -78,12 +78,24 @@
             font-size: 12px;
         }
 
-        .footer-left,
-        .footer-right {
-            flex: 1;
-            font-size: 12px;
-        }
+        .left,
+        .right {
 
+            font-size: 12px;
+            border: solid;
+           border-width: 1.5px;
+           text-align: center;
+            height: 100px;
+
+        }
+        .left
+        {
+            width: 210px;
+        }
+        .right
+        {
+            width: 200px;
+        }
         .footer {
             display: flex;
             justify-content: space-between;
@@ -91,16 +103,7 @@
             padding: 10px 30px;
         }
 
-        .footer-left {
-            font-size: 14px;
-            line-height: 1.5;
-        }
 
-        .footer-right {
-            font-size: 14px;
-            line-height: 1.5;
-            text-align: right;
-        }
 
         /* Footer right block */
         .footer-right {

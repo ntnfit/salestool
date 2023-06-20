@@ -5,14 +5,15 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="{{ asset('favicons/favicon.ico') }}"/>
+    <link rel="shortcut icon" href="{{ asset('favicons/favicon.ico') }}" />
     <title>Phiếu giao hàng Aeon</title>
+
 </head>
 
 <body>
     <style>
         @page {
-            size: A4;
+            size: A4 portrait;
             margin: 0;
         }
 
@@ -20,46 +21,55 @@
             .page-break {
                 page-break-before: always;
             }
+            .master{
+            height: 288mm;
+            width: 100%;
+        }
+        .page{
+            position: relative;
+            right: 0;
+            float: right;
+        }
 
-            .infocompany {
+        }
 
-                font-size: 12px;
-                /* adjust font size as needed */
-                line-height: 1.5;
-                /* adjust line height as needed */
-            }
+        .infocompany {
+            font-size: 12px;
+            /* adjust font size as needed */
+            line-height: 1.5;
+            /* adjust line height as needed */
+        }
 
-            .tables-container {
-                display: flex;
-                justify-content: space-between;
-                align-items: flex-start margin-bottom: 20px;
-                /* add some spacing between the tables */
-                margin-right: 16px;
-            }
+        .tables-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start margin-bottom: 20px;
+            /* add some spacing between the tables */
+            margin-right: 16px;
+        }
 
-            #table1,
-            #table2,
-            #table3 {
-                width: 50%;
-                /* distribute tables evenly across the container */
+        #table1,
+        #table2,
+        #table3 {
+            width: 50%;
+            /* distribute tables evenly across the container */
 
-                padding: 5px;
+            padding: 5px;
 
-            }
+        }
 
-            #table1 {
-                width: 80%;
-                 !important
-                /* set width for table 1 */
-            }
+        #table1 {
+            width: 80%;
+             !important
+            /* set width for table 1 */
+        }
 
-            #table1 th:nth-child(1) {
-                width: 300px;
-            }
+        #table1 th:nth-child(1) {
+            width: 300px;
+        }
 
-            #table1 th:nth-child(2) {
-                width: 200px;
-            }
+        #table1 th:nth-child(2) {
+            width: 200px;
         }
 
         .break {
@@ -84,14 +94,14 @@
         #header1 {
             margin-left: 0px;
             text-align: left;
-            width: 50%
+            width: 70%
         }
 
         #header2 {
             margin-right: 10px;
             margin-top: 20px;
             text-align: right;
-            width: 250px;
+            width: 190px;
             height: 60px;
             border: 1px solid black;
             vertical-align: top;
@@ -113,18 +123,6 @@
             border-collapse: collapse;
         }
 
-        /* #table1 td,th{
-            width: 150px;
-            height: 15px;
-            font-size: 11px;;
-        } */
-
-        /* #table2 td,th{
-            width: 100px;
-            height: 15px;
-            font-size: 11px;;
-        } */
-
         table td,
         th {
             height: 15px;
@@ -143,21 +141,38 @@
         }
 
         #note {
-            margin-top: 20px;
-            margin-right: 500px;
-            float: right;
+            position: relative;
+    margin-top: 10px;
+
+    margin-left: 77px;
         }
 
         .table-header {
             display: inline-block;
             margin-right: -16px;
         }
-        .page-break{
-        margin-bottom: 140px;
-     }
+        h2{
+            margin-top: -5px
+        }
+        .master{
+            height: 288mm;
+            width: 100%;
+        }
+        .page{
+            position: relative;
+            right: 0;
+            float: right;
+        }
     </style>
+     @php
+     $pagenumber=0;
+         $totalPage=count($groupedDocuments);
+     @endphp
     @foreach ($groupedDocuments as $docentry => $documents)
         <div class="page-break">
+         <div class="master">
+
+        <header>
             <div class="header">
                 <div id="header1">
                     <img src="{{ asset('images/aeonlogo.png') }}" width="200" height="100">
@@ -174,179 +189,190 @@
             </div>
 
             <h2>PHIẾU GIAO HÀNG</h2>
-            <div class="tables-container">
-                <table id="table1" class="table-header" cellspacing="0" cellpadding="5">
-                    <thead>
-                        <tr>
-                            <th style="width: 200px;">Mã Số Nhà Cung Cấp</th>
-                            <th style="width: 280px;">Tên Nhà Cung Cấp</th>
-                            <th style="width: 100px;">Số Hợp Đồng</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>374</td>
-                            <td> CTY TNHH Betagen Việt Nam</td>
-                            <td>GA00686</td>
-                        </tr>
-                    </tbody>
-                </table>
+        </header>
+            <main>
+                    <div class="tables-container">
+                        <table id="table1" class="table-header" cellspacing="0" cellpadding="5">
+                            <thead>
+                                <tr>
+                                    <th style="width: 200px;">Mã Số Nhà Cung Cấp</th>
+                                    <th style="width: 280px;">Tên Nhà Cung Cấp</th>
+                                    <th style="width: 100px;">Số Hợp Đồng</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>374</td>
+                                    <td> CTY TNHH Betagen Việt Nam</td>
+                                    <td>GA00686</td>
+                                </tr>
+                            </tbody>
+                        </table>
 
 
-                <table id="table2" class="table-header" cellspacing="0" cellpadding="5">
-                    <thead>
-                        <tr>
-                            <th style="width: 300px;"colspan="3">Ngày nhận</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    </tbody>
-                </table>
+                        <table id="table2" class="table-header" cellspacing="0" cellpadding="5">
+                            <thead>
+                                <tr>
+                                    <th style="width: 300px;"colspan="3">Ngày nhận</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
 
-                <table id="table3" class="table-header" cellspacing="0" cellpadding="5">
-                    <thead>
-                        <tr>
-                            <th style="width: 70px;">In lại</th>
-                            <th colspan="3" style="width: 300px;">Ngày in</th>
-                            <th style="width: 100px;">Thời gian</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td></td>
-                            <td>{{date("d")}}</td>
-                            <td>{{date("m")}}</td>
-                            <td>{{date("Y")}}</td>
-                            <td>{{date('H:i')}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <table id="table4" cellspacing="0" cellpadding="5">
-                <thead>
-                    <tr>
-                        <th style="width: 50px;">Loại Phiếu</th>
-                        <th style="width: 60px;">Mã Kho</th>
-                        <th style="width: 460px;">Tên Kho & Địa Chỉ Kho</th>
-                        <th style="width: 115px;">LINE CODE</th>
-                        <th style="width: 95px;">DEPT CODE</th>
-                        <th colspan="3" style="width: 300px;">Ngày Đặt Hàng</th>
-                        <th colspan="3" style="width: 310px;">Ngày Giao Hàng</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td></td>
-                        <td>1001</td>
-                        <td>{{ $documents->last()->WhsName }}</td>
-                        <td>{{ $documents->last()->LineCode }}</td>
-                        <td>2027</td>
-                        <td>{{date('d', strtotime($documents->last()->OrderDate))   }}</td>
-                        <td>{{date('m', strtotime($documents->last()->OrderDate))   }}</td>
-                        <td>{{date('Y', strtotime($documents->last()->OrderDate))  }}</td>
-                        <td>{{date('d', strtotime($documents->last()->DeliveryDate))  }}</td>
-                        <td>{{date('m', strtotime($documents->last()->DeliveryDate))  }}</td>
-                        <td>{{date('Y', strtotime($documents->last()->DeliveryDate))  }}</td>
-                    </tr>
-                </tbody>
-            </table>
+                        <table id="table3" class="table-header" cellspacing="0" cellpadding="5">
+                            <thead>
+                                <tr>
+                                    <th style="width: 70px;">In lại</th>
+                                    <th colspan="3" style="width: 300px;">Ngày in</th>
+                                    <th style="width: 100px;">Thời gian</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td>{{ date('d') }}</td>
+                                    <td>{{ date('m') }}</td>
+                                    <td>{{ date('Y') }}</td>
+                                    <td>{{ date('H:i') }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <table id="table4" cellspacing="0" cellpadding="5">
+                        <thead>
+                            <tr>
+                                <th style="width: 50px;">Loại Phiếu</th>
+                                <th style="width: 60px;">Mã Kho</th>
+                                <th style="width: 460px;">Tên Kho & Địa Chỉ Kho</th>
+                                <th style="width: 115px;">LINE CODE</th>
+                                <th style="width: 95px;">DEPT CODE</th>
+                                <th colspan="3" style="width: 300px;">Ngày Đặt Hàng</th>
+                                <th colspan="3" style="width: 310px;">Ngày Giao Hàng</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                <td>1001</td>
+                                <td>{{ $documents->last()->WhsName }}</td>
+                                <td>{{ $documents->last()->LineCode }}</td>
+                                <td>2027</td>
+                                <td>{{ date('d', strtotime($documents->last()->OrderDate)) }}</td>
+                                <td>{{ date('m', strtotime($documents->last()->OrderDate)) }}</td>
+                                <td>{{ date('Y', strtotime($documents->last()->OrderDate)) }}</td>
+                                <td>{{ date('d', strtotime($documents->last()->DeliveryDate)) }}</td>
+                                <td>{{ date('m', strtotime($documents->last()->DeliveryDate)) }}</td>
+                                <td>{{ date('Y', strtotime($documents->last()->DeliveryDate)) }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
 
-            <table id="table-main" cellspacing="0" cellpadding="5">
-                <thead>
+                    <table id="table-main" cellspacing="0" cellpadding="5">
+                        <thead>
 
 
-                    <tr>
-                        <th rowspan="2" style="width: 50px;">STT</th>
-                        <th rowspan="2" style="width: 237px;">TÊN SẢN PHẨM (ITEM DESCRIPTION)</th>
-                        <th style="width: 70px;">SỐ LƯỢNG</th>
-                        <th style="width: 70px;">ĐVT</th>
-                        <th style="width: 120px;">MÃ HÀNG</th>
-                        <th rowspan="2" style="width: 100px;">MÃ VẠCH <br>SẢN PHẨM</th>
-                        <th rowspan="2" style="width: 70px;">SỐ LƯỢNG ĐẶT HÀNG</th>
-                        <th rowspan="2" style="width: 70px;">SỐ LƯỢNG GIAO HÀNG</th>
-                        <th rowspan="2" style="width: 50px;">CHIẾT KHẤU (%)</th>
-                        <th rowspan="2" style="width: 95px;">GIÁ BÁN</th>
-                        <th colspan="2"style="width: 200px;">GIÁ MUA</th>
-                        <th colspan="2" style="width: 200px;">GIÁ BÁN</th>
+                            <tr>
+                                <th rowspan="2" style="width: 50px;">STT</th>
+                                <th rowspan="2" style="width: 237px;">TÊN SẢN PHẨM (ITEM DESCRIPTION)</th>
+                                <th style="width: 70px;">SỐ LƯỢNG</th>
+                                <th style="width: 70px;">ĐVT</th>
+                                <th style="width: 120px;">MÃ HÀNG</th>
+                                <th rowspan="2" style="width: 100px;">MÃ VẠCH <br>SẢN PHẨM</th>
+                                <th rowspan="2" style="width: 70px;">SỐ LƯỢNG ĐẶT HÀNG</th>
+                                <th rowspan="2" style="width: 70px;">SỐ LƯỢNG GIAO HÀNG</th>
+                                <th rowspan="2" style="width: 50px;">CHIẾT KHẤU (%)</th>
+                                <th rowspan="2" style="width: 95px;">GIÁ BÁN</th>
+                                <th colspan="2"style="width: 200px;">GIÁ MUA</th>
+                                <th colspan="2" style="width: 200px;">GIÁ BÁN</th>
 
-                    </tr>
+                            </tr>
 
-                    <tr>
-                        <th style="width: 50px;">SIZE</th>
-                        <th>MÀU SẮC</th>
-                        <th>MÃ HÀNG NCC</th>
-                        <th>ĐƠN GIÁ</th>
-                        <th style="width: 100px;">THÀNH TIỀN</th>
-                        <th>ĐƠN GIÁ</th>
-                        <th style="width: 100px;">THÀNH TIỀN</th>
+                            <tr>
+                                <th style="width: 50px;">SIZE</th>
+                                <th>MÀU SẮC</th>
+                                <th>MÃ HÀNG NCC</th>
+                                <th>ĐƠN GIÁ</th>
+                                <th style="width: 100px;">THÀNH TIỀN</th>
+                                <th>ĐƠN GIÁ</th>
+                                <th style="width: 100px;">THÀNH TIỀN</th>
 
-                    </tr>
-                </thead>
-                <tbody>
-                    @php($index = 0)
-                    @php($sumtotal = 0)
-                    @foreach ($documents as $document)
-                        <tr>
-                            <td>{{++$index}}</td>
-                            <td>{{ $document->TenHang }}</td>
-                            <td>{{ $document->Size }}</td>
-                            <td>{{ $document->Color }}</td>
-                            <td>{{ $document->MaHang }}</td>
-                            <td>{{ $document->Mavach }}</td>
-                            <td>{{ number_format($document->OrderQtybyThung) }}</td>
-                            <td>{{  number_format($document->OrderQtybyThung) }}</td>
-                            @if(number_format($document->Discount)>0)
-                            <td>{{  number_format($document->Discount) }}</td>
-                            @else
-                            <td>-</td>
-                            @endif
-                            <td></td>
-                            <td>{{  number_format($document->DGiaMua) }}</td>
-                            <td>{{ number_format($document->TTMua) }}</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        @php($sumtotal+=$document->TTMua)
-                    @endforeach
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <th colspan="10" style="font-weight: bold;text-align: right;">TỔNG TIỀN</th>
-                        <td colspan="4">{{number_format($sumtotal) }}</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @php($index = 0)
+                            @php($sumtotal = 0)
+                            @foreach ($documents as $document)
+                                <tr>
+                                    <td>{{ ++$index }}</td>
+                                    <td>{{ $document->TenHang }}</td>
+                                    <td>{{ $document->Size }}</td>
+                                    <td>{{ $document->Color }}</td>
+                                    <td>{{ $document->MaHang }}</td>
+                                    <td>{{ $document->Mavach }}</td>
+                                    <td>{{ number_format($document->OrderQtybyThung) }}</td>
+                                    <td>{{ number_format($document->OrderQtybyThung) }}</td>
+                                    @if (number_format($document->Discount) > 0)
+                                        <td>{{ number_format($document->Discount) }}</td>
+                                    @else
+                                        <td>-</td>
+                                    @endif
+                                    <td></td>
+                                    <td>{{ number_format($document->DGiaMua) }}</td>
+                                    <td>{{ number_format($document->TTMua) }}</td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                @php($sumtotal += $document->TTMua)
+                            @endforeach
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th colspan="10" style="font-weight: bold;text-align: right;">TỔNG TIỀN</th>
+                                <td colspan="4">{{ number_format($sumtotal) }}</td>
 
-                    </tr>
-                    <tr>
-                        <th colspan="10" style="font-weight: bold;text-align: right;">TỔNG CHIẾT KHẤU</th>
-                        <td colspan="4">{{number_format($documents->last()->DiscountSum) }}</td>
-                    </tr>
-                    <tr>
-                        <th colspan="10" style="font-weight: bold;text-align: right;">NET TOTAL</th>
-                        <td colspan="4">{{number_format($documents->last()->DiscountSum+$sumtotal) }}</td>
-                    </tr>
-                    <tr>
-                        <th colspan="10" style="font-weight: bold;text-align: right;">VAT 10%</th>
-                        <td colspan="4">{{number_format($documents->last()->VAT) }}</td>
-                    </tr>
-                    <tr>
-                        <th colspan="10" style="font-weight: bold;text-align: right;">TỔNG TIỀN THANH TOÁN</th>
-                        <td colspan="4">{{number_format($documents->last()->DocTotal)}}</td>
+                            </tr>
+                            <tr>
+                                <th colspan="10" style="font-weight: bold;text-align: right;">TỔNG CHIẾT KHẤU</th>
+                                <td colspan="4">{{ number_format($documents->last()->DiscountSum) }}</td>
+                            </tr>
+                            <tr>
+                                <th colspan="10" style="font-weight: bold;text-align: right;">NET TOTAL</th>
+                                <td colspan="4">{{ number_format($documents->last()->DiscountSum + $sumtotal) }}</td>
+                            </tr>
+                            <tr>
+                                <th colspan="10" style="font-weight: bold;text-align: right;">VAT 10%</th>
+                                <td colspan="4">{{ number_format($documents->last()->VAT) }}</td>
+                            </tr>
+                            <tr>
+                                <th colspan="10" style="font-weight: bold;text-align: right;">TỔNG TIỀN THANH TOÁN
+                                </th>
+                                <td colspan="4">{{ number_format($documents->last()->DocTotal) }}</td>
 
-                    </tr>
-                </tfoot>
-            </table>
+                            </tr>
+                        </tfoot>
+                    </table>
 
-            <div id="note">
-                <span>
-                    Ghi chú:
-                </span>
-            </div>
+            </main>
+            <footer>
+                <div id="note">
+                    <span>
+                        Ghi chú:
+                    </span>
+                </div>
+            </footer>
         </div>
+        <div class="page">
+            {{++$pagenumber.'/'. $totalPage}}
+        </div>
+                </div>
     @endforeach
+
 </body>
 
 </html>
