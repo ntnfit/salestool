@@ -14,23 +14,23 @@ class DeliveryController extends Controller
     function __construct()
     {
         $this->middleware('permission:logistic-module');
-         
+
     }
     public function index()
     {
         return view('delivery.index');
     }
     public function store(Request $request)
-    { 
+    {
         $files = $request->file('file');
-      
-        $attachments = []; 
+
+        $attachments = [];
         if ($request->hasFile('file')) {
 
             foreach ($files as $file) {
-             
+
                 $namefile = pathinfo($file->getClientOriginalName(),PATHINFO_FILENAME);
-               
+
                 $extension = $file->getClientOriginalExtension();
                 $fileName = $namefile ."_". time() . '.' . $extension;
 
@@ -39,43 +39,43 @@ class DeliveryController extends Controller
                 // Replace '\' with '\\' in the target folder path to avoid any escape sequence issues
                 $destinationPath = str_replace('\\', '\\\\', $destinationPath);
 
-                $file->move($destinationPath, $fileName);           
+                $file->move($destinationPath, $fileName);
                 $attachment = [
                     "FileExtension" => $extension,
                     "FileName" => pathinfo($fileName,PATHINFO_FILENAME),
                     "SourcePath" => env('pathuploadSAP'),
                     "UserID" => "1"
                 ];
-                
+
                 array_push($attachments, $attachment);
-                
+
                 $payload = [
                     "Attachments2_Lines" => $attachments
                 ];
-                
+
             }
-            
+
         }
-    
+
         $entry=$this->attachSAP($payload);
         $this->updatestatus($entry,$request->DocKey);
-      
-        
+
+
        return  redirect()->back()->with('message', 'update sucesss!');
-    
+
     }
     function destroy (Request $request)
     {
-        
-        
+
+
         $destinationPath =base_path() . '/' .'uploads/delivery/';
-       
+
         if(file_exists($destinationPath.$request->id))
         {
            unlink($destinationPath.$request->id);
-        } 
-           
-            
+        }
+
+
     }
     function updatestatus(string $entry, string $so)
     {
@@ -100,8 +100,8 @@ class DeliveryController extends Controller
             'verify' => false,
             'json' => $payload
         ]);
-    
-   
+
+
     }
 
     public function attachSAP(array $payload)
@@ -118,18 +118,18 @@ class DeliveryController extends Controller
             "base_uri" => $serviceLayerUrl,
             "headers" => $headers,
         ]);
-        
+
         // Make a request to the service layer
         $response = $client->request("POST", "/b1s/v1/Attachments2", [
             'verify' => false,
             'json' => $payload
         ]);
-    
+
         // Get the response body as a string
         $responseBody = $response->getBody()->getContents();
         $responseJson = json_decode($responseBody, true);
         $absoluteEntry = $responseJson["AbsoluteEntry"];
-        
+
         return $absoluteEntry;
     }
 
@@ -148,7 +148,7 @@ class DeliveryController extends Controller
     }
     function truckview()
     {
-        
+
         $conDB = (new SAPB1Controller)->connect_sap();
         $sql='select * from "@BS_TRUCKINFO" Where "U_Status"=?';
         $stmt = odbc_prepare($conDB, $sql);
@@ -172,30 +172,30 @@ class DeliveryController extends Controller
     }
 
     function TruckApply(Request $request){
-       
+
         $conDB = (new SAPB1Controller)->connect_sap();
         if (!empty($request->No))
         {
             foreach($request->No as $no)
             {
-               
-               
+
+
                 if( $no['DocType']=='IT')
                 {
-                    $sql='update OWTQ set "U_TruckInfo"=? Where "DocNum"=?';  
+                    $sql='update OWTQ set "U_TruckInfo"=? Where "DocNum"=?';
                 }
                 else {
-                    $sql='update ORDR set "U_TruckInfo"=? Where "DocNum"=?';  
+                    $sql='update ORDR set "U_TruckInfo"=? Where "DocNum"=?';
                 }
-                    
+
                 $stmt = odbc_prepare($conDB, $sql);
                 odbc_execute($stmt,array($request->TruckCode,$no['DocNum']));
 
             }
             odbc_close($conDB);
-            
+
         }
-       
+
         return response()->json(["success" => true,"data"=>"okay"]);
 
     }
@@ -223,17 +223,17 @@ class DeliveryController extends Controller
             {
                 foreach($request->TruckCode as $no)
                 {
-                    $sql='update "@BS_TRUCKINFO" set "U_Status"=? Where "Code"=?';       
+                    $sql='update "@BS_TRUCKINFO" set "U_Status"=? Where "Code"=?';
                     $stmt = odbc_prepare($conDB, $sql);
                     odbc_execute($stmt,array('L',$no));
-    
+
                 };
             }
            else
            {
                 foreach($request->TruckCode as $no)
                 {
-                    $sql='update "@BS_TRUCKINFO" set "U_Status"=? Where "Code"=?';       
+                    $sql='update "@BS_TRUCKINFO" set "U_Status"=? Where "Code"=?';
                     $stmt = odbc_prepare($conDB, $sql);
                     odbc_execute($stmt,array('A',$no));
 
@@ -242,9 +242,9 @@ class DeliveryController extends Controller
 
 
             odbc_close($conDB);
-            
+
         }
-       
+
         return response()->json(["success" => true,"data"=>"okay"]);
 
     }
@@ -255,10 +255,10 @@ class DeliveryController extends Controller
         {
                 foreach($request->No as $no)
                 {
-                    $sql='update ORDR set "U_TruckInfo"=? Where "DocNum"=?';       
+                    $sql='update ORDR set "U_TruckInfo"=? Where "DocNum"=?';
                     $stmt = odbc_prepare($conDB, $sql);
                     odbc_execute($stmt,array('L',$no));
-    
+
                 };
         }
         odbc_close($conDB);
@@ -285,10 +285,10 @@ class DeliveryController extends Controller
         {
                 foreach($request->No as $no)
                 {
-                    $sql='update ORDR set "Printed"=? Where "DocNum"=?';       
+                    $sql='update ORDR set "Printed"=? Where "DocNum"=?';
                     $stmt = odbc_prepare($conDB, $sql);
                     odbc_execute($stmt,array('N',$no));
-    
+
                 };
         }
         odbc_close($conDB);
@@ -296,24 +296,24 @@ class DeliveryController extends Controller
     }
     function PrintLayoutDO(Request $request)
     {
-       
+
         $conDB = (new SAPB1Controller)->connect_sap();
         $results = array();
         $layout=$request->layout;
         if ($layout=="vin") {
-           
-            
+
+
             $sql='call "usp_NNHD_PhieuGiaoHang_Delivery_VIN"(?)';
             $stmt = odbc_prepare($conDB, $sql);
             odbc_execute($stmt,array($request->so));
-            
+
             while ($row = odbc_fetch_object($stmt)) {
                 $results[] = $row;
             };
             rsort($results);
         $groupedDocuments=collect($results)->groupBy('DocEntry');
         return view ('layoutsap.vin',compact('groupedDocuments'));
-           
+
         }
         else if ($layout=="ck")
         {
@@ -421,7 +421,7 @@ class DeliveryController extends Controller
             while ($row = odbc_fetch_object($stmt)) {
                 $results[] = $row;
             };
-            sort($results);           
+            sort($results);
             $groupedDocuments=collect($results)->groupBy('DocEntry');
             return view ('layoutsap.betagen',compact('groupedDocuments'));
           }
@@ -432,20 +432,20 @@ class DeliveryController extends Controller
         $conDB = (new SAPB1Controller)->connect_sap();
         foreach($request->dataNo as $data)
         {
-                   
+
             if( $data['TypeName']=="IT")
             {
-                $upate='update OWTQ SET "U_TruckInfo"=?,"U_DelNo"=? where "DocNum"=? ';
+                $upate='update OWTQ SET "U_DelNo"=? where "DocNum"=? ';
                 $stmt = odbc_prepare($conDB, $upate);
-                odbc_execute($stmt,array(null,$data['U_DelNo'],$data['DocNum']));
+                odbc_execute($stmt,array($data['U_DelNo'],$data['DocNum']));
             }
             else
             {
-                $upate='update ORDR SET "U_TruckInfo"=?,"U_DelNo"=? where "DocNum"=? ';
+                $upate='update ORDR SET "U_DelNo"=? where "DocNum"=? ';
                 $stmt = odbc_prepare($conDB, $upate);
-                odbc_execute($stmt,array(null,$data['U_DelNo'],$data['DocNum']));
+                odbc_execute($stmt,array($data['U_DelNo'],$data['DocNum']));
             }
-            
+
         }
         odbc_close($conDB);
         return response()->json(["success" => true,"data"=>"okay"]);
@@ -462,7 +462,7 @@ class DeliveryController extends Controller
         while ($row = odbc_fetch_object($stmt)) {
             $results[] = $row;
         };
-      
-         return  json_encode( $results);   
+
+         return  json_encode( $results);
     }
 }

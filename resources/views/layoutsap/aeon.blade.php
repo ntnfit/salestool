@@ -12,7 +12,7 @@
 <body>
     <style>
         @page {
-            size: A4 landscape;
+            size: A4;
             margin: 0;
         }
 
@@ -153,8 +153,8 @@
             margin-right: -16px;
         }
         .page-break{
-        margin-bottom: 140px; 
-     }   
+        margin-bottom: 140px;
+     }
     </style>
     @foreach ($groupedDocuments as $docentry => $documents)
         <div class="page-break">
@@ -220,7 +220,7 @@
                         <tr>
                             <td></td>
                             <td>{{date("d")}}</td>
-                            <td>{{date("m")}}</td>           
+                            <td>{{date("m")}}</td>
                             <td>{{date("Y")}}</td>
                             <td>{{date('H:i')}}</td>
                         </tr>
@@ -248,7 +248,7 @@
                         <td>2027</td>
                         <td>{{date('d', strtotime($documents->last()->OrderDate))   }}</td>
                         <td>{{date('m', strtotime($documents->last()->OrderDate))   }}</td>
-                        <td>{{date('Y', strtotime($documents->last()->OrderDate))  }}</td>    
+                        <td>{{date('Y', strtotime($documents->last()->OrderDate))  }}</td>
                         <td>{{date('d', strtotime($documents->last()->DeliveryDate))  }}</td>
                         <td>{{date('m', strtotime($documents->last()->DeliveryDate))  }}</td>
                         <td>{{date('Y', strtotime($documents->last()->DeliveryDate))  }}</td>
@@ -258,7 +258,7 @@
 
             <table id="table-main" cellspacing="0" cellpadding="5">
                 <thead>
-                   
+
 
                     <tr>
                         <th rowspan="2" style="width: 50px;">STT</th>
@@ -318,7 +318,7 @@
                     <tr>
                         <th colspan="10" style="font-weight: bold;text-align: right;">TỔNG TIỀN</th>
                         <td colspan="4">{{number_format($sumtotal) }}</td>
-                        
+
                     </tr>
                     <tr>
                         <th colspan="10" style="font-weight: bold;text-align: right;">TỔNG CHIẾT KHẤU</th>

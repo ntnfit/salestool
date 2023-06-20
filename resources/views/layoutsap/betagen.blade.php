@@ -8,7 +8,7 @@
     <script src="https://unpkg.com/pagedjs/dist/paged.polyfill.js"></script>
     <style>
         @page {
-            size: A4 landscape;
+            size: A4;
             margin: 0 1 1 0;
 
             @bottom-right {
@@ -201,7 +201,7 @@
         </div>
     @endforeach
 
-   
+
 </body>
 <script>
     window.addEventListener("load", function() {

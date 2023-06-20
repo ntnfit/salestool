@@ -8,7 +8,7 @@
     <script src="https://unpkg.com/pagedjs/dist/paged.polyfill.js"></script>
     <style>
       @page {
-            size: A4 landscape;
+            size: A4;
             margin: 0 1 1 0;
 
             @bottom-right {
@@ -80,7 +80,7 @@
 
         .footer-block {
             display: flex;
-            margin-top: 30px;
+            margin-top: 10px;
         }
 
         .footer-left,
@@ -92,8 +92,8 @@
         .footer {
             display: flex;
             justify-content: space-between;
-            margin-top: 16px;
-          
+            margin-top: -5px;
+
         }
 
         .footer-left {
@@ -102,14 +102,10 @@
             border: 1px solid;
         }
         .left{
-            border: solid;
-         border-width: 1.5px;
          text-align: center;
          width: auto
         }
         .right{
-            border: solid;
-            border-width: 1.5px;
             text-align: center;
             width: auto
         }
@@ -119,7 +115,7 @@
             line-height: 1.5;
             text-align: right;
             margin-right: 30px;
-            
+
         }
 
         .page-number:after {
@@ -151,7 +147,7 @@
                     <div class="left-content">
                         <p>Mã nhà cung cấp: 110013/2003471</p>
                         <p>Nhà cung cấp: Cong TY TNHH BETAGEN VIET NAM</p>
-                       
+
                         <p>Khách hàng: {{ $documents->last()->CardName }}</p>
                         <p>Kho nhận: {{ $documents->last()->Buyer }}</p>
                     </div>
@@ -197,9 +193,9 @@
                 <div class="right">
                     <p>Ngày ............ Tháng ............ Năm ............</p>
                     <p>Người giao hàng</p>
-              
+
                 </div>
-                
+
             </footer>
             <div class="conteft" >
                 <p class="inline">Bảo vệ</p>
@@ -207,8 +203,8 @@
                 <p class="inline">Ngành hàng</p>
             </div>
         </div>
-		
-       
+
+
     @endforeach
 </body>
 <script>

@@ -8,7 +8,7 @@
     <link rel="shortcut icon" href="{{ asset('favicons/favicon.ico') }}" />
     <style>
         @page {
-            size: A4 landscape;
+            size: A4;
             margin: 0 1 1 0;
 
             @bottom-right {

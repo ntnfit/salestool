@@ -8,7 +8,7 @@
     <script src="https://unpkg.com/pagedjs/dist/paged.polyfill.js"></script>
     <style>
         @page {
-            size: A4 landscape;
+            size: A4;
             margin: 0 1 1 0;
 
             @bottom-right {
@@ -23,8 +23,8 @@
                 page-break-before: always;
             }
 
-			
-			
+
+
 
         }
 
@@ -147,7 +147,7 @@
                         <p>Mã nhà cung cấp: {{ $documents->last()->VendorCode }}</p>
                         <p>Nhà cung cấp: CONG TY TNHH BETAGEN VIET NAM</p>
                         <p>Khách hàng: {{ $documents->last()->CardName }}</p>
-                       
+
                     </div>
                     <div class="right-content">
                         <p style="text-align: end;">{{date("d/m/Y", strtotime($documents->last()->DocDate))  }}</p>
@@ -190,13 +190,13 @@
                 <div class="right">
                     <p>{{$documents->last()->CardName}}</p>
                     <p>Người nhận hàng</p>
-                   
+
                 </div>
             </footer>
         </div>
-		
+
     @endforeach
-	
+
 
 </body>
 <script>
