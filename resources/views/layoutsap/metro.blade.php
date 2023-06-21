@@ -94,6 +94,7 @@
             line-height: 1.5;
             border: solid;
            border-width: 1.5px;
+           text-align: center;
         }
 
         .right {
@@ -102,6 +103,7 @@
             text-align: right;
             border: solid;
            border-width: 1.5px;
+           text-align: center;
         }
 
         /* Footer right block */
