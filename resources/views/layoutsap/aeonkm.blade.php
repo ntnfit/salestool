@@ -238,7 +238,7 @@
 
             </div>
         <div class="page">
-            {{ ++$pagenumber . '/' . $totalPage }}
+            {{ ++$pagenumber . 'of' . $totalPage }}
         </div>
         </div>
     @endforeach
