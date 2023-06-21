@@ -352,7 +352,7 @@
                 field: 'Quantity',
                 valueFormatter: params => Number(params.value).toFixed(2),
                 filter: 'agTextColumnFilter',
-               
+
             },
 
             {
@@ -411,7 +411,7 @@
                 field: 'TruckWeight',
                 valueFormatter: params => Number(params.value).toFixed(2),
                 filter: 'agTextColumnFilter',
-                
+
             },
             {
                 headerName: 'Truck Time',
@@ -820,13 +820,13 @@
                 headerName: 'Delivery Qty',
                 field: 'DeliverQty',
                 valueFormatter: params =>Number(params.value).toFixed(2)
-                
+
             },
             {
                 headerName: 'Weight',
                 field: 'Weight',
                 valueFormatter: params =>Number(params.value).toFixed(2)
-               
+
             },
             {
                 headerName: 'Uom',
@@ -836,19 +836,19 @@
                 headerName: 'price before',
                 field: 'PriceBefDi',
                 valueFormatter: params =>Number(params.value).toFixed(2)
-               
+
             },
             {
                 headerName: 'price after',
                 field: 'Price',
                 valueFormatter: params =>Number(params.value).toFixed(2)
-               
+
             },
             {
                 headerName: 'Line Total',
                 field: 'LineTotal',
                 valueFormatter: params =>Number(params.value).toFixed(2)
-               
+
             },
         ]
         const gridOptionssUB = {
