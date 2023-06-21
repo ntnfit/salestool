@@ -262,7 +262,7 @@ class InvController extends Controller
         $statusSAP=0;
         $userId = Auth::user()->UserID;
         $applysap=0;
-        $datecreate=date("Ymd", strtotime(date("Y/m/d")));
+        $datecreate=date("Y-m-d H:i:s", time());
         $insertHeader='insert into "BS_STOCKOUTREQUEST" 
         ("StockNo","StockDate","StockType",
         "FromWhsCode","FromWhsName", "ToWhsCode","ToWhsName",
@@ -485,17 +485,18 @@ class InvController extends Controller
         $statusSAP=0;
         $userId = Auth::user()->UserID;
         $applysap=0;
-        $datecreate=date("Ymd", strtotime(date("Y/m/d")));
+        $datecreate=$date;
+        $dateUpdate=date("Y-m-d H:i:s", time());
         $insertHeader='insert into "BS_STOCKOUTREQUEST" 
         ("StockNo","StockDate","StockType",
         "FromWhsCode","FromWhsName", "ToWhsCode","ToWhsName",
-        "AbsEntry","BinCode","AbsEntry1","BinCode1","Note","StatusSAP","DateCreate",
+        "AbsEntry","BinCode","AbsEntry1","BinCode1","Note","StatusSAP","DateCreate","DateUpdate",
         "UserID","ApplyStatus")
         values
         (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
          $stmtsheader = odbc_prepare($conDB, $insertHeader);
         $result = odbc_execute($stmtsheader, array($SOID,$date,$Stocktype,$FromWhsCode,$FromWhsName, $ToWhsCode,$ToWhsName,
-        $AbsEntry,$team, $AbsEntry1,$team1,$note,$statusSAP,$datecreate,$userId,$applysap));
+        $AbsEntry,$team, $AbsEntry1,$team1,$note,$statusSAP,$datecreate, $dateUpdate,$userId,$applysap));
         
         //handler data to detail
         // item post
