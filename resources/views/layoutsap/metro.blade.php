@@ -89,15 +89,19 @@
             padding: 10px 30px;
         }
 
-        .footer-left {
+        .left {
             font-size: 14px;
             line-height: 1.5;
+            border: solid;
+           border-width: 1.5px;
         }
 
-        .footer-right {
+        .right {
             font-size: 14px;
             line-height: 1.5;
             text-align: right;
+            border: solid;
+           border-width: 1.5px;
         }
 
         /* Footer right block */
