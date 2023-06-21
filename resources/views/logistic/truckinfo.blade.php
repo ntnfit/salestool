@@ -81,7 +81,7 @@
     </div>
     {{-- <input type="text" id="filter-text-box" placeholder="Filter..." oninput="onFilterTextBoxChanged()"> --}}
     <!-- form gird -->
-    <div id="MyGrid" class="ag-theme-alpine" style="height: 60%">
+    <div id="MyGrid" class="ag-theme-alpine" style="height: 70%">
     </div>
     <div id="subgird" class="ag-theme-alpine" style="height: 25%">
     </div>
