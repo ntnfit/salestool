@@ -194,11 +194,7 @@
             background-color: #ddd;
         }
 
-        table#tableadd tr:nth-child(even) {
-            background-color: #efd0d0;
-            max-width: 35%;
-        }
-
+    
         table#tableadd td:first-child,
         table#tableadd th:first-child {
             text-align: left;
@@ -309,9 +305,7 @@
             max-width: 60px;
         }
 
-        table#tableadd tbody tr.matched {
-            background-color: #efd0d0;
-        }
+  
 
         input[type="number"] {
             width: 60.4px;
@@ -320,10 +314,7 @@
         max-width: 500px;
 }
 
-        table#tableadd tr:nth-child(even) input {
-            /* Apply your styles to the input field here */
-            background-color: #efd0d0;
-        }
+  
     </style>
 @stop
 @push('js')

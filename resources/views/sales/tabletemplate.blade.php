@@ -41,6 +41,7 @@
                         'OpenQty' => array_fill_keys($distinctLots, 0),
                         'QuantityIn' => array_fill_keys($distinctLots, 0),
                         'QuantityOut' => array_fill_keys($distinctLots, 0),
+                        'U_Size' => $result['U_Size']
                     ];
                 }
                 $consolidatedData[$consolidatedKey]['QuantityIn'][$result['LotNo']] += $result['QuantityIn'];
@@ -55,10 +56,11 @@
 
         @foreach ($consolidatedData as $key => $result)
             <tr class="{{ $result['QuantityOut'] > 0 ? 'has-stockout' : '' }}"
+                @if ($result['TypePrd'] == '001' && ($result['U_Size']<>'')) style="background-color:#9dd7ef" @endif
                 @if ($result['TypePrd'] === '002') style="background-color: rgb(223, 240, 216)" @endif>
                 <td>{{ $loop->iteration }}</td>
-                <td class="ItemCode">{{ $result['ItemCode'] }}</td>
-                <td class="ItemName" colspan="3">{{ $result['ItemName'] }}</td>
+                <td class="ItemCode"  @if ($result['TypePrd'] == '001' && ($result['U_Size']<>'')) style="background-color:#9dd7ef" @endif>{{ $result['ItemCode'] }}</td>
+                <td class="ItemName"  @if ($result['TypePrd'] == '001' && ($result['U_Size']<>'')) style="background-color:#9dd7ef" @endif colspan="3">{{ $result['ItemName'] }}</td>
 
                 <td hidden><input type="text" class="sotype" name="sotype[{{ $result['ItemCode'] }}][]"
                         value="{{ $ordertype }}"></td>
