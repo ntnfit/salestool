@@ -59,7 +59,7 @@ class PromotionController extends Controller
          while ($row = odbc_fetch_array($Datas)) {
             $header[] = $row;
         }
-        $sql='select * from "BS_PRO_CUSTOMER" where "ProId"=('.$id.') and ifnull("ProCustCode",'.'\'\''.') <>'.'\'\'';;
+        $sql='select "ProCustCode" "CardCode", "ProCustName" "CardName",* from "BS_PRO_CUSTOMER" where "ProId"=('.$id.') and ifnull("ProCustCode",'.'\'\''.') <>'.'\'\'';;
         $stmt = odbc_prepare($conDB, $sql);
         $Datas=odbc_exec($conDB,$sql);
         $customerdt=[];
@@ -507,7 +507,7 @@ class PromotionController extends Controller
 
                     if($request->protype!="5")
                     {
-                        $customercode=$cusCode->ProCustCode;
+                        $customercode=$cusCode->CardCode;
                         $insertCusQuery='insert into BS_PRO_CUSTOMER ("ProId","ProCustCode","ProCustName","GroupCode","ChannelCode","RouteCode","LocationCode")';
 
                     }
