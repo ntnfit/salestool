@@ -27,7 +27,7 @@
     @php
         $config = ['format' => 'L', 'format' => 'DD/MM/yyy'];
         $configsodate = ['autoclose' => true, 'format' => 'DD/MM/yyy', 'immediateUpdates' => true, 'todayBtn' => true, 'todayHighlight' => true, 'setDate' => 0];
-        
+
     @endphp
     <div class="row">
         <div class="col-lg-12 margin-tb">
@@ -82,9 +82,9 @@
                 name="bincode" id="bincode" fgroup-class="col-md-2" enable-old-support>
                 <option value=""></option>
             </x-adminlte-select-bs>
-           
+
         </div>
-        <div class="row">           
+        <div class="row">
         <x-adminlte-input label="PO ID" label-class="text-lightblue" name="pono" id="pono" type="text"
             placeholder="" igroup-size="sm" fgroup-class="col-md-2">
         </x-adminlte-input>
@@ -96,7 +96,7 @@
                 </div>
             </x-slot>
         </x-adminlte-input-date>
-        
+
         <x-adminlte-input-date name="date" id="sodate" label="Date" :config="$configsodate"
             label-class="text-lightblue" igroup-size="sm" fgroup-class="col-md-3" placeholder="Choose a date...">
             <x-slot name="appendSlot">
@@ -105,12 +105,12 @@
                 </div>
             </x-slot>
         </x-adminlte-input-date>
-        
+
             <x-adminlte-button class="btn" id="search"
                 style="float: right;margin-top: 34px;font-size: small;height: 31px;" type="button" label="load item"
                 theme="success" icon="fas fa-filter" />
 
-        
+
             </div>
         <input type="text" id="searchInput" placeholder="Search...">
         <div class="row">
@@ -194,7 +194,7 @@
             background-color: #ddd;
         }
 
-    
+
         table#tableadd td:first-child,
         table#tableadd th:first-child {
             text-align: left;
@@ -234,7 +234,7 @@
 
         .orange {
             color: #3adf92;
-            
+
         }
 
         button,
@@ -305,7 +305,7 @@
             max-width: 60px;
         }
 
-  
+
 
         input[type="number"] {
             width: 60.4px;
@@ -314,7 +314,7 @@
         max-width: 500px;
 }
 
-  
+
     </style>
 @stop
 @push('js')
@@ -1079,11 +1079,11 @@
         document.onkeydown = function (e) {
   switch (e.key) {
     case 'ArrowDown':
-      e.preventDefault(); 
+      e.preventDefault();
       var activeElement = document.activeElement;
       var currentRow = activeElement.closest('tr');
       var nextRow = currentRow.nextElementSibling;
-      
+
       if (nextRow && nextRow.tagName === 'TR') {
         var currentInputIndex = Array.from(currentRow.querySelectorAll('.Qtyout, .qtypro')).indexOf(activeElement);
         var inputsInNextRow = nextRow.querySelectorAll('.Qtyout, .qtypro');
@@ -1094,43 +1094,48 @@
       break;
 
     case 'ArrowUp':
-      e.preventDefault(); 
-      var activeElement = document.activeElement;
-      var currentRow = activeElement.closest('tr');
-      var prevRow = currentRow.previousElementSibling;
-      
-      if (prevRow && prevRow.tagName === 'TR') {
-        var currentInputIndex = Array.from(currentRow.querySelectorAll('.Qtyout, .qtypro')).indexOf(activeElement);
-        var inputsInPrevRow = prevRow.querySelectorAll('.Qtyout, .qtypro');
-        if (inputsInPrevRow[currentInputIndex]) {
-          inputsInPrevRow[currentInputIndex].focus();
+    e.preventDefault();
+    var activeElement = document.activeElement;
+    var currentCell = activeElement.closest('td');
+    var currentRowIndex = Array.from(currentCell.parentNode.parentNode.children).indexOf(currentCell.parentNode);
+    var currentColumnIndex = Array.from(currentCell.parentNode.children).indexOf(currentCell);
+    var rows = Array.from(currentCell.closest('table').querySelectorAll('tr'));
+
+    if (currentRowIndex > 0) {
+        var prevRow = rows[currentRowIndex];
+        var prevCell = prevRow.children[currentColumnIndex];
+        var inputInPrevCell = prevCell.querySelector('.Qtyout, .qtypro');
+        if (inputInPrevCell) {
+            inputInPrevCell.focus();
         }
-      }
+    }
+        break;
+
       case 'ArrowRight':
       e.preventDefault();
       var activeElement = document.activeElement;
       var currentRow = activeElement.closest('tr');
       var inputsInCurrentRow = Array.from(currentRow.querySelectorAll('.Qtyout, .qtypro'));
       var currentIndex = inputsInCurrentRow.indexOf(activeElement);
-      
+
       if (inputsInCurrentRow[currentIndex + 1]) {
         inputsInCurrentRow[currentIndex + 1].focus();
       }
       break;
-      
+
     case 'ArrowLeft':
       e.preventDefault();
       var activeElement = document.activeElement;
       var currentRow = activeElement.closest('tr');
       var inputsInCurrentRow = Array.from(currentRow.querySelectorAll('.Qtyout, .qtypro'));
       var currentIndex = inputsInCurrentRow.indexOf(activeElement);
-      
+
       if (inputsInCurrentRow[currentIndex - 1]) {
         inputsInCurrentRow[currentIndex - 1].focus();
       }
       break;
   }
 };
-         
+
     </script>
 @endpush
