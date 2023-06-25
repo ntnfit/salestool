@@ -100,7 +100,7 @@
                 </div>
             </div>
            <div class="form-group col-md-2">
-            <label for="sodate">SO Date:</label>
+            <label for="sodate"  class="text-lightblue">SO Date:</label>
             <div class="input-group date" id="sodate" data-target-input="nearest">
                 <input type="text" name="date" class="form-control datetimepicker-input" data-target="#sodate"
                     placeholder="Select Date" />
