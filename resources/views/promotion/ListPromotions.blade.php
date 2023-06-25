@@ -2,7 +2,7 @@
 
 @section('title', 'List promotion')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
-    <script src="https://unpkg.com/jquery/dist/jquery.min.js"></script>	
+    <script src="https://unpkg.com/jquery/dist/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.13.1/xlsx.full.min.js"></script>
@@ -15,7 +15,7 @@
                     <li class="text-danger">{{ $error }}</li>
                 @endforeach
             </ul>
- @endif 
+ @endif
  @if(session()->has('message'))
  <div class="alert alert-success">
 	 {{ session()->get('message') }}
@@ -26,7 +26,7 @@
       <a style="float: right" href="{{route('add-promotions')}}"><x-adminlte-button label="add new" theme="primary" icon="fas fa-plus"/> </a>
       <button class ="btn btn-danger" id="getSelectedRowsBtn">Terminate</button>
     </div>
-   
+
 		<div id="myGrid" class="ag-theme-alpine" style="height: 100%">
 		</div>
     <div id="loadingModal" class="modal">
@@ -109,7 +109,7 @@
 @endsection
 @push('js')
 		<script>var __basePath = './';</script>
-		<script src="https://cdn.jsdelivr.net/npm/ag-grid-community@28.2.1/dist/ag-grid-community.min.js"> 
+		<script src="https://cdn.jsdelivr.net/npm/ag-grid-community@28.2.1/dist/ag-grid-community.min.js">
 		</script>
     <script src="https://cdn.jsdelivr.net/npm/ag-grid-enterprise@28.2.1/dist/ag-grid-enterprise.min.js">
       </script>
@@ -142,7 +142,7 @@
 
 const columnDefs = [
     { headerName: '', field: '', maxWidth: 50,  headerCheckboxSelection: true, checkboxSelection: true, headerCheckboxSelectionFilteredOnly: true,},
-  { headerName:"ProId",field: 'ProId',maxWidth: 100 
+  { headerName:"ProId",field: 'ProId',maxWidth: 100
     },
   {headerName:"Promotion Name",field: 'PromotionName'},
   {  headerName:"Promotion Type",field: 'ProtypeName' },
@@ -177,10 +177,19 @@ const gridOptions = {
     resizable: true,
   },
   onRowDoubleClicked: function(params) {
-                var id = params.data.ProId;
+                var hasTerminated = params.data.hasTerminate;
+
+                if (hasTerminated == 1) {
+                    return; // Disable direct navigation
+                }
+                else
+                {
+                    var id = params.data.ProId;
                 var url = '{{ route("pro.edit", ":id") }}';
                 url = url.replace(':id', id);
                 window.location.href = url;
+                }
+
             },
     rowSelection: 'multiple'
 };
@@ -224,7 +233,7 @@ document.querySelector("#getSelectedRowsBtn").addEventListener("click", function
 document.addEventListener('DOMContentLoaded', function () {
   var gridDiv = document.querySelector('#myGrid');
   new agGrid.Grid(gridDiv, gridOptions);
-    
+
   gridOptions.api.setRowData({!!$Promotionlist!!})
 
 });

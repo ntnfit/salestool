@@ -4,8 +4,8 @@
 @section('plugins.Datatables', true)
 
 @section('plugins.Sweetalert2', true)
-@section('plugins.DateRangePicker', true)
-@section('plugins.TempusDominusBs4', true)
+<link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
 @section('plugins.select2', true)
 <link rel="shortcut icon" href="{{ asset('favicons/favicon.ico') }}" />
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
@@ -51,20 +51,20 @@
                 @endforeach
             </x-adminlte-select>
             @php
-            $configss = [
-                'title' => 'Select data',
-                'liveSearch' => true,
-                'liveSearchPlaceholder' => 'Search...',
-                'showTick' => true,
-                'actionsBox' => true,
-            ];
-        @endphp
+                $configss = [
+                    'title' => 'Select data',
+                    'liveSearch' => true,
+                    'liveSearchPlaceholder' => 'Search...',
+                    'showTick' => true,
+                    'actionsBox' => true,
+                ];
+            @endphp
             <x-adminlte-select-bs label="Customer Code" :config="$configss" label-class="text-lightblue" igroup-size="sm"
                 name="cuscode" id="cuscode" fgroup-class="col-md-3 cuscode" enable-old-support>
                 <option value=""></option>
                 @foreach ($customers as $customer)
                     <option value="{{ $customer['CardCode'] }}">
-                        {{ 'StoreId: ' . $customer['U_SID'].'--'.$customer['CardCode'] . '--' . $customer['CardName'] . '--'.$customer['GroupName'].'--'.$customer['ChannelName'].'--'.$customer['RouteName'].'--' .$customer['LocationName'] }}
+                        {{ 'StoreId: ' . $customer['U_SID'] . '--' . $customer['CardCode'] . '--' . $customer['CardName'] . '--' . $customer['GroupName'] . '--' . $customer['ChannelName'] . '--' . $customer['RouteName'] . '--' . $customer['LocationName'] }}
                     </option>
                 @endforeach
             </x-adminlte-select-bs>
@@ -85,33 +85,38 @@
 
         </div>
         <div class="row">
-        <x-adminlte-input label="PO ID" label-class="text-lightblue" name="pono" id="pono" type="text"
-            placeholder="" igroup-size="sm" fgroup-class="col-md-2">
-        </x-adminlte-input>
-        <x-adminlte-input-date name="podate" id="podate" label="PoDate" :config="$config"
-            label-class="text-lightblue" igroup-size="sm" fgroup-class="col-md-2" placeholder="Choose a date...">
-            <x-slot name="appendSlot">
-                <div class="input-group-text bg-gradient-danger">
-                    <i class="fas fa-calendar-alt"></i>
-                </div>
-            </x-slot>
-        </x-adminlte-input-date>
+            <x-adminlte-input label="PO ID" label-class="text-lightblue" name="pono" id="pono" type="text"
+                placeholder="" igroup-size="sm" fgroup-class="col-md-2">
+            </x-adminlte-input>
 
-        <x-adminlte-input-date name="date" id="sodate" label="Date" :config="$configsodate"
-            label-class="text-lightblue" igroup-size="sm" fgroup-class="col-md-3" placeholder="Choose a date...">
-            <x-slot name="appendSlot">
-                <div class="input-group-text bg-gradient-danger">
-                    <i class="fas fa-calendar-alt"></i>
+            <div class="form-group col-md-2">
+                <label for="podate" class="text-lightblue">PO Date:</label>
+                <div class="input-group date" id="podate" data-target-input="nearest">
+                    <input type="text" name="podate" class="form-control datetimepicker-input" data-target="#podate"
+                        placeholder="Select Date" />
+                    <div class="input-group-append" data-target="#podate" data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fas fa-calendar"></i></div>
+                    </div>
                 </div>
-            </x-slot>
-        </x-adminlte-input-date>
+            </div>
+           <div class="form-group col-md-2">
+            <label for="sodate">SO Date:</label>
+            <div class="input-group date" id="sodate" data-target-input="nearest">
+                <input type="text" name="date" class="form-control datetimepicker-input" data-target="#sodate"
+                    placeholder="Select Date" />
+                <div class="input-group-append" data-target="#sodate" data-toggle="datetimepicker">
+                    <div class="input-group-text"><i class="fas fa-calendar"></i></div>
+                </div>
+            </div>
+        </div>
+
 
             <x-adminlte-button class="btn" id="search"
                 style="float: right;margin-top: 34px;font-size: small;height: 31px;" type="button" label="load item"
                 theme="success" icon="fas fa-filter" />
 
 
-            </div>
+        </div>
         <input type="text" id="searchInput" placeholder="Search...">
         <div class="row">
             <div style="height:auto;max-height: 600px; overflow: auto;" id="tabledata">
@@ -245,9 +250,11 @@
             color: #3adf92;
             font-weight: bold;
         }
-        .inlot{
+
+        .inlot {
             font-weight: bold;
         }
+
         /* Popup Modal styles */
         .modal {
             display: none;
@@ -310,16 +317,19 @@
         input[type="number"] {
             width: 60.4px;
         }
-    .dropdown-menu.show {
-        max-width: 500px;
-}
 
-
+        .dropdown-menu.show {
+            max-width: 500px;
+        }
     </style>
 @stop
 @push('js')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.bundle.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js">
+    </script>
     <script>
         $(document).ready(function() {
             $('#WhsCode').change(function() {
@@ -471,7 +481,7 @@
                                 var prototal = parseInt($row.find('.openqtyrow').text(), 10);
                                 console.log(sumpro);
                                 if (sumpro > prototal) {
-                                    alert('Quantity exceeds open quantity'+prototal);
+                                    alert('Quantity exceeds open quantity' + prototal);
                                     $row.find('input.Qtyout').val('');
                                 }
                             }
@@ -490,7 +500,7 @@
                             var prototal = $row.find('.totalpro').val();
                             console.log(sumpro);
                             if (sumpro > prototal) {
-                                alert('Quantity exceeds promotion quantity:'+prototal);
+                                alert('Quantity exceeds promotion quantity:' + prototal);
                                 $row.find('input.qtypro').val('');
                             }
                         });
@@ -607,81 +617,90 @@
                     $('#promotion .spinner-grow').remove();
                     // Re-enable button
                     $('#promotion').prop('disabled', false);
-                    console.log('data: ', data);
+                    //  console.log('data: ', data);
                     promotions = data.promotiodt;
-                    // Loop through each row in the table with ID "tableadd"
-                    $("#tableadd tbody tr").each(function(index) {
-                        var itemCode = $(this).find("td.ItemCode").text()
-                            .trim(); // Get the value in the "ItemCode" column of the current row
-                        // Check if the value in "ItemCode" column is found in the list of promotions
-                        if (promotions.hasOwnProperty(itemCode)) {
-                            var promotionQty = promotions[
-                                itemCode
-                            ]; // Get the promotion quantity for the current item code
-                            var newQty =
-                                promotionQty; // Calculate the new quantity by adding the promotion quantity
-                            // Clone the current row, update the "Total Qty" input field with the new quantity, and append it to the table
-                            var newRow = $(this).clone(true, true);
-                            newRow.css('background-color', '#DFF0D8');
-                            newRow.find(".sotype").val('KM');
-                            newRow.find(".totalrow").val(
-                                newQty
-                            ); // Update the "Total Qty" input field with the new quantity
-                            newRow.find(".Qtyout").val("");
-                            newRow.find(".Qtyout").removeClass('Qtyout').addClass('qtypro');
-                            newRow.find(".totalrow").removeClass('totalrow').addClass(
-                                'totalpro').attr('name', 'totalprorow[]');
-                            newRow.find("input[name^='stockOuts']").attr("name", function(index,
-                                name) {
-                                return name.replace(/^stockOuts/, "proout");
-                            });
-                            // Append the cloned row to the table
-                            $(this).after(newRow);
-                            // Remove the "STT" (serial number) for the cloned row
-                            newRow.find("td:first-child").text("");
-                        }
-                    });
-                    // Add new rows for items in the promotions list that are not in the table
-                    $.each(promotions, function(itemCode, promotionQty) {
-                        var itemname = data.ItemName;
-                        var nameItem = itemname[itemCode];
-                        var found = false;
-                        $("#tableadd tbody tr").each(function() {
-                            if ($(this).find(".ItemCode").text().trim() == itemCode) {
-                                found = true;
-                                return false;
+                    if (Object.keys(promotions).length == 0) {
+                        alert('promotion empty!')
+                        $('#promotion').attr('disabled', 'disabled');
+                    } else {
+                        // Loop through each row in the table with ID "tableadd"
+                        $("#tableadd tbody tr").each(function(index) {
+                            var itemCode = $(this).find("td.ItemCode").text()
+                                .trim(); // Get the value in the "ItemCode" column of the current row
+                            // Check if the value in "ItemCode" column is found in the list of promotions
+                            if (promotions.hasOwnProperty(itemCode)) {
+                                var promotionQty = promotions[
+                                    itemCode
+                                ]; // Get the promotion quantity for the current item code
+                                var newQty =
+                                    promotionQty; // Calculate the new quantity by adding the promotion quantity
+                                // Clone the current row, update the "Total Qty" input field with the new quantity, and append it to the table
+                                var newRow = $(this).clone(true, true);
+                                newRow.css('background-color', '#DFF0D8');
+                                newRow.find(".sotype").val('KM');
+                                newRow.find(".totalrow").val(
+                                    newQty
+                                ); // Update the "Total Qty" input field with the new quantity
+                                newRow.find(".Qtyout").val("");
+                                newRow.find(".Qtyout").removeClass('Qtyout').addClass('qtypro');
+                                newRow.find(".totalrow").removeClass('totalrow').addClass(
+                                    'totalpro').attr('name', 'totalprorow[]');
+                                newRow.find("input[name^='stockOuts']").attr("name", function(
+                                    index,
+                                    name) {
+                                    return name.replace(/^stockOuts/, "proout");
+                                });
+                                // Append the cloned row to the table
+                                $(this).after(newRow);
+                                // Remove the "STT" (serial number) for the cloned row
+                                newRow.find("td:first-child").text("");
                             }
                         });
-                        if (!found) {
-                            var lastRow = $(
-                                "#tableadd tbody tr:last"); // Get the last row of the table
-                            var secondLastRow = lastRow
-                                .prev(); // Get the second last row of the table
-                            var newRow = secondLastRow.clone(true,
-                                true); // Clone the second last row
-                            newRow.css('background-color', '#DFF0D8');
-                            newRow.find(".ItemCode").text(itemCode);
-                            newRow.find(".ItemName").text(nameItem);
-                            newRow.find(".inlot").text("");
-                            newRow.find(".sotype").val('KM');
-                            newRow.find(".Qtyout").remove();
-                            newRow.find(".Qtyout").val("");
-                            newRow.find(".totalrow").val(promotionQty);
-                            newRow.find(".totalrow").removeClass('totalrow').addClass(
-                                'totalpro').attr('name', 'totalprorow[]');
-                            newRow.find("input[name^='stockOuts']").attr("name", function(index,
-                                name) {
-                                return name.replace(/^stockOuts/, "proout");
+                        // Add new rows for items in the promotions list that are not in the table
+                        $.each(promotions, function(itemCode, promotionQty) {
+                            var itemname = data.ItemName;
+                            var nameItem = itemname[itemCode];
+                            var found = false;
+                            $("#tableadd tbody tr").each(function() {
+                                if ($(this).find(".ItemCode").text().trim() ==
+                                    itemCode) {
+                                    found = true;
+                                    return false;
+                                }
                             });
-                            $("#tableadd tbody").append(newRow);
-                        }
-                    });
-                    // Refresh "STT" (serial number) and "Total Qty" in the table
-                    $("#tableadd tbody tr").each(function(index) {
-                        $(this).find("td:first-child").text(index +
-                            1); // Update the "STT" (serial number)
-                    });
-                    $('#promotion').attr('disabled', 'disabled');
+                            if (!found) {
+                                var lastRow = $(
+                                    "#tableadd tbody tr:last"); // Get the last row of the table
+                                var secondLastRow = lastRow
+                                    .prev(); // Get the second last row of the table
+                                var newRow = secondLastRow.clone(true,
+                                    true); // Clone the second last row
+                                newRow.css('background-color', '#DFF0D8');
+                                newRow.find(".ItemCode").text(itemCode);
+                                newRow.find(".ItemName").text(nameItem);
+                                newRow.find(".inlot").text("");
+                                newRow.find(".sotype").val('KM');
+                                newRow.find(".Qtyout").remove();
+                                newRow.find(".Qtyout").val("");
+                                newRow.find(".totalrow").val(promotionQty);
+                                newRow.find(".totalrow").removeClass('totalrow').addClass(
+                                    'totalpro').attr('name', 'totalprorow[]');
+                                newRow.find("input[name^='stockOuts']").attr("name", function(
+                                    index,
+                                    name) {
+                                    return name.replace(/^stockOuts/, "proout");
+                                });
+                                $("#tableadd tbody").append(newRow);
+                            }
+                        });
+                        // Refresh "STT" (serial number) and "Total Qty" in the table
+                        $("#tableadd tbody tr").each(function(index) {
+                            $(this).find("td:first-child").text(index +
+                                1); // Update the "STT" (serial number)
+                        });
+                        $('#promotion').attr('disabled', 'disabled');
+                    }
+
                 },
                 error: function(data) {
                     $('#promotion .spinner-grow').remove();
@@ -1069,73 +1088,99 @@
     </script>
     <script>
         $(document).ready(function() {
-            $('#sodate').val(moment().format(
-                'DD/MM/YYYY')); // set the value of the input element to the current date
-            $('#sodate').datetimepicker(); // initialize the datetimepicker
+                $('#sodate').datetimepicker({
+                    format: 'DD/MM/YYYY',
+                    useCurrent: false,
+                    keepOpen: false,
+                    defaultDate: new Date()
+
+                });
+
+                $('#sodate').on('click', function() {
+                    $(this).datetimepicker('show');
+                });
+
+                $('#sodate').on('blur', function() {
+                    $(this).datetimepicker('hide');
+                });
+                $('#podate').datetimepicker({
+                    format: 'DD/MM/YYYY',
+                    useCurrent: false,
+                    keepOpen: false,
 
 
-        });
+                });
 
-        document.onkeydown = function (e) {
-  switch (e.key) {
-    case 'ArrowDown':
-      e.preventDefault();
-      var activeElement = document.activeElement;
-      var currentRow = activeElement.closest('tr');
-      var nextRow = currentRow.nextElementSibling;
+                $('#podate').on('click', function() {
+                    $(this).datetimepicker('show');
+                });
 
-      if (nextRow && nextRow.tagName === 'TR') {
-        var currentInputIndex = Array.from(currentRow.querySelectorAll('.Qtyout, .qtypro')).indexOf(activeElement);
-        var inputsInNextRow = nextRow.querySelectorAll('.Qtyout, .qtypro');
-        if (inputsInNextRow[currentInputIndex]) {
-          inputsInNextRow[currentInputIndex].focus();
-        }
-      }
-      break;
+                $('#podate').on('blur', function() {
+                    $(this).datetimepicker('hide');
+                });
+            });
 
-    case 'ArrowUp':
-    e.preventDefault();
-    var activeElement = document.activeElement;
-    var currentCell = activeElement.closest('td');
-    var currentRowIndex = Array.from(currentCell.parentNode.parentNode.children).indexOf(currentCell.parentNode);
-    var currentColumnIndex = Array.from(currentCell.parentNode.children).indexOf(currentCell);
-    var rows = Array.from(currentCell.closest('table').querySelectorAll('tr'));
+        document.onkeydown = function(e) {
+            switch (e.key) {
+                case 'ArrowDown':
+                    e.preventDefault();
+                    var activeElement = document.activeElement;
+                    var currentRow = activeElement.closest('tr');
+                    var nextRow = currentRow.nextElementSibling;
 
-    if (currentRowIndex > 0) {
-        var prevRow = rows[currentRowIndex];
-        var prevCell = prevRow.children[currentColumnIndex];
-        var inputInPrevCell = prevCell.querySelector('.Qtyout, .qtypro');
-        if (inputInPrevCell) {
-            inputInPrevCell.focus();
-        }
-    }
-        break;
+                    if (nextRow && nextRow.tagName === 'TR') {
+                        var currentInputIndex = Array.from(currentRow.querySelectorAll('.Qtyout, .qtypro')).indexOf(
+                            activeElement);
+                        var inputsInNextRow = nextRow.querySelectorAll('.Qtyout, .qtypro');
+                        if (inputsInNextRow[currentInputIndex]) {
+                            inputsInNextRow[currentInputIndex].focus();
+                        }
+                    }
+                    break;
 
-      case 'ArrowRight':
-      e.preventDefault();
-      var activeElement = document.activeElement;
-      var currentRow = activeElement.closest('tr');
-      var inputsInCurrentRow = Array.from(currentRow.querySelectorAll('.Qtyout, .qtypro'));
-      var currentIndex = inputsInCurrentRow.indexOf(activeElement);
+                case 'ArrowUp':
+                    e.preventDefault();
+                    var activeElement = document.activeElement;
+                    var currentCell = activeElement.closest('td');
+                    var currentRowIndex = Array.from(currentCell.parentNode.parentNode.children).indexOf(currentCell
+                        .parentNode);
+                    var currentColumnIndex = Array.from(currentCell.parentNode.children).indexOf(currentCell);
+                    var rows = Array.from(currentCell.closest('table').querySelectorAll('tr'));
 
-      if (inputsInCurrentRow[currentIndex + 1]) {
-        inputsInCurrentRow[currentIndex + 1].focus();
-      }
-      break;
+                    if (currentRowIndex > 0) {
+                        var prevRow = rows[currentRowIndex];
+                        var prevCell = prevRow.children[currentColumnIndex];
+                        var inputInPrevCell = prevCell.querySelector('.Qtyout, .qtypro');
+                        if (inputInPrevCell) {
+                            inputInPrevCell.focus();
+                        }
+                    }
+                    break;
 
-    case 'ArrowLeft':
-      e.preventDefault();
-      var activeElement = document.activeElement;
-      var currentRow = activeElement.closest('tr');
-      var inputsInCurrentRow = Array.from(currentRow.querySelectorAll('.Qtyout, .qtypro'));
-      var currentIndex = inputsInCurrentRow.indexOf(activeElement);
+                case 'ArrowRight':
+                    e.preventDefault();
+                    var activeElement = document.activeElement;
+                    var currentRow = activeElement.closest('tr');
+                    var inputsInCurrentRow = Array.from(currentRow.querySelectorAll('.Qtyout, .qtypro'));
+                    var currentIndex = inputsInCurrentRow.indexOf(activeElement);
 
-      if (inputsInCurrentRow[currentIndex - 1]) {
-        inputsInCurrentRow[currentIndex - 1].focus();
-      }
-      break;
-  }
-};
+                    if (inputsInCurrentRow[currentIndex + 1]) {
+                        inputsInCurrentRow[currentIndex + 1].focus();
+                    }
+                    break;
 
+                case 'ArrowLeft':
+                    e.preventDefault();
+                    var activeElement = document.activeElement;
+                    var currentRow = activeElement.closest('tr');
+                    var inputsInCurrentRow = Array.from(currentRow.querySelectorAll('.Qtyout, .qtypro'));
+                    var currentIndex = inputsInCurrentRow.indexOf(activeElement);
+
+                    if (inputsInCurrentRow[currentIndex - 1]) {
+                        inputsInCurrentRow[currentIndex - 1].focus();
+                    }
+                    break;
+            }
+        };
     </script>
 @endpush

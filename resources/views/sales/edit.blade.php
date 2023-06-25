@@ -26,7 +26,7 @@
     @php
         $config = ['format' => 'L', 'format' => 'DD/MM/yyy'];
         $configsodate = ['autoclose' => true, 'format' => 'DD/MM/yyy', 'immediateUpdates' => true, 'todayBtn' => true, 'todayHighlight' => true, 'setDate' => 0];
-        
+
     @endphp
     <form action="{{ route('sales.update', $so->StockNo) }}" method="post" id="updateorder">
         @csrf
@@ -72,7 +72,7 @@
                     </div>
                 </x-slot>
             </x-adminlte-input-date>
-          
+
             <x-adminlte-input-date name="date" id="sodate" label="Date" :config="$configsodate"
                 label-class="text-lightblue" igroup-size="sm" fgroup-class="col-md-3" placeholder="Choose a date..."
                 value="{{ Carbon\Carbon::parse($so->StockDate)->format('d/m/Y') }}" readonly="true">
@@ -82,7 +82,7 @@
                     </div>
                 </x-slot>
             </x-adminlte-input-date>
-          
+
             <x-adminlte-button class="btn" id="search"
                 style="float: right;margin-top: 34px;font-size: small;height: 31px;" type="button" label="load item"
                 theme="success" icon="fas fa-filter" />
@@ -139,7 +139,7 @@
                             $consolidatedData[$consolidatedKey]['PlanQty'][$result['LotNo']] += $result['PlanQty'];
                             $consolidatedData[$consolidatedKey]['CumQty'][$result['LotNo']] += $result['CumQty'];
                             $consolidatedData[$consolidatedKey]['OpenQty'][$result['LotNo']] += $result['OpenQty'];
-                            
+
                             $totalStockOuts[$result['LotNo']] += $result['QuantityOut'];
                         @endphp
                     @endforeach
@@ -469,9 +469,9 @@
         .dropdown-menu.show {
             max-width: 500px;
         }
-      
 
-   
+
+
     </style>
 @stop
 @push('js')
@@ -651,8 +651,15 @@
                     $('#promotion .spinner-grow').remove();
                     // Re-enable button
                     $('#promotion').prop('disabled', false);
-                    console.log('data: ', data);
+                    //console.log('data: ', data);
                     promotions = data.promotiodt;
+                    if(Object.keys(promotions).length==0)
+                    {
+                        alert('promotion empty!')
+                        $('#promotion').attr('disabled', 'disabled');
+                    }
+                    else
+                    {
                     // Loop through each row in the table with ID "tableadd"
                     $("#tableadd tbody tr").each(function(index) {
                         var itemCode = $(this).find("td.ItemCode").text()
@@ -726,6 +733,7 @@
                             1); // Update the "STT" (serial number)
                     });
                     $('#promotion').attr('disabled', 'disabled');
+                }
                 },
                 error: function(data) {
                     console.log('data: ', data);
@@ -1078,11 +1086,11 @@
         document.onkeydown = function (e) {
   switch (e.key) {
     case 'ArrowDown':
-      e.preventDefault(); 
+      e.preventDefault();
       var activeElement = document.activeElement;
       var currentRow = activeElement.closest('tr');
       var nextRow = currentRow.nextElementSibling;
-      
+
       if (nextRow && nextRow.tagName === 'TR') {
         var currentInputIndex = Array.from(currentRow.querySelectorAll('.Qtyout, .qtypro')).indexOf(activeElement);
         var inputsInNextRow = nextRow.querySelectorAll('.Qtyout, .qtypro');
@@ -1093,11 +1101,11 @@
       break;
 
     case 'ArrowUp':
-      e.preventDefault(); 
+      e.preventDefault();
       var activeElement = document.activeElement;
       var currentRow = activeElement.closest('tr');
       var prevRow = currentRow.previousElementSibling;
-      
+
       if (prevRow && prevRow.tagName === 'TR') {
         var currentInputIndex = Array.from(currentRow.querySelectorAll('.Qtyout, .qtypro')).indexOf(activeElement);
         var inputsInPrevRow = prevRow.querySelectorAll('.Qtyout, .qtypro');
@@ -1111,19 +1119,19 @@
       var currentRow = activeElement.closest('tr');
       var inputsInCurrentRow = Array.from(currentRow.querySelectorAll('.Qtyout, .qtypro'));
       var currentIndex = inputsInCurrentRow.indexOf(activeElement);
-      
+
       if (inputsInCurrentRow[currentIndex + 1]) {
         inputsInCurrentRow[currentIndex + 1].focus();
       }
       break;
-      
+
     case 'ArrowLeft':
       e.preventDefault();
       var activeElement = document.activeElement;
       var currentRow = activeElement.closest('tr');
       var inputsInCurrentRow = Array.from(currentRow.querySelectorAll('.Qtyout, .qtypro'));
       var currentIndex = inputsInCurrentRow.indexOf(activeElement);
-      
+
       if (inputsInCurrentRow[currentIndex - 1]) {
         inputsInCurrentRow[currentIndex - 1].focus();
       }
