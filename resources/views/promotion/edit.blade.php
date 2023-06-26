@@ -359,8 +359,10 @@ $config = [
     </div>
     </div>
     <input type="text" name="customerdata[]" value="{{$customerdt}}" hidden>
+    @if($header[0]['Terminated']==0)
     <x-adminlte-button class="btn-flat" style="float: right; margin-top:10px" id="submit" type="submit"
         label="Save" theme="success" icon="fas fa-lg fa-save" />
+    @endif
     </form>
     </div>
     <script>

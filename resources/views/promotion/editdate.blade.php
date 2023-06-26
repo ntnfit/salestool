@@ -39,8 +39,8 @@ $config = [
                     <x-adminlte-input label="Promotion name" label-class="text-lightblue" name="promotionname" value="{{$header[0]['ProName']}}"
                         type="text" fgroup-class="col-md-6" enable-old-support>
                     </x-adminlte-input>
-        
-                    @if($header[0]['Rouding']==1) 
+
+                    @if($header[0]['Rouding']==1)
                     <x-adminlte-input name="rouding" style="margin-left: 1.5rem;" label="Rounding" type="checkbox"
                         label-class="text-lightblue" value="rouding" fgroup-class="col-xs-3 rouding" enable-old-support checked>
                     </x-adminlte-input>
@@ -62,7 +62,7 @@ $config = [
             </div>
             <div class="row">
                 <x-adminlte-date-range name="period" label="Period" :config="$config" label-class="text-lightblue" fgroup-class="col-md-3" />
-               
+
             </div>
             <!-- row input -->
             <div class="tab">
@@ -90,7 +90,7 @@ $config = [
                                 <th class="header-label">Base Quantity</th>
                                 <th class="header-label">Base UoM Code</th>
                                 <th class="header-label Itemselectdate">ItemPro</th>
-                                <th class="header-label proqtydate">Quantity</th>                          
+                                <th class="header-label proqtydate">Quantity</th>
                                 <th class="header-label probatchdate">Batch No.</th>
                                 <th class="header-label">Action</th>
                             </tr>
@@ -138,7 +138,7 @@ $config = [
                                         @endforeach
                                     </select>
                                 </td>
-                                
+
                                 <td class="Itemselectdate" >
                                         <select class="itemlist" id="Itemdate" name="Itemdate[]" data-placeholder="Select an itemcode">
                                             <option value="" selected></option>
@@ -276,12 +276,14 @@ $config = [
 
                 </div>
             </div>
-           
+
     </div>
     </div>
     <input type="text" name="customerdata[]" value="{{$customerdt}}" hidden>
+    @if($header[0]['Terminated']==0)
     <x-adminlte-button class="btn-flat" style="float: right; margin-top:10px" id="submit" type="submit"
         label="Save" theme="success" icon="fas fa-lg fa-save" />
+        @endif
     </form>
     </div>
     <script>
@@ -414,9 +416,9 @@ $config = [
             document.getElementById(tabName).style.display = "block";
             evt.currentTarget.className += " active";
         }
-    
+
         document.getElementById("defaultOpen").click();
-    
+
         const config = [
             {
                 typeSelect: 'protype',
@@ -424,16 +426,16 @@ $config = [
                 divcontent: 'promcontent'
             }
         ];
-    
+
         config.forEach(({ typeSelect, myTable, divcontent }) => {
             const typeSelectElem = document.getElementById(typeSelect);
             const myTableElem = document.getElementById(myTable);
             const divcontentElem = document.getElementById(divcontent);
-    
+
             typeSelectElem.addEventListener('change', function () {
                 const selectedValue = this.value;
                 console.log(selectedValue);
-    
+
                 if (selectedValue === '2' || selectedValue === '3' || selectedValue === '4') {
                     myTableElem.style.display = 'none';
                     divcontentElem.style.visibility = 'hidden';
@@ -443,7 +445,7 @@ $config = [
                 }
             });
         });
-    
+
         $(document).ready(function () {
             const handleInputChange = (config) => {
                 const { itemName, qtyName, uomCodeName, baseQtyName, baseUomName } = config;
@@ -453,12 +455,12 @@ $config = [
                 const quantity = quantityInput.val();
                 const uomCode = row.find(`select[name="${uomCodeName}[]"]`).val();
                 const baseUomInput = row.find(`select[name="${baseUomName}[]"]`);
-    
+
                 if (quantity === '') {
                     quantityInput.val('0');
                     quantity = '0';
                 }
-    
+
                 if (quantity && uomCode) {
                     $.ajax({
                         url: "{{ route('baseuom') }}",
@@ -482,7 +484,7 @@ $config = [
                     baseUomInput.val('');
                 }
             };
-    
+
             const configurations = [
                 {
                     itemName: 'proitem',
@@ -490,7 +492,7 @@ $config = [
                     uomCodeName: 'prouomcode',
                     baseQtyName: 'probaseqty',
                     baseUomName: 'probaseoum'
-               
+
                 },
                 {
                     itemName: 'Item',
@@ -535,7 +537,7 @@ const selectedRow = this.params.node;
 const gridApi = this.params.api;
 gridApi.applyTransaction({
     remove: [selectedRow.data]
-  
+
 });
 const remainingData = collectRemainingData();
 const customerDataInput = document.querySelector("input[name='customerdata[]']");
@@ -607,6 +609,6 @@ gridOptions.api.forEachNodeAfterFilter(node => {
 return remainingData;
 }
 </script>
-   
-  
+
+
 @endpush

@@ -90,21 +90,21 @@
             </x-adminlte-input>
 
             <div class="form-group col-md-2">
-                <label for="podate" class="text-lightblue">PO Date:</label>
-                <div class="input-group date" id="podate" data-target-input="nearest">
-                    <input type="text" name="podate" class="form-control datetimepicker-input" data-target="#podate"
+                <label for="podates" class="text-lightblue">PO Date:</label>
+                <div class="input-group date" id="podates" data-target-input="nearest">
+                    <input type="text" name="podate" id="podate" class="form-control datetimepicker-input" data-target="#podates"
                         placeholder="Select Date" />
-                    <div class="input-group-append" data-target="#podate" data-toggle="datetimepicker">
+                    <div class="input-group-append" data-target="#podates" data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fas fa-calendar"></i></div>
                     </div>
                 </div>
             </div>
            <div class="form-group col-md-2">
-            <label for="sodate"  class="text-lightblue">SO Date:</label>
-            <div class="input-group date" id="sodate" data-target-input="nearest">
-                <input type="text" name="date" class="form-control datetimepicker-input" data-target="#sodate"
+            <label for="sodates"  class="text-lightblue">SO Date:</label>
+            <div class="input-group date" id="sodates" data-target-input="nearest">
+                <input type="text" name="date" id="sodate" class="form-control datetimepicker-input" data-target="#sodates"
                     placeholder="Select Date" />
-                <div class="input-group-append" data-target="#sodate" data-toggle="datetimepicker">
+                <div class="input-group-append" data-target="#sodates" data-toggle="datetimepicker">
                     <div class="input-group-text"><i class="fas fa-calendar"></i></div>
                 </div>
             </div>
@@ -1088,7 +1088,7 @@
     </script>
     <script>
         $(document).ready(function() {
-                $('#sodate').datetimepicker({
+                $('#sodates').datetimepicker({
                     format: 'DD/MM/YYYY',
                     useCurrent: false,
                     keepOpen: false,
@@ -1096,14 +1096,14 @@
 
                 });
 
-                $('#sodate').on('click', function() {
+                $('#sodates').on('click', function() {
                     $(this).datetimepicker('show');
                 });
 
-                $('#sodate').on('blur', function() {
+                $('#sodates').on('blur', function() {
                     $(this).datetimepicker('hide');
                 });
-                $('#podate').datetimepicker({
+                $('#podates').datetimepicker({
                     format: 'DD/MM/YYYY',
                     useCurrent: false,
                     keepOpen: false,
@@ -1111,11 +1111,11 @@
 
                 });
 
-                $('#podate').on('click', function() {
+                $('#podates').on('click', function() {
                     $(this).datetimepicker('show');
                 });
 
-                $('#podate').on('blur', function() {
+                $('#podates').on('blur', function() {
                     $(this).datetimepicker('hide');
                 });
             });

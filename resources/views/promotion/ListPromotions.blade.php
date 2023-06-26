@@ -177,18 +177,18 @@ const gridOptions = {
     resizable: true,
   },
   onRowDoubleClicked: function(params) {
-                var hasTerminated = params.data.hasTerminate;
+                // var hasTerminated = params.data.hasTerminate;
 
-                if (hasTerminated == 1) {
-                    return; // Disable direct navigation
-                }
-                else
-                {
+                // if (hasTerminated == 1) {
+                //     return; // Disable direct navigation
+                // }
+                // else
+                // {
                     var id = params.data.ProId;
                 var url = '{{ route("pro.edit", ":id") }}';
                 url = url.replace(':id', id);
                 window.location.href = url;
-                }
+              //  }
 
             },
     rowSelection: 'multiple'
