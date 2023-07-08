@@ -3,19 +3,19 @@
 @section('title', 'Customer data')
 <link rel="shortcut icon" href="{{ asset('favicons/favicon.ico') }}"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
-    <script src="https://unpkg.com/jquery/dist/jquery.min.js"></script>	
+    <script src="https://unpkg.com/jquery/dist/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.13.1/xlsx.full.min.js"></script>
 @section('content')
 
 
- 
+
     <div class="form-group col-md-2">
-      
+
       <button type="button" class="form-control btn btn-primary" id="export-excel" onclick="onBtExport()">Excel</button>
     </div>
-   
+
 		<div id="myGrid" class="ag-theme-alpine" style="height: 100%">
 		</div>
 
@@ -44,7 +44,7 @@
         </style>
 
 		<script>var __basePath = './';</script>
-		<script src="https://cdn.jsdelivr.net/npm/ag-grid-community@28.2.1/dist/ag-grid-community.min.js"> 
+		<script src="https://cdn.jsdelivr.net/npm/ag-grid-community@28.2.1/dist/ag-grid-community.min.js">
 		</script>
     <script src="https://cdn.jsdelivr.net/npm/ag-grid-enterprise@28.2.1/dist/ag-grid-enterprise.min.js">
       </script>
@@ -77,13 +77,13 @@
 
 const columnDefs = [
   { field: 'empID' },
-  { field: 'U_EmpEngName'},
-  { field: 'Name' },
-  { field: 'remark', maxWidth: 100 },
-  {
+  {headerName:"Emp", field: 'ExtEmpNo'},
+  {field: 'fullname'},
+  { headerName:"Emp Eng Name", field: 'U_EmpEngName'},
+  { headerName: 'Group Name',field: 'Name'},
+  { headerName: 'Position', field: 'remark'},
+  { headerName: 'Old code',
     field: 'U_Oldcode',
-    filter: 'agDateColumnFilter',
-    filterParams: filterParams,
   },
   { field: 'startDate' },
   { field: 'status'},
@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var gridDiv = document.querySelector('#myGrid');
   new agGrid.Grid(gridDiv, gridOptions);
       gridOptions.api.setRowData({!!$ListEmp!!})
-          
+    console.log({!!$ListEmp!!});
 
 });
 
